@@ -1,2 +1,86 @@
-# Ignore Mac files
+#LOCAL
+.DS_STORE
+*/.DS_STORE
+
+#--------------
+#SPRING BOOT
+
+*#
+*.iml
+*.ipr
+*.iws
+*.jar
+*.sw?
+*~
+.#*
+.*.md.html
 .DS_Store
+.classpath
+.factorypath
+.gradle
+.idea
+.metadata
+.metadata/*
+.project
+.recommenders
+.settings
+.springBeans
+/build
+/code
+MANIFEST.MF
+_site/
+activemq-data
+bin
+build
+build.log
+dependency-reduced-pom.xml
+dump.rdb
+interpolated*.xml
+lib/
+manifest.yml
+overridedb.*
+settings.xml
+target
+transaction-logs
+.flattened-pom.xml
+secrets.yml
+.gradletasknamecache
+.sts4-cache
+
+#--------------
+#ANDROID
+
+#Intellij
+*/.iml
+*/.iml/
+*/*.idea/
+*/*.idea/*
+
+#Build app files
+*/*.apk
+*/*.ap_
+
+#ART/Dalvik VM files
+*/*.dex
+
+#Java class files
+*/*.class
+
+#Gradle files
+*/.gradle/
+*/Android/build/
+
+#Local config files (sdk path, etc.)
+*/Android/local.properties
+
+#Proguard folder
+*/Android/proguard/
+
+#Log files
+*/*.log
+
+#Keystore files
+*/*.jks
+
+#External native build folder
+*/*.externalNativeBuild

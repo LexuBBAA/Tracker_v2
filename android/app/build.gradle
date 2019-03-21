@@ -1,0 +1,64 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.tracker.trackerv2"
+        minSdkVersion 15
+        targetSdkVersion 28
+        versionCode 100
+        versionName "1.0.0.12.04.18"
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+        }
+
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+
+    //  Kotlin Coroutines
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.coroutines"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutines"
+
+    //  ROOM Persistance Lib
+    implementation "android.arch.persistence.room:runtime:$rootProject.roomVersion"
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    kapt "android.arch.persistence.room:compiler:$rootProject.roomVersion"
+    //  Lifecycle components
+    implementation "android.arch.lifecycle:extensions:$rootProject.archLifecycleVersion"
+    kapt "android.arch.lifecycle:compiler:$rootProject.archLifecycleVersion"
+
+    //  OkHttp3 - Network requesting
+    implementation 'com.squareup.okhttp3:okhttp:3.12.0'
+
+    //  Google Gson - JSON Parsing
+    implementation 'com.google.code.gson:gson:2.8.5'
+
+}
+
+kotlin {
+    experimental {
+        coroutines "enable"
+    }
+}
