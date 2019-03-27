@@ -9,6 +9,10 @@ import com.tracker.auth.ws.datasources.tokens.services.impl.TokensServiceImpl;
 import com.tracker.auth.ws.datasources.users.dto.UserDto;
 import com.tracker.auth.ws.datasources.users.services.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,32 +31,26 @@ public class OAuth2Controller {
 	private UserServiceImpl userService;
 
 	@GetMapping("/")
-	public String getStatus() {
-		return "Available";
+	public ResponseEntity getStatus() {
+		return new ResponseEntity<>("Available", HttpStatus.OK);
 	}
 
 	@GetMapping("/token")
-	public ApiResponse getToken(
-			@RequestHeader(value = "username", required = false) String username,
-			@RequestHeader(value = "password"/*, required = false*/) String password,
-			@RequestHeader(value = "client-secret", required = false) String clientSecret,
-			@RequestHeader(value = "client-id", required = false) String clientId,
+	public ResponseEntity getToken(
+			@RequestHeader(value = "username") String username,
+			@RequestHeader(value = "password") String password,
 			@RequestHeader(value = "deviceId", required = false) String deviceId,
 			@RequestHeader(value = "deviceOs", required = false) String deviceOs,
 			@RequestHeader(value = "deviceOsVersion", required = false) String deviceOsVersion,
 			@RequestHeader(value = "latitude", required = false) Float latitude,
 			@RequestHeader(value = "longitude", required = false) Float longitude
 	) {
-		if(clientId == null || clientSecret == null) {
-			return new ErrorResponse(HttpResponseCode.HTTP_RESPONSE_FORBIDDEN);
+		if(username.isEmpty() || password.isEmpty()) {
+			return new ErrorResponse(HttpResponseCode.HTTP_RESPONSE_BAD_REQUEST).toResponseEntity();
 		}
 
-		if(username == null || password == null) {
-			return new ErrorResponse(HttpResponseCode.HTTP_RESPONSE_BAD_REQUEST);
-		}
-
-		if(deviceId == null) {
-			return new ErrorResponse(HttpResponseCode.HTTP_RESPONSE_BAD_REQUEST);
+		if(deviceId == null || deviceId.isEmpty()) {
+			return new ErrorResponse(HttpResponseCode.HTTP_RESPONSE_BAD_REQUEST).toResponseEntity();
 		}
 
 		UserDto userDto = new UserDto();
@@ -77,9 +75,9 @@ public class OAuth2Controller {
 
 			generatedToken = tokensService.getToken(authenticatedUser);
 		} else {
-			return new ErrorResponse(HttpResponseCode.HTTP_RESPONSE_UNAUTHORIZED);
+			return new ErrorResponse(HttpResponseCode.HTTP_RESPONSE_UNAUTHORIZED).toResponseEntity();
 		}
 
-		return new TokenResponse(generatedToken);
+		return new ResponseEntity<>(generatedToken, HttpStatus.OK);
 	}
 }

@@ -1,11 +1,10 @@
-package com.tracker.auth.ws.datasources.models.response;
+package com.tracker.ws.entities.responses.base;
 
-import com.tracker.auth.ws.datasources.models.enums.HttpResponseCode;
-import com.tracker.auth.ws.datasources.models.enums.HttpResponseMessage;
+import com.tracker.ws.entities.responses.enums.HttpResponseCode;
+import com.tracker.ws.entities.responses.enums.HttpResponseMessage;
+import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
-
-import javax.persistence.Column;
 
 //  TODO:   remove this so that all apps use the ResponseEntity<T> (base Http responses) class
 public abstract class ApiResponse<T> {
@@ -18,22 +17,22 @@ public abstract class ApiResponse<T> {
     @Nullable
     private T payload;
 
-    ApiResponse() {
+    public ApiResponse() {
         this(HttpResponseCode.HTTP_RESPONSE_OK);
     }
 
-    ApiResponse(@NonNull HttpResponseCode httpResponseCode) {
+    public ApiResponse(@NonNull HttpResponseCode httpResponseCode) {
         this(
                 httpResponseCode.getValue(),
                 HttpResponseMessage.get(httpResponseCode).getValue()
         );
     }
 
-    ApiResponse(@NonNull T payload) {
+    public ApiResponse(@NonNull T payload) {
         this(HttpResponseCode.HTTP_RESPONSE_OK, payload);
     }
 
-    ApiResponse(@NonNull HttpResponseCode httpResponseCode, @NonNull T payload) {
+    public ApiResponse(@NonNull HttpResponseCode httpResponseCode, @NonNull T payload) {
         this(
                 httpResponseCode.getValue(),
                 HttpResponseMessage.get(httpResponseCode).getValue()
@@ -41,7 +40,7 @@ public abstract class ApiResponse<T> {
         this.payload = payload;
     }
 
-    ApiResponse(int responseCode, @NonNull String responseMessage) {
+    public ApiResponse(int responseCode, @NonNull String responseMessage) {
         this.timestamp = System.currentTimeMillis();
         this.responseCode = responseCode;
         this.responseMessage = responseMessage;

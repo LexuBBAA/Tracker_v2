@@ -1,4 +1,4 @@
-package com.tracker.auth.ws.datasources.models.enums;
+package com.tracker.ws.entities.responses.enums;
 
 public enum HttpResponseCode {
 

@@ -1,6 +1,6 @@
-package com.tracker.auth.ws.datasources.models.response;
+package com.tracker.ws.entities.responses.base;
 
-import com.tracker.auth.ws.datasources.models.enums.HttpResponseCode;
+import com.tracker.ws.entities.responses.enums.HttpResponseCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 
