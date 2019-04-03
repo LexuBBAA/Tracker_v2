@@ -4,6 +4,7 @@ import com.tracker.auth.ws.datasources.models.enums.HttpResponseCode;
 import com.tracker.auth.ws.datasources.models.response.ApiResponse;
 import com.tracker.auth.ws.datasources.models.response.ErrorResponse;
 import com.tracker.auth.ws.datasources.models.response.TokenResponse;
+import com.tracker.auth.ws.datasources.models.response.TokenValidityResponsePayload;
 import com.tracker.auth.ws.datasources.tokens.dto.TokenDto;
 import com.tracker.auth.ws.datasources.tokens.services.impl.TokensServiceImpl;
 import com.tracker.auth.ws.datasources.users.dto.UserDto;
@@ -79,5 +80,13 @@ public class OAuth2Controller {
 		}
 
 		return new ResponseEntity<>(generatedToken, HttpStatus.OK);
+	}
+
+	@GetMapping("/token/validate")
+	public ResponseEntity validateToken(
+			@RequestHeader(value = "token", required = false) String token
+	) {
+		boolean isValid = token != null && tokensService.validateToken(token);
+		return new ResponseEntity<>(new TokenValidityResponsePayload(isValid), HttpStatus.OK);
 	}
 }

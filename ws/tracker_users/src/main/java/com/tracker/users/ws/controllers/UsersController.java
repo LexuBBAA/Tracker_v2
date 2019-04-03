@@ -1,30 +1,24 @@
 package com.tracker.users.ws.controllers;
 
 import com.tracker.users.ws.datasource.dto.UserDto;
-import com.tracker.users.ws.datasource.requests.auth.AuthTokenOwnerRequest;
 import com.tracker.users.ws.datasource.requests.roles.GetUserRoleRequest;
-import com.tracker.users.ws.datasource.responses.auth.AuthTokenOwnerRespose;
 import com.tracker.users.ws.datasource.responses.roles.UserRoleResponse;
-import com.tracker.users.ws.datasource.services.UsersPreviewService;
+import com.tracker.users.ws.datasource.responses.self.CreateUserResponseBody;
 import com.tracker.users.ws.datasource.services.impl.UsersPreviewServiceImpl;
 import com.tracker.users.ws.datasource.services.impl.UsersServiceImpl;
 import com.tracker.users.ws.utils.HttpResponseCode;
 import com.tracker.users.ws.utils.HttpResponseMessage;
-import com.tracker.users.ws.utils.RequestType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 public class UsersController {
-    private static final String AUTH_URL = "http://tracker-auth";
     private static final String ROLES_URL = "http://tracker-roles";
 
     @Autowired
@@ -47,38 +41,26 @@ public class UsersController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/{userId}")
     public ResponseEntity getUserDetails(
-            @RequestHeader(value = "token") String token,
             @PathVariable(name = "userId") Integer userId
     ) {
-        if (token == null || token.isEmpty()) {
-            return new ResponseEntity<>(
-                    HttpResponseMessage.get(HttpResponseCode.HTTP_RESPONSE_FORBIDDEN).getValue(),
-                    HttpResponseCode.HTTP_RESPONSE_FORBIDDEN.getHttpStatus()
-            );
-        }
-
-
-        ResponseEntity<AuthTokenOwnerRespose> tokenOwnerResponse = restTemplate.exchange(AUTH_URL + "/oauth/owner/" + token, HttpMethod.GET, new AuthTokenOwnerRequest(token), AuthTokenOwnerRespose.class);
-        AuthTokenOwnerRespose tokenOwner = tokenOwnerResponse.getBody();
-
         UserDto userDetails = usersService.getUserById(userId);
-        if (userDetails != null && (int) userDetails.userId == Objects.requireNonNull(tokenOwner).userId) {
-            return new ResponseEntity<>(userDetails, HttpStatus.OK);
-        } else if (userDetails == null) {
+
+        if (userDetails == null) {
             return new ResponseEntity<>(
                     HttpResponseMessage.get(HttpResponseCode.HTTP_RESPONSE_NO_CONTENT),
                     HttpResponseCode.HTTP_RESPONSE_NO_CONTENT.getHttpStatus()
             );
-        }
+        } else {
+            ResponseEntity<UserRoleResponse> roleResponse = restTemplate.exchange(ROLES_URL + "/role/full/" + userDetails.userId, HttpMethod.GET, new GetUserRoleRequest(), UserRoleResponse.class);
+            userDetails.role = roleResponse.getBody();
 
-        ResponseEntity<UserRoleResponse> tokenOwnerRoleResponse = restTemplate.exchange(ROLES_URL + "/role/full/" + Objects.requireNonNull(tokenOwner).userId, HttpMethod.GET, new GetUserRoleRequest(), UserRoleResponse.class);
-        userDetails.formatForRole(tokenOwnerRoleResponse.getBody(), RequestType.VIEW);
-        return new ResponseEntity<>(userDetails, HttpStatus.OK);
+            return new ResponseEntity<>(userDetails, HttpStatus.OK);
+        }
     }
 
-    @GetMapping("/user/{userId}/preview")
+    @GetMapping("/{userId}/preview")
     public ResponseEntity getUserPreview(
             @PathVariable(value = "userId") Integer userId
     ) {
@@ -90,6 +72,67 @@ public class UsersController {
             );
         }
         return new ResponseEntity<>(userDto, HttpStatus.OK);
+    }
+
+    @PostMapping("/")
+    public ResponseEntity createNewUser(@RequestBody UserDto newUser) {
+        if(newUser == null || newUser.validateRequestMandatoryFields()) {
+            return new ResponseEntity<>(
+                    HttpResponseMessage.get(HttpResponseCode.HTTP_RESPONSE_BAD_REQUEST),
+                    HttpResponseCode.HTTP_RESPONSE_BAD_REQUEST.getHttpStatus()
+            );
+        }
+
+        UserDto userDto = usersService.createUser(newUser);
+        if(userDto != null && userDto.userId != null) {
+            CreateUserResponseBody responseBody = new CreateUserResponseBody(userDto);
+            return new ResponseEntity<>(responseBody, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(
+                    HttpResponseMessage.get(HttpResponseCode.HTTP_RESPONSE_INTERNAL_SERVER_ERROR),
+                    HttpResponseCode.HTTP_RESPONSE_INTERNAL_SERVER_ERROR.getHttpStatus()
+            );
+        }
+    }
+
+    @PutMapping("/")
+    public ResponseEntity updateUser(@RequestBody UserDto user) {
+        if(user == null || user.userId == null || user.validateRequestMandatoryFields()) {
+            return new ResponseEntity<>(
+                    HttpResponseMessage.get(HttpResponseCode.HTTP_RESPONSE_BAD_REQUEST),
+                    HttpResponseCode.HTTP_RESPONSE_BAD_REQUEST.getHttpStatus()
+            );
+        }
+
+        UserDto newUser = usersService.updateUser(user);
+        if(newUser == null) {
+            return new ResponseEntity<>(
+                    HttpResponseMessage.get(HttpResponseCode.HTTP_RESPONSE_INTERNAL_SERVER_ERROR),
+                    HttpResponseCode.HTTP_RESPONSE_INTERNAL_SERVER_ERROR.getHttpStatus()
+            );
+        } else {
+            return new ResponseEntity<>(
+                    HttpResponseMessage.get(HttpResponseCode.HTTP_RESPONSE_OK),
+                    HttpResponseCode.HTTP_RESPONSE_OK.getHttpStatus()
+            );
+        }
+    }
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity deleteUser(@PathVariable(value = "userId") Integer userId) {
+        UserDto userDto = usersService.getUserById(userId);
+        if(userDto == null) {
+            return new ResponseEntity<>(
+                    HttpResponseMessage.get(HttpResponseCode.HTTP_RESPONSE_NO_CONTENT),
+                    HttpResponseCode.HTTP_RESPONSE_NO_CONTENT.getHttpStatus()
+            );
+        }
+
+        usersService.deleteUserById(userId);
+        return new ResponseEntity<>(
+                HttpResponseMessage.get(HttpResponseCode.HTTP_RESPONSE_OK),
+                HttpResponseCode.HTTP_RESPONSE_OK.getHttpStatus()
+        );
     }
 
 }

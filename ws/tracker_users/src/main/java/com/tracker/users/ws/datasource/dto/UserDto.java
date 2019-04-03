@@ -2,10 +2,7 @@ package com.tracker.users.ws.datasource.dto;
 
 import com.tracker.users.ws.datasource.entities.UserEntity;
 import com.tracker.users.ws.datasource.entities.UserPreviewEntity;
-import com.tracker.users.ws.datasource.responses.roles.UserAccessProfileResponse;
-import com.tracker.users.ws.datasource.responses.roles.UserDepartmentResponse;
 import com.tracker.users.ws.datasource.responses.roles.UserRoleResponse;
-import com.tracker.users.ws.utils.RequestType;
 
 import java.io.Serializable;
 import java.sql.Date;
@@ -32,6 +29,7 @@ public class UserDto implements Serializable {
     public Integer teamId;
     public UserRoleResponse role;
     public Date lastActivityTime;
+    public String password;
 
     public UserDto(UserEntity entity) {
         this.userId = entity.getUserId();
@@ -69,37 +67,11 @@ public class UserDto implements Serializable {
         this.lastActivityTime = entity.getLastActivityTime();
     }
 
-    public void formatForRole(UserRoleResponse userRole, RequestType requestType) {
-        if(requestType != RequestType.VIEW && userRole.userAccessRights.usersAccess == UserAccessProfileResponse.AccessType.NONE) {
-            this.username = null;
-            this.email = null;
-            this.createdBy = null;
-            this.reportingTo = null;
-            this.efficiency = null;
-            this.projectsCount = null;
-            this.projectsCompleted = null;
-            this.birthdate = null;
-            this.salary = null;
-            this.phone = null;
-            this.freeDaysCount = null;
-            this.jiraUserId = null;
-            this.githubUserId = null;
-            this.teamId = null;
-            this.role = null;
-            return;
-        }
-        if (userRole.userDepartment.type != UserDepartmentResponse.DepartmentType.HR) {
-            this.salary = null;
-            this.freeDaysCount = null;
-        }
-        if (userRole.userDepartment.type != UserDepartmentResponse.DepartmentType.Other &&
-                userRole.userDepartment.type != UserDepartmentResponse.DepartmentType.Software) {
-            this.jiraUserId = null;
-            this.githubUserId = null;
-        }
-        if (userRole.userDepartment.type == UserDepartmentResponse.DepartmentType.Bussiness) {
-            this.createdDate = null;
-            this.createdBy = null;
-        }
+    public boolean validateRequestMandatoryFields() {
+        return firstname != null && lastname != null &&
+                username != null && email != null &&
+                createdBy != null && reportingTo != null &&
+                birthdate != null && role != null &&
+                password != null;
     }
 }

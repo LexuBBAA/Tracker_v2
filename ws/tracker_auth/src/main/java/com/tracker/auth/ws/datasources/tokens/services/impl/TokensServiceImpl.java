@@ -51,6 +51,11 @@ public class TokensServiceImpl implements TokensService {
         return generatedToken;
     }
 
+    @Override
+    public boolean validateToken(String token) {
+        return repository.existsByToken(token);
+    }
+
     private TokenDto generateToken(@NonNull UserDto userDto) throws NoSuchAlgorithmException {
         String newToken = generateNewToken();
 

@@ -53,6 +53,8 @@ public class UserEntity implements Serializable {
     private Integer roleId;
     @Column(name = "last_activity")
     private Date lastActivityTime;
+    @Column(name = "password")
+    private String password;
 
     public UserEntity() {
     }
@@ -79,8 +81,11 @@ public class UserEntity implements Serializable {
         this.teamId = userDto.teamId;
         if(userDto.role != null && userDto.role.id != null) {
             this.roleId = userDto.role.id;
+        } else {
+            this.roleId = -1;
         }
         this.lastActivityTime = userDto.lastActivityTime;
+        this.password = userDto.password;
     }
 
     public Integer getUserId() {
@@ -221,6 +226,14 @@ public class UserEntity implements Serializable {
 
     public void setRoleId(Integer roleId) {
         this.roleId = roleId;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public Date getLastActivityTime() {

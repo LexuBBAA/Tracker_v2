@@ -1,5 +1,6 @@
 package com.tracker.ws.controllers;
 
+import com.tracker.ws.entities.responses.auth.TokenValidityResponsePayload;
 import com.tracker.ws.entities.responses.base.ErrorResponse;
 import com.tracker.ws.entities.responses.auth.TokenResponsePayload;
 import com.tracker.ws.entities.responses.enums.HttpResponseCode;
@@ -69,6 +70,22 @@ public class AuthController {
         HttpEntity authRequestTemplate = new HttpEntity(authHeaders);
 
         return restTemplate.exchange(AUTH_URL + "/token", HttpMethod.GET, authRequestTemplate, TokenResponsePayload.class);
+    }
+
+    @GetMapping("/oauth/token/validate")
+    public ResponseEntity validateToken(
+            @RequestHeader(value = "client-secret", required = false) String clientSecret,
+            @RequestHeader(value = "client-id", required = false) String clientId,
+            @RequestHeader(value = "token", required = false) String token
+    ) {
+        if(clientId == null || clientSecret == null) {
+            return new ErrorResponse(HttpResponseCode.HTTP_RESPONSE_FORBIDDEN).toResponseEntity();
+        }
+
+        HttpHeaders tokenHeaders = new HttpHeaders();
+        tokenHeaders.add("token", token);
+
+        return restTemplate.exchange(AUTH_URL + "/token/validate", HttpMethod.GET, new HttpEntity<>(tokenHeaders), TokenValidityResponsePayload.class);
     }
 
 }
