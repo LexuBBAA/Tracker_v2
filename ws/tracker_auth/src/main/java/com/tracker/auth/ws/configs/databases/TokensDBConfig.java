@@ -37,7 +37,7 @@ public class TokensDBConfig {
             @Qualifier("tokensDataSource") DataSource dataSource
     ) {
         return builder.dataSource(dataSource)
-                .packages("com.tracker.auth.ws.datasources.tokens.entities")
+                .packages("com.tracker.auth.ws.datasource.tokens.entities")
                 .persistenceUnit("tokens")
                 .build();
     }

@@ -38,7 +38,7 @@ public class UsersDBConfig {
             @Qualifier("dataSource") DataSource dataSource
     ) {
         return builder.dataSource(dataSource)
-                .packages("com.tracker.auth.ws.datasources.users.entities")
+                .packages("com.tracker.auth.ws.datasource.users.entities")
                 .persistenceUnit("users")
                 .build();
     }
