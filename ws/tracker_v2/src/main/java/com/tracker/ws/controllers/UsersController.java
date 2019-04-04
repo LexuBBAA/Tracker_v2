@@ -18,6 +18,9 @@ public class UsersController {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private AuthController authController;
+
     @GetMapping("/users")
     public ResponseEntity getUsers(
             @RequestHeader(value = "client-secret", required = false) String clientSecret,
@@ -32,7 +35,7 @@ public class UsersController {
             return new ErrorResponse(HttpResponseCode.HTTP_RESPONSE_FORBIDDEN).toResponseEntity();
         }
 
-        return restTemplate.exchange(USERS_URL + "/", HttpMethod.GET, new HttpEntity<>(new HttpHeaders()), Object.class);
+        return restTemplate.exchange(USERS_URL + "/users", HttpMethod.GET, new HttpEntity<>(new HttpHeaders()), Object.class);
     }
 
     @GetMapping("/user/{userId}")
@@ -53,7 +56,7 @@ public class UsersController {
             );
         }
 
-        ResponseEntity validateTokenResponse = new AuthController().validateToken(clientSecret, clientId, token);
+        ResponseEntity validateTokenResponse = authController.validateToken(clientSecret, clientId, token);
         if(!(validateTokenResponse.getBody() instanceof TokenValidityResponsePayload) || !((TokenValidityResponsePayload) validateTokenResponse.getBody()).isValid) {
             return new ResponseEntity<>(
                     "Invalid Token",
@@ -81,7 +84,7 @@ public class UsersController {
             );
         }
 
-        ResponseEntity validateTokenResponse = new AuthController().validateToken(clientSecret, clientId, token);
+        ResponseEntity validateTokenResponse = authController.validateToken(clientSecret, clientId, token);
         if(!(validateTokenResponse.getBody() instanceof TokenValidityResponsePayload) || !((TokenValidityResponsePayload) validateTokenResponse.getBody()).isValid) {
             return new ResponseEntity<>(
                     "Invalid Token",
@@ -102,7 +105,7 @@ public class UsersController {
             return new ErrorResponse(HttpResponseCode.HTTP_RESPONSE_FORBIDDEN).toResponseEntity();
         }
 
-        ResponseEntity validateTokenResponse = new AuthController().validateToken(clientSecret, clientId, token);
+        ResponseEntity validateTokenResponse = authController.validateToken(clientSecret, clientId, token);
         if(!(validateTokenResponse.getBody() instanceof TokenValidityResponsePayload) || !((TokenValidityResponsePayload) validateTokenResponse.getBody()).isValid) {
             return new ResponseEntity<>(
                     "Invalid Token",
@@ -124,7 +127,7 @@ public class UsersController {
             return new ErrorResponse(HttpResponseCode.HTTP_RESPONSE_FORBIDDEN).toResponseEntity();
         }
 
-        ResponseEntity validateTokenResponse = new AuthController().validateToken(clientSecret, clientId, token);
+        ResponseEntity validateTokenResponse = authController.validateToken(clientSecret, clientId, token);
         if(!(validateTokenResponse.getBody() instanceof TokenValidityResponsePayload) || !((TokenValidityResponsePayload) validateTokenResponse.getBody()).isValid) {
             return new ResponseEntity<>(
                     "Invalid Token",
@@ -153,7 +156,7 @@ public class UsersController {
             );
         }
 
-        ResponseEntity validateTokenResponse = new AuthController().validateToken(clientSecret, clientId, token);
+        ResponseEntity validateTokenResponse = authController.validateToken(clientSecret, clientId, token);
         if(!(validateTokenResponse.getBody() instanceof TokenValidityResponsePayload) || !((TokenValidityResponsePayload) validateTokenResponse.getBody()).isValid) {
             return new ResponseEntity<>(
                     "Invalid Token",
