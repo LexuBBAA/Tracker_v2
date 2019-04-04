@@ -35,9 +35,6 @@ public class RoleEntity implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private RoleVeterancy veterancy;
 	
-	@Column(name = "access_profile_id", nullable = false)
-	private int accessProfileId;
-	
 	public RoleEntity() {}
 	
 	public RoleEntity(String title, String description, int departmentId, RoleVeterancy veterancy, int accessProfileId) {
@@ -45,7 +42,6 @@ public class RoleEntity implements Serializable {
 		this.description = description;
 		this.departmentId = departmentId;
 		this.veterancy = veterancy;
-		this.accessProfileId = accessProfileId;
 	}
 
 	public int getId() { return id; }
@@ -57,7 +53,5 @@ public class RoleEntity implements Serializable {
 	public int getDepartmentId() { return departmentId; }
 
 	public RoleVeterancy getVeterancy() { return veterancy; }
-
-	public int getAccessProfileId() { return accessProfileId; }
 
 }

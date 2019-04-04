@@ -1,7 +1,6 @@
 package com.tracker.users.ws.controllers;
 
 import com.tracker.users.ws.datasource.dto.UserDto;
-import com.tracker.users.ws.datasource.requests.roles.GetUserRoleRequest;
 import com.tracker.users.ws.datasource.responses.roles.UserRoleResponse;
 import com.tracker.users.ws.datasource.responses.self.CreateUserResponseBody;
 import com.tracker.users.ws.datasource.services.impl.UsersPreviewServiceImpl;
@@ -9,9 +8,7 @@ import com.tracker.users.ws.datasource.services.impl.UsersServiceImpl;
 import com.tracker.users.ws.utils.HttpResponseCode;
 import com.tracker.users.ws.utils.HttpResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -53,7 +50,7 @@ public class UsersController {
                     HttpResponseCode.HTTP_RESPONSE_NO_CONTENT.getHttpStatus()
             );
         } else {
-            ResponseEntity<UserRoleResponse> roleResponse = restTemplate.exchange(ROLES_URL + "/role/full/" + userDetails.userId, HttpMethod.GET, new GetUserRoleRequest(), UserRoleResponse.class);
+            ResponseEntity<UserRoleResponse> roleResponse = restTemplate.exchange(ROLES_URL + "/" + userDetails.role.id, HttpMethod.GET, new HttpEntity<>(new HttpHeaders()), UserRoleResponse.class);
             userDetails.role = roleResponse.getBody();
 
             return new ResponseEntity<>(userDetails, HttpStatus.OK);
