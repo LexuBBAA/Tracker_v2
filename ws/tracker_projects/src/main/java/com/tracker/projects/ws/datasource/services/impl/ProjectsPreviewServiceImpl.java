@@ -1,7 +1,7 @@
 package com.tracker.projects.ws.datasource.services.impl;
 
-import com.tracker.projects.ws.datasource.dtos.ProjectPreviewDto;
-import com.tracker.projects.ws.datasource.entities.ProjectPreviewEntity;
+import com.tracker.projects.ws.datasource.dtos.projects.ProjectPreviewDto;
+import com.tracker.projects.ws.datasource.entities.projects.ProjectPreviewEntity;
 import com.tracker.projects.ws.datasource.repositories.ProjectPreviewRepository;
 import com.tracker.projects.ws.datasource.services.ProjectsPreviewService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProjectsPreviewServiceImpl implements ProjectsPreviewService {

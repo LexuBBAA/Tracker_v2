@@ -1,6 +1,6 @@
 package com.tracker.projects.ws.datasource.repositories;
 
-import com.tracker.projects.ws.datasource.entities.ProjectPreviewEntity;
+import com.tracker.projects.ws.datasource.entities.projects.ProjectPreviewEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

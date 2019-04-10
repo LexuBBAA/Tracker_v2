@@ -1,8 +1,6 @@
 package com.tracker.projects.ws.datasource.services;
 
-import com.tracker.projects.ws.datasource.dtos.ProjectDto;
-
-import java.util.List;
+import com.tracker.projects.ws.datasource.dtos.projects.ProjectDto;
 
 public interface ProjectsService {
     ProjectDto getProjectById(Integer projectId);

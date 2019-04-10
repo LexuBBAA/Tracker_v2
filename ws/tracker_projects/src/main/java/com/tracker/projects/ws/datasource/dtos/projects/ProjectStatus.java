@@ -1,4 +1,4 @@
-package com.tracker.projects.ws.datasource.dtos;
+package com.tracker.projects.ws.datasource.dtos.projects;
 
 public enum ProjectStatus {
     PROJECT_SETUP,

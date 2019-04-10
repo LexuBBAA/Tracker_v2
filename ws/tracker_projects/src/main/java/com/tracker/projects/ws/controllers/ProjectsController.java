@@ -1,9 +1,7 @@
 package com.tracker.projects.ws.controllers;
 
-import com.tracker.projects.ws.datasource.dtos.ProjectDto;
-import com.tracker.projects.ws.datasource.dtos.ProjectPreviewDto;
-import com.tracker.projects.ws.datasource.services.ProjectsPreviewService;
-import com.tracker.projects.ws.datasource.services.ProjectsService;
+import com.tracker.projects.ws.datasource.dtos.projects.ProjectDto;
+import com.tracker.projects.ws.datasource.dtos.projects.ProjectPreviewDto;
 import com.tracker.projects.ws.datasource.services.impl.ProjectsPreviewServiceImpl;
 import com.tracker.projects.ws.datasource.services.impl.ProjectsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;

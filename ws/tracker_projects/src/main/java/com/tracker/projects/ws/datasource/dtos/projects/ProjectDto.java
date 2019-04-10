@@ -1,9 +1,9 @@
-package com.tracker.projects.ws.datasource.dtos;
+package com.tracker.projects.ws.datasource.dtos.projects;
 
-import com.tracker.projects.ws.datasource.entities.ProjectEntity;
-import com.tracker.projects.ws.datasource.entities.ProjectPreviewEntity;
+import com.tracker.projects.ws.datasource.dtos.sprints.SprintDto;
+import com.tracker.projects.ws.datasource.dtos.TeamDto;
+import com.tracker.projects.ws.datasource.entities.projects.ProjectEntity;
 
-import java.io.File;
 import java.sql.Date;
 
 public class ProjectDto extends ProjectPreviewDto {

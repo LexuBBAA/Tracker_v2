@@ -1,16 +1,12 @@
 package com.tracker.projects.ws.datasource.services.impl;
 
-import com.tracker.projects.ws.datasource.dtos.ProjectDto;
-import com.tracker.projects.ws.datasource.dtos.ProjectPreviewDto;
-import com.tracker.projects.ws.datasource.entities.ProjectEntity;
-import com.tracker.projects.ws.datasource.entities.ProjectPreviewEntity;
+import com.tracker.projects.ws.datasource.dtos.projects.ProjectDto;
+import com.tracker.projects.ws.datasource.entities.projects.ProjectEntity;
 import com.tracker.projects.ws.datasource.repositories.ProjectsRepository;
 import com.tracker.projects.ws.datasource.services.ProjectsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service

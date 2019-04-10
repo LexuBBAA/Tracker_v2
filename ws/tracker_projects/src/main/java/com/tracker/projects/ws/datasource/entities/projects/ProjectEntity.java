@@ -1,18 +1,16 @@
-package com.tracker.projects.ws.datasource.entities;
+package com.tracker.projects.ws.datasource.entities.projects;
 
-import com.tracker.projects.ws.datasource.dtos.ProjectDto;
-import com.tracker.projects.ws.datasource.dtos.ProjectStatus;
-import com.tracker.projects.ws.datasource.dtos.SprintDto;
-import com.tracker.projects.ws.datasource.dtos.TeamDto;
+import com.tracker.projects.ws.datasource.dtos.projects.ProjectDto;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.io.Serializable;
 import java.sql.Date;
 
 @Entity(name = "Projects")
-public class ProjectEntity {
+public class ProjectEntity implements Serializable {
     @Id
     @GeneratedValue
     @Column(name = "id")
