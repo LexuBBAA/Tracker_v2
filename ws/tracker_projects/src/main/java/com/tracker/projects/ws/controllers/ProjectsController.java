@@ -2,7 +2,10 @@ package com.tracker.projects.ws.controllers;
 
 import com.tracker.projects.ws.datasource.dtos.ProjectDto;
 import com.tracker.projects.ws.datasource.dtos.ProjectPreviewDto;
+import com.tracker.projects.ws.datasource.services.ProjectsPreviewService;
+import com.tracker.projects.ws.datasource.services.ProjectsService;
 import com.tracker.projects.ws.datasource.services.impl.ProjectsPreviewServiceImpl;
+import com.tracker.projects.ws.datasource.services.impl.ProjectsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -16,6 +19,9 @@ public class ProjectsController {
 
 	@Autowired
 	private ProjectsPreviewServiceImpl previewService;
+
+	@Autowired
+	private ProjectsServiceImpl projectsService;
 
 	@GetMapping("/")
 	public String getStatus() {
@@ -33,19 +39,25 @@ public class ProjectsController {
 	public ResponseEntity getProjectDetails(
 			@PathVariable(value = "projectId") Integer projectId
 	) {
-		return new ResponseEntity(HttpStatus.OK);
+		ProjectDto projectDto = projectsService.getProjectById(projectId);
+		return projectDto == null ? new ResponseEntity(HttpStatus.NO_CONTENT): new ResponseEntity<>(new HttpEntity<>(projectDto), HttpStatus.OK);
 	}
 
 	@PostMapping("/")
 	public ResponseEntity createProject(@RequestBody ProjectDto projectDto) {
-		return new ResponseEntity(HttpStatus.OK);
+		ProjectDto savedProject = projectsService.createProject(projectDto);
+		if(savedProject.id == null) {
+			return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return new ResponseEntity<>(new HttpEntity<>(savedProject), HttpStatus.OK);
 	}
 
 	@PutMapping("/")
 	public ResponseEntity updateProject(
 			@RequestBody ProjectDto projectDto
 	) {
-		return new ResponseEntity(HttpStatus.OK);
+		ProjectDto savedProject = projectsService.updateProject(projectDto);
+		return savedProject == null ? new ResponseEntity(HttpStatus.NO_CONTENT): new ResponseEntity<>(new HttpEntity<>(savedProject), HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{projectId}")

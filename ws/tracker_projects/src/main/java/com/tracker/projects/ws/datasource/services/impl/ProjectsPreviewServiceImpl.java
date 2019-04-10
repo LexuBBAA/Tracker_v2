@@ -22,19 +22,6 @@ public class ProjectsPreviewServiceImpl implements ProjectsPreviewService {
     }
 
     @Override
-    public ProjectPreviewDto getProjectById(Integer projectId) {
-        Optional<ProjectPreviewEntity> previewEntity = repository.findById(projectId);
-
-        return previewEntity.map(ProjectPreviewDto::new).orElse(null);
-    }
-
-    @Override
-    public ProjectPreviewDto updateProject(ProjectPreviewDto projectDto) {
-        ProjectPreviewEntity savedEntity = repository.save(getFromDto(projectDto));
-        return getFromEntity(savedEntity);
-    }
-
-    @Override
     public boolean deleteProject(Integer projectId) {
         if(repository.existsById(projectId)) {
             repository.deleteById(projectId);
@@ -54,9 +41,5 @@ public class ProjectsPreviewServiceImpl implements ProjectsPreviewService {
 
     private ProjectPreviewDto getFromEntity(ProjectPreviewEntity entity) {
         return new ProjectPreviewDto(entity);
-    }
-
-    private ProjectPreviewEntity getFromDto(ProjectPreviewDto dto) {
-        return new ProjectPreviewEntity(dto);
     }
 }

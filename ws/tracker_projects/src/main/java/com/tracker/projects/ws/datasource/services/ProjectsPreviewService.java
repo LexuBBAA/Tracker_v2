@@ -6,7 +6,5 @@ import java.util.List;
 
 public interface ProjectsPreviewService {
     List<ProjectPreviewDto> getProjects();
-    ProjectPreviewDto getProjectById(Integer projectId);
-    ProjectPreviewDto updateProject(ProjectPreviewDto projectDto);
     boolean deleteProject(Integer projectId);
 }

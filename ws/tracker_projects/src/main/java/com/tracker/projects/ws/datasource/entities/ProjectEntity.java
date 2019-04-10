@@ -1,5 +1,10 @@
 package com.tracker.projects.ws.datasource.entities;
 
+import com.tracker.projects.ws.datasource.dtos.ProjectDto;
+import com.tracker.projects.ws.datasource.dtos.ProjectStatus;
+import com.tracker.projects.ws.datasource.dtos.SprintDto;
+import com.tracker.projects.ws.datasource.dtos.TeamDto;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -44,6 +49,30 @@ public class ProjectEntity {
     private String projectStatus;
 
     public ProjectEntity() {
+    }
+
+    public ProjectEntity(ProjectDto dto) {
+        this.id = dto.id;
+        this.title = dto.title;
+        this.description = dto.description;
+
+        this.teamId = dto.team.id;
+
+        this.image = dto.image;
+        this.clientId = dto.clientId;
+        this.startDate = dto.startDate;
+        this.dueDate = dto.dueDate;
+
+        this.currentSprint = dto.currentSprint.id;
+        this.sprintDuration = dto.sprintDuration;
+        this.sprintPlanningDay = dto.sprintPlanningDay;
+        this.sprintDemoDay = dto.sprintDemoDay;
+        this.sprintReviewDay = dto.sprintReviewDay;
+
+        this.costValue = dto.costValue;
+        this.attachment = dto.attachment;
+
+        this.projectStatus = dto.status.name();
     }
 
     public Integer getId() {
