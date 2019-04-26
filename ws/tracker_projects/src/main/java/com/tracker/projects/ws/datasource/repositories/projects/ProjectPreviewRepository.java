@@ -1,4 +1,4 @@
-package com.tracker.projects.ws.datasource.repositories;
+package com.tracker.projects.ws.datasource.repositories.projects;
 
 import com.tracker.projects.ws.datasource.entities.projects.ProjectPreviewEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

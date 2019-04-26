@@ -2,7 +2,7 @@ package com.tracker.projects.ws.datasource.services.impl;
 
 import com.tracker.projects.ws.datasource.dtos.sprints.SprintDto;
 import com.tracker.projects.ws.datasource.entities.SprintEntity;
-import com.tracker.projects.ws.datasource.repositories.SprintsRepository;
+import com.tracker.projects.ws.datasource.repositories.sprints.SprintsRepository;
 import com.tracker.projects.ws.datasource.services.SprintsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

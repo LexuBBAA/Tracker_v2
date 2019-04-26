@@ -1,4 +1,4 @@
-package com.tracker.projects.ws.datasource.repositories;
+package com.tracker.projects.ws.datasource.repositories.sprints;
 
 import com.tracker.projects.ws.datasource.entities.SprintEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
