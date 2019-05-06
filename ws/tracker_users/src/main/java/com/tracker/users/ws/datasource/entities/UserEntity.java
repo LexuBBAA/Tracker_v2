@@ -2,265 +2,143 @@ package com.tracker.users.ws.datasource.entities;
 
 import com.tracker.users.ws.datasource.dto.UserDto;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicUpdate;
+
 import java.io.Serializable;
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "Users")
+@Table(name = "users")
+@DynamicUpdate
 public class UserEntity implements Serializable {
-    @Id
+	private static final long serialVersionUID = -3491457484818684481L;
+	
+	@Id
     @GeneratedValue
-    @Column(name = "user_id")
-    private Integer userId;
-    @Column(name = "firstname")
+    @Column(name = "id")
+    private Long id;
+    @Column(name = "userid", nullable = false)
+    private String userId;
+    @Column(name = "firstname", nullable = false)
     private String firstname;
-    @Column(name = "lastname")
+    @Column(name = "lastname", nullable = false)
     private String lastname;
-    @Column(name = "username")
+    @Column(name = "username", nullable = false)
     private String username;
-    @Column(name = "email")
+    @Column(name = "email", nullable = false)
     private String email;
-    @Column(name = "created_by")
-    private Integer createdBy;
-    @Column(name = "reporting_to")
-    private Integer reportingTo;
-    @Column(name = "efficiency")
-    private Double efficiency;
-    @Column(name = "projects_count")
-    private Integer projectsCount;
-    @Column(name = "projects_completed")
-    private Integer projectsCompleted;
-    @Column(name = "birthdate")
-    private Date birthdate;
-    @Column(name = "salary")
-    private Double salary;
-    @Column(name = "phone")
-    private String phone;
-    @Column(name = "created_date")
-    private Date createdDate;
-    @Column(name = "free_days_count")
-    private Integer freeDaysCount;
-    @Column(name = "jira_user_id")
-    private String jiraUserId;
-    @Column(name = "github_user_id")
-    private String githubUserId;
-    @Column(name = "avatar")
-    private String avatar;
-    @Column(name = "team_id")
-    private Integer teamId;
-    @Column(name = "role")
-    private Integer roleId;
-    @Column(name = "last_activity")
-    private Date lastActivityTime;
-    @Column(name = "password")
-    private String password;
-
+    @Column(name = "createdby", nullable = true)
+    private String createdBy;
+    @Column(name = "avatarurl", nullable = true)
+    private String avatarUrl;
+    
+    @Column(name = "createdat")
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+    
     public UserEntity() {
     }
 
     public UserEntity(UserDto userDto) {
+    	this.id = userDto.id;
         this.userId = userDto.userId;
         this.firstname = userDto.firstname;
         this.lastname = userDto.lastname;
         this.username = userDto.username;
         this.email = userDto.email;
-        this.createdBy = userDto.createdBy;
-        this.reportingTo = userDto.reportingTo;
-        this.efficiency = userDto.efficiency;
-        this.projectsCount = userDto.projectsCount;
-        this.projectsCompleted = userDto.projectsCompleted;
-        this.birthdate = userDto.birthdate;
-        this.salary = userDto.salary;
-        this.phone = userDto.phone;
-        this.createdDate = userDto.createdDate;
-        this.freeDaysCount = userDto.freeDaysCount;
-        this.jiraUserId = userDto.jiraUserId;
-        this.githubUserId = userDto.githubUserId;
-        this.avatar = userDto.avatar;
-        this.teamId = userDto.teamId;
-        if(userDto.role != null && userDto.role.id != null) {
-            this.roleId = userDto.role.id;
-        } else {
-            this.roleId = -1;
+        if(userDto.createdAt != null) {
+        	this.createdAt = userDto.createdAt;
         }
-        this.lastActivityTime = userDto.lastActivityTime;
-        this.password = userDto.password;
+        if(userDto.createdById != null) {
+        	this.createdBy = userDto.createdById;
+        }
+        if(userDto.avatarUrl != null) {
+        	this.avatarUrl = userDto.avatarUrl;
+        }
     }
 
-    public Integer getUserId() {
-        return userId;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public String getFirstname() {
-        return firstname;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public String getLastname() {
-        return lastname;
-    }
+	public String getUserId() {
+		return userId;
+	}
 
-    public String getUsername() {
-        return username;
-    }
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	public String getFirstname() {
+		return firstname;
+	}
 
-    public Integer getCreatedBy() {
-        return createdBy;
-    }
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
 
-    public Integer getReportingTo() {
-        return reportingTo;
-    }
+	public String getLastname() {
+		return lastname;
+	}
 
-    public Double getEfficiency() {
-        return efficiency;
-    }
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
 
-    public Integer getProjectsCount() {
-        return projectsCount;
-    }
+	public String getUsername() {
+		return username;
+	}
 
-    public Integer getProjectsCompleted() {
-        return projectsCompleted;
-    }
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
-    public Date getBirthdate() {
-        return birthdate;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    public Double getSalary() {
-        return salary;
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-    public String getPhone() {
-        return phone;
-    }
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
 
-    public Date getCreatedDate() {
-        return createdDate;
-    }
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
 
-    public Integer getFreeDaysCount() {
-        return freeDaysCount;
-    }
+	public String getCreatedBy() {
+		return createdBy;
+	}
 
-    public String getJiraUserId() {
-        return jiraUserId;
-    }
+	public void setCreatedBy(String createdById) {
+		this.createdBy = createdById;
+	}
 
-    public String getGithubUserId() {
-        return githubUserId;
-    }
+	public String getAvatar() {
+		return avatarUrl;
+	}
 
-    public String getAvatar() {
-        return avatar;
-    }
+	public void setAvatar(String avatarUrl) {
+		this.avatarUrl = avatarUrl;
+	}
 
-    public Integer getTeamId() {
-        return teamId;
-    }
-
-    public Integer getRoleId() {
-        return roleId;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setReportingTo(Integer reportingTo) {
-        this.reportingTo = reportingTo;
-    }
-
-    public void setEfficiency(Double efficiency) {
-        this.efficiency = efficiency;
-    }
-
-    public void setProjectsCount(Integer projectsCount) {
-        this.projectsCount = projectsCount;
-    }
-
-    public void setProjectsCompleted(Integer projectsCompleted) {
-        this.projectsCompleted = projectsCompleted;
-    }
-
-    public void setSalary(Double salary) {
-        this.salary = salary;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public void setFreeDaysCount(Integer freeDaysCount) {
-        this.freeDaysCount = freeDaysCount;
-    }
-
-    public void setJiraUserId(String jiraUserId) {
-        this.jiraUserId = jiraUserId;
-    }
-
-    public void setGithubUserId(String githubUserId) {
-        this.githubUserId = githubUserId;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
-    public void setTeamId(Integer teamId) {
-        this.teamId = teamId;
-    }
-
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public Date getLastActivityTime() {
-        return lastActivityTime;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public void setCreatedBy(Integer createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public void setBirthdate(Date birthdate) {
-        this.birthdate = birthdate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public void setLastActivityTime(Date lastActivityTime) {
-        this.lastActivityTime = lastActivityTime;
-    }
+	@Override
+	public String toString() {
+		return "UserEntity [id=" + id + ", userId=" + userId + ", firstname=" + firstname + ", lastname=" + lastname
+				+ ", username=" + username + ", email=" + email + ", createdAt=" + createdAt + "]";
+	}
 }

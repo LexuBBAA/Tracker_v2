@@ -1,11 +1,12 @@
 package com.tracker.users.ws.datasource.services;
 
-import com.tracker.users.ws.datasource.dto.UserDto;
+import com.tracker.users.ws.datasource.dto.UserPreviewDto;
 
 import java.util.List;
-import java.util.Set;
 
 public interface UsersPreviewService {
-    UserDto getUserById(int userId);
-    UserDto getUserByUsername(String username);
+	List<UserPreviewDto> findAll();
+	UserPreviewDto findById(String userId);
+	List<UserPreviewDto> findAllByUsername(String username);
+	List<UserPreviewDto> findAllByCreatedById(String createdById);
 }

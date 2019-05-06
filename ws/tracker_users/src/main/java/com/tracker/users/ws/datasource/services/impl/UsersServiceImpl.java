@@ -4,15 +4,14 @@ import com.tracker.users.ws.datasource.dto.UserDto;
 import com.tracker.users.ws.datasource.entities.UserEntity;
 import com.tracker.users.ws.datasource.repositories.UsersRepository;
 import com.tracker.users.ws.datasource.services.UsersService;
-import org.springframework.beans.BeanUtils;
+
+import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class UsersServiceImpl implements UsersService {
@@ -24,86 +23,54 @@ public class UsersServiceImpl implements UsersService {
     public List<UserDto> getUsers() {
         return getFromEntities(repository.findAll());
     }
-
+    
     @Override
-    public UserDto getUserById(int userId) {
-        Optional<UserEntity> optionalUserEntity = repository.findById(userId);
-        return optionalUserEntity.map(this::getFromEntity).orElse(null);
-    }
+	public UserDto getUserById(String userId) {
+		return getFromEntity(repository.findByUserId(userId));
+	}
+	
+	@Override
+	public UserDto updateUser(UserDto updatedUser) {
+		if(!repository.existsByUserId(updatedUser.userId)) {
+			return null;
+		}
+		
+		UserEntity storedEntity = repository.save(getFromDto(updatedUser));
+		if(storedEntity == null) {
+			return null;
+		}
+		
+		return getFromEntity(storedEntity);
+	}
 
-    @Override
-    public UserDto updateUser(UserDto updatedUser) {
-        return getFromEntity(repository.save(getFromDto(updatedUser)));
-    }
+	@Override
+	public boolean deleteUserById(String userId) {
+		if(repository.existsByUserId(userId)) {
+			repository.deleteByUserId(userId);
+			return true;
+		}
+		
+		return false;
+	}
 
-    @Override
-    public void deleteUserById(int userId) {
-        repository.deleteById(userId);
-    }
+	@Override
+	public UserDto createUser(UserDto user) {
+		user.userId = generateUserId();
+		
+		UserEntity storedEntity = repository.save(getFromDto(user));
+		if(storedEntity == null) {
+			return null;
+		}
+		
+		return getFromEntity(storedEntity);
+	}
 
-    @Override
-    public UserDto createUser(UserDto user) {
-        return getFromEntity(repository.save(getFromDto(user)));
-    }
-
-    @Override
-    public UserDto getUserByUsername(String username) {
-        Optional<UserEntity> optionalUserEntity = repository.findByUsername(username);
-        return optionalUserEntity.map(this::getFromEntity).orElse(null);
-    }
-
-
-    @Override
-    public List<UserDto> getUsersManagedBy(int managerId) {
-        return getFromEntities(repository.findByReportingTo(managerId));
-    }
-
-    @Override
-    public List<UserDto> getUsersManagedBy(Set<Integer> managerIds) {
-        return getFromEntities(repository.findByReportingToIn(managerIds));
-    }
-
-    @Override
-    public List<UserDto> getUsersOwnedBy(int createdBy) {
-        return getFromEntities(repository.findByCreatedBy(createdBy));
-    }
-
-    @Override
-    public List<UserDto> getUsersOwnedBy(Set<Integer> createdByIds) {
-        return getFromEntities(repository.findByCreatedByIn(createdByIds));
-    }
-
-
-    @Override
-    public List<UserDto> getUsersInTeam(int teamId) {
-        return getFromEntities(repository.findByTeamId(teamId));
-    }
-
-    @Override
-    public List<UserDto> getUsersInTeams(Set<Integer> teamIds) {
-        return getFromEntities(repository.findByTeamIdIn(teamIds));
-    }
-
-
-    @Override
-    public List<UserDto> getUsersWithEfficiency(double efficiency) {
-        return getFromEntities(repository.findByEfficiency(efficiency));
-    }
-
-    @Override
-    public List<UserDto> getUsersBelowEfficiency(double lessThanEfficiency) {
-        return getFromEntities(repository.findByEfficiencyLessThanEqual(lessThanEfficiency));
-    }
-
-    @Override
-    public List<UserDto> getUsersAboveEfficiency(double aboveEfficiency) {
-        return getFromEntities(repository.findByEfficiencyGreaterThanEqual(aboveEfficiency));
-    }
-
-    @Override
-    public List<UserDto> getUsersInEfficiencyRange(double above, double below) {
-        return getFromEntities(repository.findByEfficiencyGreaterThanEqualAndEfficiencyLessThanEqual(above, below));
-    }
+	@Override
+	public List<UserDto> getUsersByUsername(String username) {
+		List<UserEntity> storedEntities = repository.findAllByUsernameLike(username);
+		return getFromEntities(storedEntities);
+	}
+    
 
 
     @NonNull
@@ -123,5 +90,15 @@ public class UsersServiceImpl implements UsersService {
             dtos.add(getFromEntity(e));
         }
         return dtos;
+    }
+    
+    @NonNull
+    private String generateUserId() {
+    	String generatedId = RandomStringUtils.randomAlphanumeric(25);
+    	if(repository.existsByUserId(generatedId)) {
+    		return generateUserId();
+    	}
+    	
+    	return generatedId;
     }
 }
