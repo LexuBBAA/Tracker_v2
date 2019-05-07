@@ -1,12 +1,12 @@
 package com.tracker.projects.ws.datasource.entities;
 
+import com.tracker.projects.ws.datasource.dtos.UserTeamDto;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "UserTeams")
@@ -27,10 +27,16 @@ public class UserTeamEntity implements Serializable {
 
     @Column(name = "joineddate", updatable = false)
     @CreationTimestamp
-    private LocalDateTime joinedDate;
+    private LocalDate joinedDate;
 
     public UserTeamEntity() {
 
+    }
+
+    public UserTeamEntity(UserTeamDto dto) {
+        this.userId = dto.userId;
+        this.teamId = dto.teamId;
+        this.joinedDate = LocalDate.now();
     }
 
     public Long getId() {
@@ -57,11 +63,11 @@ public class UserTeamEntity implements Serializable {
         this.teamId = teamId;
     }
 
-    public LocalDateTime getJoinedDate() {
+    public LocalDate getJoinedDate() {
         return joinedDate;
     }
 
-    public void setJoinedDate(LocalDateTime joinedDate) {
+    public void setJoinedDate(LocalDate joinedDate) {
         this.joinedDate = joinedDate;
     }
 }
