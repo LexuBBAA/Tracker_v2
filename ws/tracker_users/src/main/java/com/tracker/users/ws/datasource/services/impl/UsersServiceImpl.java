@@ -35,12 +35,14 @@ public class UsersServiceImpl implements UsersService {
 			return null;
 		}
 		
-		UserEntity storedEntity = repository.save(getFromDto(updatedUser));
-		if(storedEntity == null) {
-			return null;
-		}
-		
-		return getFromEntity(storedEntity);
+		UserEntity storedEntity = repository.findByUserId(updatedUser.userId);
+		storedEntity.setUsername(updatedUser.username);
+		storedEntity.setFirstname(updatedUser.firstname);
+		storedEntity.setLastname(updatedUser.lastname);
+		storedEntity.setAvatar(updatedUser.avatarUrl);
+
+		UserEntity updatedEntity = repository.save(storedEntity);
+		return getFromEntity(updatedEntity);
 	}
 
 	@Override
@@ -58,10 +60,6 @@ public class UsersServiceImpl implements UsersService {
 		user.userId = generateUserId();
 		
 		UserEntity storedEntity = repository.save(getFromDto(user));
-		if(storedEntity == null) {
-			return null;
-		}
-		
 		return getFromEntity(storedEntity);
 	}
 

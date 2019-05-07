@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 public class UsersController {
-    @SuppressWarnings("unused")
+
 	@Autowired
     private RestTemplate restTemplate;
 
