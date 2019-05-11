@@ -19,6 +19,10 @@ public class TaskStatusEntity implements Serializable {
     public TaskStatusEntity() {
     }
 
+    public TaskStatusEntity(String value) {
+        this.status = value;
+    }
+
     public Long getId() {
         return id;
     }

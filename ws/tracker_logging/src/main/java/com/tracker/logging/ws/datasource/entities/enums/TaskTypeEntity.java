@@ -20,6 +20,10 @@ public class TaskTypeEntity implements Serializable {
 
     }
 
+    public TaskTypeEntity(String value) {
+        this.type = value;
+    }
+
     public Long getId() {
         return id;
     }
