@@ -1,6 +1,7 @@
 package com.tracker.projects.ws.datasource.services.impl.sprints;
 
 import com.tracker.projects.ws.datasource.dtos.sprints.SprintDto;
+import com.tracker.projects.ws.datasource.dtos.sprints.SprintPreviewDto;
 import com.tracker.projects.ws.datasource.entities.sprints.SprintEntity;
 import com.tracker.projects.ws.datasource.repositories.sprints.SprintsRepository;
 import com.tracker.projects.ws.datasource.services.sprints.SprintsService;
@@ -49,12 +50,18 @@ public class SprintsServiceImpl implements SprintsService {
     }
 
     @Override
-    public List<SprintDto> getSprintsForProject(String projectId) {
+    public SprintDto getSprintDetails(String sprintId) {
+        SprintEntity storedSprint = repository.findBySprintId(sprintId);
+        return new SprintDto(storedSprint);
+    }
+
+    @Override
+    public List<SprintPreviewDto> getSprintsForProject(String projectId) {
         return getFromEntities(repository.findAllByProject(projectId));
     }
 
     @Override
-    public List<SprintDto> getSprintsWithStatus(String status) {
+    public List<SprintPreviewDto> getSprintsWithStatus(String status) {
         return getFromEntities(repository.findAllByStatusEquals(status));
     }
 
@@ -76,10 +83,10 @@ public class SprintsServiceImpl implements SprintsService {
     }
 
     @NonNull
-    private List<SprintDto> getFromEntities(List<SprintEntity> entities) {
-        List<SprintDto> dtos = new ArrayList<>();
+    private List<SprintPreviewDto> getFromEntities(List<SprintEntity> entities) {
+        List<SprintPreviewDto> dtos = new ArrayList<>();
         for(SprintEntity entity: entities) {
-            dtos.add(new SprintDto(entity));
+            dtos.add(new SprintPreviewDto(entity));
         }
         return dtos;
     }

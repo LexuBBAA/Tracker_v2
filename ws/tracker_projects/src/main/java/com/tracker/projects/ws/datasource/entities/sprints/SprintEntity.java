@@ -39,9 +39,9 @@ public class SprintEntity implements Serializable {
     @Column(name = "createddate")
     @CreationTimestamp
     private LocalDateTime createdDate;
-    @Column(name = "project")
+    @Column(name = "project", nullable = false)
     private String project;
-    @Column(name = "status")
+    @Column(name = "status", nullable = false)
     private String status;
 
     public SprintEntity() {
