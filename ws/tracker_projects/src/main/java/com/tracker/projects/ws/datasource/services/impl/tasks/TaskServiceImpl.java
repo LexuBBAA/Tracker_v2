@@ -4,6 +4,8 @@ import com.tracker.projects.ws.datasource.dtos.tasks.TaskDto;
 import com.tracker.projects.ws.datasource.entities.tasks.TaskEntity;
 import com.tracker.projects.ws.datasource.repositories.tasks.TasksRepository;
 import com.tracker.projects.ws.datasource.services.tasks.TaskService;
+import io.micrometer.core.lang.NonNull;
+import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public TaskDto createTask(TaskDto newTask) {
+        newTask.taskId = generateTaskId();
         TaskEntity newEntity = new TaskEntity(newTask);
         TaskEntity storedEntity = repository.save(newEntity);
         return new TaskDto(storedEntity);
@@ -45,5 +48,14 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public boolean delete(TaskDto taskDto) {
         return deleteById(taskDto.taskId);
+    }
+
+    @NonNull
+    private String generateTaskId() {
+        String generatedId = RandomStringUtils.randomAlphanumeric(50);
+        if(repository.existsByTaskId(generatedId)) {
+            return generateTaskId();
+        }
+        return generatedId;
     }
 }
