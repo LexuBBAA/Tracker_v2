@@ -30,4 +30,18 @@ public class ProjectDto implements Serializable {
         this.createdDate = entity.getCreatedDate();
         this.assignedTeam = entity.getAssignedTeam();
     }
+
+    @Override
+    public String toString() {
+        return "ProjectDto{" +
+                "id=" + id +
+                ", projectId='" + projectId + '\'' +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", createdBy='" + createdBy + '\'' +
+                ", createdDate=" + createdDate +
+                ", activeSprint=" + activeSprint +
+                ", assignedTeam='" + assignedTeam + '\'' +
+                '}';
+    }
 }
