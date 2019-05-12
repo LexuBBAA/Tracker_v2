@@ -37,6 +37,8 @@ public class ProjectEntity implements Serializable {
     private LocalDateTime createdDate;
     @Column(name = "activesprint")
     private String activeSprint;
+    @Column(name = "assignedteam")
+    private String assignedTeam;
 
     public ProjectEntity() {
     }
@@ -48,6 +50,7 @@ public class ProjectEntity implements Serializable {
         this.description = dto.description;
         this.createdBy = dto.createdBy;
         this.activeSprint = dto.activeSprint.sprintId;
+        this.assignedTeam = dto.assignedTeam;
     }
 
     public Long getId() {
@@ -104,5 +107,13 @@ public class ProjectEntity implements Serializable {
 
     public void setActiveSprint(String activeSprint) {
         this.activeSprint = activeSprint;
+    }
+
+    public String getAssignedTeam() {
+        return assignedTeam;
+    }
+
+    public void setAssignedTeam(String assignedTeam) {
+        this.assignedTeam = assignedTeam;
     }
 }

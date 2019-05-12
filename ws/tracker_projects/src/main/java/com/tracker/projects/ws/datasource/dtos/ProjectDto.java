@@ -16,6 +16,7 @@ public class ProjectDto implements Serializable {
     public String createdBy;
     public LocalDateTime createdDate;
     public SprintPreviewDto activeSprint;
+    public String assignedTeam;
 
     public ProjectDto() {
     }
@@ -27,5 +28,6 @@ public class ProjectDto implements Serializable {
         this.description = entity.getDescription();
         this.createdBy = entity.getCreatedBy();
         this.createdDate = entity.getCreatedDate();
+        this.assignedTeam = entity.getAssignedTeam();
     }
 }
