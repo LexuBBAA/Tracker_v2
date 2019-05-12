@@ -1,9 +1,9 @@
-package com.tracker.auth.ws.datasources.tokens.services.impl;
+package com.tracker.auth.ws.datasources.services.impl;
 
-import com.tracker.auth.ws.datasources.tokens.dto.TokenDto;
-import com.tracker.auth.ws.datasources.tokens.entities.TokenEntity;
-import com.tracker.auth.ws.datasources.tokens.repo.TokensRepository;
-import com.tracker.auth.ws.datasources.tokens.services.TokensService;
+import com.tracker.auth.ws.datasources.dtos.TokenDto;
+import com.tracker.auth.ws.datasources.entities.TokenEntity;
+import com.tracker.auth.ws.datasources.repositories.TokensRepository;
+import com.tracker.auth.ws.datasources.services.TokensService;
 import com.tracker.auth.ws.datasources.users.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;

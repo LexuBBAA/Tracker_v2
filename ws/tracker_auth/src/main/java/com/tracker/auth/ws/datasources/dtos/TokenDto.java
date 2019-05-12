@@ -1,4 +1,4 @@
-package com.tracker.auth.ws.datasources.tokens.dto;
+package com.tracker.auth.ws.datasources.dtos;
 
 import java.io.Serializable;
 import java.sql.Date;

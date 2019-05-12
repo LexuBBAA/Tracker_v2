@@ -1,6 +1,6 @@
-package com.tracker.auth.ws.datasources.tokens.repo;
+package com.tracker.auth.ws.datasources.repositories;
 
-import com.tracker.auth.ws.datasources.tokens.entities.TokenEntity;
+import com.tracker.auth.ws.datasources.entities.TokenEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
