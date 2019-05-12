@@ -29,7 +29,7 @@ public class SprintsController {
         return new ResponseEntity<>(sprintPreviews, HttpStatus.OK);
     }
 
-    @GetMapping("/sprints/details{sprintId}")
+    @GetMapping("/sprints/details/{sprintId}")
     public ResponseEntity getSprintDetails(@PathVariable(name = "sprintId") String sprintId) {
         SprintDto sprintDetails = sprintsService.getSprintDetails(sprintId);
         if(sprintDetails == null) {
@@ -80,6 +80,10 @@ public class SprintsController {
         }
 
         SprintDto storedSprint = sprintsService.getSprintDetails(sprint.sprintId);
+        if(storedSprint == null) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+
         if(sprint.title != null) {
             storedSprint.title = sprint.title;
         }
@@ -110,5 +114,14 @@ public class SprintsController {
         }
 
         return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @DeleteMapping("/sprints/{sprintId}")
+    public ResponseEntity deleteSprint(@PathVariable(name = "sprintId") String sprintId) {
+        if(sprintsService.deleteSprint(sprintId)) {
+            return new ResponseEntity(HttpStatus.OK);
+        }
+
+        return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
 }

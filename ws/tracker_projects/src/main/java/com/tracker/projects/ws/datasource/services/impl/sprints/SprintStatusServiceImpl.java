@@ -36,7 +36,8 @@ public class SprintStatusServiceImpl implements SprintStatusService {
     @Override
     public boolean deleteByValue(String value) {
         if(repository.existsByStatus(value)) {
-            return repository.deleteByStatus(value);
+            repository.deleteByStatus(value);
+            return true;
         }
         return false;
     }

@@ -49,7 +49,9 @@ public class ProjectEntity implements Serializable {
         this.title = dto.title;
         this.description = dto.description;
         this.createdBy = dto.createdBy;
-        this.activeSprint = dto.activeSprint.sprintId;
+        if(dto.activeSprint != null) {
+            this.activeSprint = dto.activeSprint.sprintId;
+        }
         this.assignedTeam = dto.assignedTeam;
     }
 

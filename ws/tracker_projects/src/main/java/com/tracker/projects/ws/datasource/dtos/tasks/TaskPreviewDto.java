@@ -13,9 +13,9 @@ public class TaskPreviewDto implements Serializable {
     public String title;
     public String assignedTo;
     public LocalDate dueDate;
-    public TaskTypeDto type = new TaskTypeDto();
-    public TaskStatusDto status = new TaskStatusDto();
-    public TaskPriorityDto priority = new TaskPriorityDto();
+    public TaskTypeDto type;
+    public TaskStatusDto status;
+    public TaskPriorityDto priority;
 
     public TaskPreviewDto() {
     }
@@ -26,8 +26,14 @@ public class TaskPreviewDto implements Serializable {
         this.title = entity.getTitle();
         this.assignedTo = entity.getAssignedTo();
         this.dueDate = entity.getDueDate();
-        this.type.value = entity.getType();
-        this.status.value = entity.getStatus();
-        this.priority.value = entity.getPriority();
+        if(entity.getType() != null) {
+            this.type = new TaskTypeDto(entity.getType());
+        }
+        if(entity.getStatus() != null) {
+            this.status = new TaskStatusDto(entity.getStatus());
+        }
+        if(entity.getPriority() != null) {
+            this.priority = new TaskPriorityDto(entity.getPriority());
+        }
     }
 }

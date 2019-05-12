@@ -12,5 +12,5 @@ public interface TaskTypeRepository extends JpaRepository<TaskTypeEntity, Long> 
     boolean existsByType(String type);
 
     @Transactional
-    boolean deleteByType(String type);
+    void deleteByType(String type);
 }

@@ -27,13 +27,22 @@ public class TaskPriorityServiceImpl implements TaskPriorityService {
 
     @Override
     public TaskPriorityDto findByValue(String value) {
-        return new TaskPriorityDto(repository.findByPriority(value));
+        TaskPriorityEntity entity = repository.findByPriority(value);
+        if(entity != null) {
+            return new TaskPriorityDto(entity);
+        }
+        return null;
     }
 
     @Override
     public TaskPriorityDto create(String value) {
         TaskPriorityEntity newEntity = new TaskPriorityEntity(value);
-        return new TaskPriorityDto(repository.save(newEntity));
+        TaskPriorityEntity storedEntity = repository.save(newEntity);
+        if(storedEntity != null) {
+            return new TaskPriorityDto(storedEntity);
+        }
+
+        return null;
     }
 
     @Override

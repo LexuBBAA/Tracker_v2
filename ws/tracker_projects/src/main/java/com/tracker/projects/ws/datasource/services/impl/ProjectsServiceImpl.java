@@ -3,6 +3,7 @@ package com.tracker.projects.ws.datasource.services.impl;
 import com.tracker.projects.ws.datasource.dtos.ProjectDto;
 import com.tracker.projects.ws.datasource.dtos.sprints.SprintPreviewDto;
 import com.tracker.projects.ws.datasource.entities.ProjectEntity;
+import com.tracker.projects.ws.datasource.entities.sprints.SprintEntity;
 import com.tracker.projects.ws.datasource.repositories.ProjectsRepository;
 import com.tracker.projects.ws.datasource.repositories.sprints.SprintsRepository;
 import com.tracker.projects.ws.datasource.services.ProjectsService;
@@ -44,12 +45,17 @@ public class ProjectsServiceImpl implements ProjectsService {
         if(project.activeSprint != null && !project.activeSprint.sprintId.equals(storedEntity.getActiveSprint())) {
             storedEntity.setActiveSprint(project.activeSprint.sprintId);
         }
+        if(project.assignedTeam != null && !project.assignedTeam.equals(storedEntity.getAssignedTeam())) {
+            storedEntity.setAssignedTeam(project.assignedTeam);
+        }
 
         storedEntity = repository.save(storedEntity);
         project = new ProjectDto(storedEntity);
 
-        project.activeSprint = new SprintPreviewDto(sprintsRepository.findBySprintId(storedEntity.getActiveSprint()));
-
+        SprintEntity sprintEntity = sprintsRepository.findBySprintId(storedEntity.getActiveSprint());
+        if(sprintEntity != null) {
+            project.activeSprint = new SprintPreviewDto(sprintEntity);
+        }
         return project;
     }
 
@@ -58,7 +64,10 @@ public class ProjectsServiceImpl implements ProjectsService {
         ProjectEntity storedProject = repository.findByProjectId(projectId);
         ProjectDto projectDto = new ProjectDto(storedProject);
 
-        projectDto.activeSprint = new SprintPreviewDto(sprintsRepository.findBySprintId(storedProject.getActiveSprint()));
+        SprintEntity sprintEntity = sprintsRepository.findBySprintId(storedProject.getActiveSprint());
+        if(sprintEntity != null) {
+            projectDto.activeSprint = new SprintPreviewDto(sprintEntity);
+        }
         return projectDto;
     }
 
@@ -68,7 +77,10 @@ public class ProjectsServiceImpl implements ProjectsService {
         List<ProjectDto> dtos = new ArrayList<>();
         for(ProjectEntity entity: storedEntities) {
             ProjectDto newDto = new ProjectDto(entity);
-            newDto.activeSprint = new SprintPreviewDto(sprintsRepository.findBySprintId(entity.getActiveSprint()));
+            SprintEntity sprintEntity = sprintsRepository.findBySprintId(entity.getActiveSprint());
+            if(sprintEntity != null) {
+                newDto.activeSprint = new SprintPreviewDto(sprintEntity);
+            }
             dtos.add(newDto);
         }
         return dtos;
@@ -82,8 +94,9 @@ public class ProjectsServiceImpl implements ProjectsService {
     @Override
     public boolean deleteById(String projectId) {
         if(repository.existsByProjectId(projectId)) {
-            sprintsRepository.findAllByProject(projectId);
-            return repository.deleteByProjectId(projectId);
+            sprintsRepository.deleteAllByProject(projectId);
+            repository.deleteByProjectId(projectId);
+            return true;
         }
         return false;
     }

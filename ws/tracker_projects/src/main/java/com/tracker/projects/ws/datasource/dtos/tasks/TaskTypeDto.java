@@ -13,6 +13,10 @@ public class TaskTypeDto implements Serializable {
     public TaskTypeDto() {
     }
 
+    public TaskTypeDto(String value) {
+        this.value = value;
+    }
+
     public TaskTypeDto(TaskTypeEntity entity) {
         this.id = entity.getId();
         this.value = entity.getType();

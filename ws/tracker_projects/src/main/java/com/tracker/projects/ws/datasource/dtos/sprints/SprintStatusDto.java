@@ -10,6 +10,8 @@ public class SprintStatusDto implements Serializable {
     public Long id;
     public String value;
 
+    public SprintStatusDto() {}
+
     public SprintStatusDto(String value) {
         this.value = value;
     }

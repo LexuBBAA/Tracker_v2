@@ -19,7 +19,10 @@ public class TaskTypeServiceImpl implements TaskTypeService {
     public TaskTypeDto create(String value) {
         TaskTypeEntity newEntity = new TaskTypeEntity(value);
         TaskTypeEntity storedEntity = repository.save(newEntity);
-        return new TaskTypeDto(storedEntity);
+        if(storedEntity != null) {
+            return new TaskTypeDto(storedEntity);
+        }
+        return null;
     }
 
     @Override
@@ -34,7 +37,11 @@ public class TaskTypeServiceImpl implements TaskTypeService {
 
     @Override
     public TaskTypeDto getByValue(String value) {
-        return new TaskTypeDto(repository.findByType(value));
+        TaskTypeEntity typeEntity = repository.findByType(value);
+        if(typeEntity != null) {
+            return new TaskTypeDto(typeEntity);
+        }
+        return null;
     }
 
     @Override

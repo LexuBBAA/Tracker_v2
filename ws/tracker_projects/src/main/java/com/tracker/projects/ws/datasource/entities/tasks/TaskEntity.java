@@ -4,6 +4,7 @@ import com.tracker.projects.ws.datasource.dtos.tasks.TaskDto;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -22,7 +23,7 @@ public class TaskEntity implements Serializable {
     private Long id;
     @Column(name = "taskid", nullable = false, updatable = false, unique = true)
     private String taskId;
-    @Column(name = "title", nullable = false, length = 50)
+    @Column(name = "title", nullable = false, length = 150)
     private String title;
     @Column(name = "description")
     private String description;
@@ -57,7 +58,7 @@ public class TaskEntity implements Serializable {
 
     @Column(name = "project", nullable = false)
     private String project;
-    @Column(name = "sprint")
+    @Column(name = "sprintid", nullable = false)
     private String sprint;
     @Column(name = "parent")
     private String parent;
@@ -73,7 +74,7 @@ public class TaskEntity implements Serializable {
     public TaskEntity() {
     }
 
-    public TaskEntity(TaskDto task) {
+    public TaskEntity(@NonNull TaskDto task) {
         this.id = task.id;
         this.taskId = task.taskId;
         if(task.title != null && !task.title.equals(this.title)) {
@@ -116,27 +117,37 @@ public class TaskEntity implements Serializable {
         if(task.project != null && !task.project.equals(this.project)) {
             this.project = task.project;
         }
-        if(task.sprint != null && !task.sprint.equals(this.sprint)) {
-            this.sprint = task.sprint;
-        }
-        if(task.parent != null && !task.parent.taskId.equals(this.parent)) {
+        this.sprint = task.sprint;
+        if(task.parent != null) {
             this.parent = task.parent.taskId;
+        } else {
+            this.parent = null;
         }
-        if(task.partOf != null && !task.partOf.taskId.equals(this.partOf)) {
+        if(task.partOf != null) {
             this.partOf = task.partOf.taskId;
+        } else {
+            this.partOf = null;
         }
-        if(task.subtaskOf != null && !task.subtaskOf.taskId.equals(this.subtaskOf)) {
+        if(task.subtaskOf != null) {
             this.subtaskOf = task.subtaskOf.taskId;
+        } else {
+            this.subtaskOf = null;
         }
-        if(task.epic != null && !task.epic.taskId.equals(this.epic)) {
+        if(task.epic != null) {
             this.epic = task.epic.taskId;
+        } else {
+            this.epic = null;
         }
-        if(task.blocks != null && !task.blocks.equals(this.blocks)) {
+        if(task.blocks != null) {
             this.blocks = task.blocks.taskId;
+        } else {
+            this.blocks = null;
         }
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
-    public void update(TaskDto task) {
+    public void update(@NonNull TaskDto task) {
         this.taskId = task.taskId;
         if(task.title != null && !task.title.equals(this.title)) {
             this.title = task.title;
@@ -159,6 +170,7 @@ public class TaskEntity implements Serializable {
         if(task.lastModifiedBy != null && !task.lastModifiedBy.equals(this.lastModifiedBy)) {
             this.lastModifiedBy = task.lastModifiedBy;
         }
+        this.updatedAt = LocalDateTime.now();
         if(task.dueDate != null && !task.dueDate.equals(this.dueDate)) {
             this.dueDate = task.dueDate;
         }
@@ -174,27 +186,35 @@ public class TaskEntity implements Serializable {
         if(task.logged != null && (double) task.logged != this.logged) {
             this.logged = task.logged;
         }
-        this.isEpic = task.isEpic && task.type != null && task.type.value.equals("Story");
+        this.isEpic = task.isEpic && task.type != null && task.type.value.equals("STORY");
         if(task.project != null && !task.project.equals(this.project)) {
             this.project = task.project;
         }
-        if(task.sprint != null && !task.sprint.equals(this.sprint)) {
-            this.sprint = task.sprint;
-        }
-        if(task.parent != null && !task.parent.taskId.equals(this.parent)) {
+        this.sprint = task.sprint;
+        if(task.parent != null) {
             this.parent = task.parent.taskId;
+        } else {
+            this.parent = null;
         }
-        if(task.partOf != null && !task.partOf.taskId.equals(this.partOf)) {
+        if(task.partOf != null) {
             this.partOf = task.partOf.taskId;
+        } else {
+            this.partOf = null;
         }
-        if(task.subtaskOf != null && !task.subtaskOf.taskId.equals(this.subtaskOf)) {
+        if(task.subtaskOf != null) {
             this.subtaskOf = task.subtaskOf.taskId;
+        } else {
+            this.subtaskOf = null;
         }
-        if(task.epic != null && !task.epic.taskId.equals(this.epic)) {
+        if(task.epic != null) {
             this.epic = task.epic.taskId;
+        } else {
+            this.epic = null;
         }
-        if(task.blocks != null && !task.blocks.equals(this.blocks)) {
+        if(task.blocks != null) {
             this.blocks = task.blocks.taskId;
+        } else {
+            this.blocks = null;
         }
     }
 

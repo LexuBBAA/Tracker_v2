@@ -13,6 +13,10 @@ public class TaskPriorityDto implements Serializable {
     public TaskPriorityDto() {
     }
 
+    public TaskPriorityDto(String value) {
+        this.value = value;
+    }
+
     public TaskPriorityDto(TaskPriorityEntity entity) {
         this.id = entity.getId();
         this.value = entity.getPriority();

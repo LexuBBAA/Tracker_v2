@@ -52,7 +52,10 @@ public class SprintsServiceImpl implements SprintsService {
     @Override
     public SprintDto getSprintDetails(String sprintId) {
         SprintEntity storedSprint = repository.findBySprintId(sprintId);
-        return new SprintDto(storedSprint);
+        if(storedSprint != null) {
+            return new SprintDto(storedSprint);
+        }
+        return null;
     }
 
     @Override
@@ -68,7 +71,8 @@ public class SprintsServiceImpl implements SprintsService {
     @Override
     public boolean deleteSprint(String sprintId) {
         if(repository.existsBySprintId(sprintId)) {
-            return repository.deleteBySprintId(sprintId);
+            repository.deleteBySprintId(sprintId);
+            return true;
         }
         return false;
     }

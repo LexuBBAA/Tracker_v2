@@ -35,8 +35,8 @@ public class ProjectsController {
             @RequestHeader(value = "userId") String userId,
             @RequestBody ProjectDto newProject
     ) {
-        if (newProject.projectId == null || newProject.title == null) {
-            new Exception(ProjectsController.class.getSimpleName() + "- createProject : mandatory fields missing (projectId or title): " + newProject.toString()).printStackTrace();
+        if (newProject.title == null) {
+            new Exception(ProjectsController.class.getSimpleName() + "- createProject : mandatory fields missing : title: " + newProject.toString()).printStackTrace();
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
 
@@ -57,6 +57,9 @@ public class ProjectsController {
         }
 
         ProjectDto storedProject = projectsService.getById(project.projectId);
+        if(storedProject == null) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
         storedProject.title = project.title;
         storedProject.description = project.description;
         storedProject.activeSprint = project.activeSprint;

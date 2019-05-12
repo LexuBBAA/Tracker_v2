@@ -12,5 +12,5 @@ public interface ProjectsRepository extends JpaRepository<ProjectEntity, Long> {
     ProjectEntity findByProjectId(String projectId);
 
     @Transactional
-    boolean deleteByProjectId(String projectId);
+    void deleteByProjectId(String projectId);
 }

@@ -13,5 +13,5 @@ public interface TaskPriorityRepository extends JpaRepository<TaskPriorityEntity
     boolean existsByPriority(String priority);
 
     @Transactional
-    boolean deleteByPriority(String priority);
+    void deleteByPriority(String priority);
 }

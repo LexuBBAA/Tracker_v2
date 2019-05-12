@@ -19,7 +19,10 @@ public class TaskStatusServiceImpl implements TaskStatusService {
     public TaskStatusDto create(String value) {
         TaskStatusEntity newEntity = new TaskStatusEntity(value);
         TaskStatusEntity savedEntity = repository.save(newEntity);
-        return new TaskStatusDto(savedEntity);
+        if(savedEntity != null) {
+            return new TaskStatusDto(savedEntity);
+        }
+        return null;
     }
 
     @Override
@@ -34,7 +37,11 @@ public class TaskStatusServiceImpl implements TaskStatusService {
 
     @Override
     public TaskStatusDto getByValue(String value) {
-        return new TaskStatusDto(repository.findByStatus(value));
+        TaskStatusEntity entity = repository.findByStatus(value);
+        if(entity != null) {
+            return new TaskStatusDto(entity);
+        }
+        return null;
     }
 
     @Override

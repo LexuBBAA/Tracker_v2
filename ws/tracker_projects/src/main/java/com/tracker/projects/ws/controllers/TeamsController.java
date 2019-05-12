@@ -36,7 +36,7 @@ public class TeamsController {
         return new ResponseEntity<>(storedTeams, HttpStatus.OK);
     }
 
-    @GetMapping("/{teamId}")
+    @GetMapping("/teams/{teamId}")
     public ResponseEntity getTeamDetails(@PathVariable(value = "teamId") String teamId) {
         TeamDto dto = teamsService.getTeamById(teamId);
         if(dto == null) {
@@ -46,7 +46,7 @@ public class TeamsController {
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
-    @PostMapping("/")
+    @PostMapping("/teams")
     public ResponseEntity createTeam(@RequestBody TeamDto newTeam) {
         if(newTeam.createdBy == null) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -64,7 +64,7 @@ public class TeamsController {
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
-    @PutMapping("/")
+    @PutMapping("/teams")
     public ResponseEntity updateTeam(@RequestBody TeamDto team) {
         if(team.teamId == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -78,7 +78,7 @@ public class TeamsController {
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{teamId}")
+    @DeleteMapping("/teams/{teamId}")
     public ResponseEntity deleteTeam(@PathVariable(value = "teamId") String teamId) {
         if(teamsService.deleteTeamById(teamId)) {
             return new ResponseEntity(HttpStatus.OK);
@@ -87,7 +87,7 @@ public class TeamsController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/createdby/{userId}")
+    @GetMapping("/teams/createdby/{userId}")
     public ResponseEntity getTeamsCreatedBy(@PathVariable(value = "userId") String userId) {
         List<TeamPreviewDto> dtos = teamsPreviewService.getTeamsByCreatedById(userId);
         if(dtos.isEmpty()) {

@@ -13,7 +13,6 @@ public interface TasksRepository extends JpaRepository<TaskEntity, Long> {
 
     List<TaskEntity> findAllByProject(String project);
     List<TaskEntity> findAllBySprint(String sprint);
-    List<TaskEntity> findAllByEpicIsEqualToTrue();
 
     List<TaskEntity> findAllByParent(String parent);
     List<TaskEntity> findAllByEpic(String epic);
@@ -24,5 +23,5 @@ public interface TasksRepository extends JpaRepository<TaskEntity, Long> {
     boolean existsByTaskId(String taskId);
 
     @Transactional
-    boolean deleteByTaskId(String taskId);
+    void deleteByTaskId(String taskId);
 }

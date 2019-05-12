@@ -12,5 +12,5 @@ public interface SprintStatusRepository extends JpaRepository<SprintStatusEntity
     SprintStatusEntity findByStatus(String status);
 
     @Transactional
-    boolean deleteByStatus(String status);
+    void deleteByStatus(String status);
 }

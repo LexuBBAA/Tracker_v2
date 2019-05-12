@@ -13,6 +13,10 @@ public class TaskStatusDto implements Serializable {
     public TaskStatusDto() {
     }
 
+    public TaskStatusDto(String value) {
+        this.value = value;
+    }
+
     public TaskStatusDto(TaskStatusEntity entity) {
         this.id = entity.getId();
         this.value = entity.getStatus();

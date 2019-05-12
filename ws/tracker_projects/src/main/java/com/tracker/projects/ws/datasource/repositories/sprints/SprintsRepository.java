@@ -18,5 +18,7 @@ public interface SprintsRepository extends JpaRepository<SprintEntity, Long> {
     List<SprintEntity> findAllByStatusEquals(String status);
 
     @Transactional
-    boolean deleteBySprintId(String sprintId);
+    void deleteBySprintId(String sprintId);
+    @Transactional
+    void deleteAllByProject(String project);
 }

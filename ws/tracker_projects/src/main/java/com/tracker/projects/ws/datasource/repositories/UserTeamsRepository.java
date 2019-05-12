@@ -24,9 +24,9 @@ public interface UserTeamsRepository extends JpaRepository<UserTeamEntity, Long>
     List<UserTeamEntity> findAllByTeamIdAndJoinedDateAfterAndJoinedDateBefore(String teamId, LocalDate startDate, LocalDate endDate);
 
     @Transactional
-    boolean deleteByUserIdAndTeamId(String userId, String teamId);
+    void deleteByUserIdAndTeamId(String userId, String teamId);
     @Transactional
-    boolean deleteByTeamId(String teamId);
+    void deleteByTeamId(String teamId);
     @Transactional
-    boolean deleteByUserId(String userId);
+    void deleteByUserId(String userId);
 }

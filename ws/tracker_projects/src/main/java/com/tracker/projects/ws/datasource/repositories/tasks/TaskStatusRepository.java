@@ -13,5 +13,5 @@ public interface TaskStatusRepository extends JpaRepository<TaskStatusEntity, Lo
     boolean existsByStatus(String status);
 
     @Transactional
-    boolean deleteByStatus(String status);
+    void deleteByStatus(String status);
 }
