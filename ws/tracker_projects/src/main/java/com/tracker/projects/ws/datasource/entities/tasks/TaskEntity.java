@@ -1,6 +1,6 @@
-package com.tracker.logging.ws.datasource.entities;
+package com.tracker.projects.ws.datasource.entities.tasks;
 
-import com.tracker.logging.ws.datasource.dtos.TaskDto;
+import com.tracker.projects.ws.datasource.dtos.tasks.TaskDto;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;

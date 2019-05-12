@@ -1,7 +1,6 @@
-package com.tracker.logging.ws.datasource.services;
+package com.tracker.projects.ws.datasource.services.tasks;
 
-import com.tracker.logging.ws.datasource.dtos.TaskStatusDto;
-import com.tracker.logging.ws.datasource.dtos.TaskTypeDto;
+import com.tracker.projects.ws.datasource.dtos.tasks.TaskStatusDto;
 
 import java.util.List;
 

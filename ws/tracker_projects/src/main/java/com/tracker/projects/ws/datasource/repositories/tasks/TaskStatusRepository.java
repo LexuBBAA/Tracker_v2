@@ -1,11 +1,10 @@
-package com.tracker.logging.ws.datasource.repositories;
+package com.tracker.projects.ws.datasource.repositories.tasks;
 
-import com.tracker.logging.ws.datasource.entities.enums.TaskStatusEntity;
+import com.tracker.projects.ws.datasource.entities.tasks.enums.TaskStatusEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
-import java.util.List;
 
 @Repository
 public interface TaskStatusRepository extends JpaRepository<TaskStatusEntity, Long> {

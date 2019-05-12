@@ -1,4 +1,4 @@
-package com.tracker.logging.ws.datasource.entities.enums;
+package com.tracker.projects.ws.datasource.entities.tasks.enums;
 
 import javax.persistence.*;
 import java.io.Serializable;

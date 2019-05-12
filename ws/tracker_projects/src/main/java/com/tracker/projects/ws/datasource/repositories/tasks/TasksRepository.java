@@ -1,6 +1,6 @@
-package com.tracker.logging.ws.datasource.repositories;
+package com.tracker.projects.ws.datasource.repositories.tasks;
 
-import com.tracker.logging.ws.datasource.entities.TaskEntity;
+import com.tracker.projects.ws.datasource.entities.tasks.TaskEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,6 +1,6 @@
-package com.tracker.logging.ws.datasource.dtos;
+package com.tracker.projects.ws.datasource.dtos.tasks;
 
-import com.tracker.logging.ws.datasource.entities.enums.TaskTypeEntity;
+import com.tracker.projects.ws.datasource.entities.tasks.enums.TaskTypeEntity;
 
 import java.io.Serializable;
 

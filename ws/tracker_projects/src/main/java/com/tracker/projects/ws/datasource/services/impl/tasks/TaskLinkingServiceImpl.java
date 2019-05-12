@@ -1,9 +1,9 @@
-package com.tracker.logging.ws.datasource.services.impl;
+package com.tracker.projects.ws.datasource.services.impl.tasks;
 
-import com.tracker.logging.ws.datasource.dtos.TaskDto;
-import com.tracker.logging.ws.datasource.entities.TaskEntity;
-import com.tracker.logging.ws.datasource.repositories.TasksRepository;
-import com.tracker.logging.ws.datasource.services.TaskLinkingService;
+import com.tracker.projects.ws.datasource.dtos.tasks.TaskDto;
+import com.tracker.projects.ws.datasource.entities.tasks.TaskEntity;
+import com.tracker.projects.ws.datasource.repositories.tasks.TasksRepository;
+import com.tracker.projects.ws.datasource.services.tasks.TaskLinkingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,6 @@
-package com.tracker.logging.ws.datasource.services;
+package com.tracker.projects.ws.datasource.services.tasks;
 
-import com.tracker.logging.ws.datasource.dtos.TaskDto;
+import com.tracker.projects.ws.datasource.dtos.tasks.TaskDto;
 
 public interface TaskLinkingService {
     TaskDto setTaskBlocks(String sourceId, String blocksId);

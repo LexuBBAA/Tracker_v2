@@ -1,6 +1,6 @@
-package com.tracker.logging.ws.datasource.dtos;
+package com.tracker.projects.ws.datasource.dtos.tasks;
 
-import com.tracker.logging.ws.datasource.entities.TaskEntity;
+import com.tracker.projects.ws.datasource.entities.tasks.TaskEntity;
 
 import java.io.Serializable;
 import java.time.LocalDate;
