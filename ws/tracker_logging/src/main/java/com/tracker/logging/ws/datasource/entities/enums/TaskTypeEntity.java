@@ -13,7 +13,11 @@ public class TaskTypeEntity implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "type", length = 25, unique = true)
+    @Column(name = "type",
+            nullable = false,
+            unique = true,
+            updatable = false,
+            length = 25)
     private String type;
 
     public TaskTypeEntity() {

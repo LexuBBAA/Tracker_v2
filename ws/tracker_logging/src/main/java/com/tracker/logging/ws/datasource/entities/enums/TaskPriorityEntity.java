@@ -1,10 +1,10 @@
 package com.tracker.logging.ws.datasource.entities.enums;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 
+@Entity
+@Table(name = "taskpriorityvalues")
 public class TaskPriorityEntity implements Serializable {
     private static final long serialVersionUID = -7108623019621145951L;
 
@@ -16,7 +16,8 @@ public class TaskPriorityEntity implements Serializable {
     @Column(name = "priority",
             nullable = false,
             unique = true,
-            updatable = false)
+            updatable = false,
+            length = 50)
     private String priority;
 
     public TaskPriorityEntity() {

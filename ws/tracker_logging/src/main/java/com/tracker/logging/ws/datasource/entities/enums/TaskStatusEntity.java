@@ -13,7 +13,11 @@ public class TaskStatusEntity implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "status", length = 25, unique = true)
+    @Column(name = "status",
+            nullable = false,
+            unique = true,
+            updatable = false,
+            length = 25)
     private String status;
 
     public TaskStatusEntity() {

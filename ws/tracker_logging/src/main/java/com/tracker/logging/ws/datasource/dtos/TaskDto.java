@@ -11,6 +11,7 @@ public class TaskDto extends TaskPreviewDto {
     public String createdBy;
     public LocalDateTime createdAt;
     public LocalDateTime lastUpdatedAt;
+    public String lastModifiedBy;
     public Double estimate;
     public Double logged;
     public Integer storyPoints;
@@ -34,6 +35,7 @@ public class TaskDto extends TaskPreviewDto {
         this.createdBy = entity.getCreatedBy();
         this.createdAt = entity.getCreatedAt();
         this.lastUpdatedAt = entity.getUpdatedAt();
+        this.lastModifiedBy = entity.getLastModifiedBy();
         this.estimate = entity.getEstimate();
         this.logged = entity.getLogged();
         this.storyPoints = entity.getStoryPoints();

@@ -22,7 +22,7 @@ public class TaskEntity implements Serializable {
     private Long id;
     @Column(name = "taskid", nullable = false, updatable = false, unique = true)
     private String taskId;
-    @Column(name = "title", nullable = false)
+    @Column(name = "title", nullable = false, length = 50)
     private String title;
     @Column(name = "description")
     private String description;
@@ -30,16 +30,18 @@ public class TaskEntity implements Serializable {
     private String type;
     @Column(name = "status", nullable = false)
     private String status;
-    @Column(name = "createdat", updatable = false)
+    @Column(name = "createddate", updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
-    @Column(name = "updatedat")
+    @Column(name = "lastmodifiedat")
     @UpdateTimestamp
     private LocalDateTime updatedAt;
     @Column(name = "createdby", nullable = false)
     private String createdBy;
     @Column(name = "assignedto")
     private String assignedTo;
+    @Column(name = "lastmodifiedby", nullable = false)
+    private String lastModifiedBy;
     @Column(name = "duedate")
     private LocalDate dueDate;
     @Column(name = "storypoints")
@@ -52,6 +54,7 @@ public class TaskEntity implements Serializable {
     private Double logged = 0d;
     @Column(name = "isepic")
     private Boolean isEpic;
+
     @Column(name = "project", nullable = false)
     private String project;
     @Column(name = "sprint")
@@ -90,6 +93,9 @@ public class TaskEntity implements Serializable {
         }
         if(task.assignedTo != null && !task.assignedTo.equals(this.assignedTo)) {
             this.assignedTo = task.assignedTo;
+        }
+        if(task.lastModifiedBy != null && !task.lastModifiedBy.equals(this.lastModifiedBy)) {
+            this.lastModifiedBy = task.lastModifiedBy;
         }
         if(task.dueDate != null && !task.dueDate.equals(this.dueDate)) {
             this.dueDate = task.dueDate;
@@ -149,6 +155,9 @@ public class TaskEntity implements Serializable {
         }
         if(task.assignedTo != null && !task.assignedTo.equals(this.assignedTo)) {
             this.assignedTo = task.assignedTo;
+        }
+        if(task.lastModifiedBy != null && !task.lastModifiedBy.equals(this.lastModifiedBy)) {
+            this.lastModifiedBy = task.lastModifiedBy;
         }
         if(task.dueDate != null && !task.dueDate.equals(this.dueDate)) {
             this.dueDate = task.dueDate;
@@ -353,6 +362,14 @@ public class TaskEntity implements Serializable {
         return subtaskOf;
     }
 
+    public String getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
     public void setSubtaskOf(String subtaskOf) {
         this.subtaskOf = subtaskOf;
     }
@@ -372,4 +389,5 @@ public class TaskEntity implements Serializable {
     public void setBlocks(String blocks) {
         this.blocks = blocks;
     }
+
 }
