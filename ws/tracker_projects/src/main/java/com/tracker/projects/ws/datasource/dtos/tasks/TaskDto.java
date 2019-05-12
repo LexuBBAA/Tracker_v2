@@ -43,4 +43,34 @@ public class TaskDto extends TaskPreviewDto {
         this.sprint = entity.getSprint();
         this.project = entity.getProject();
     }
+
+    @Override
+    public String toString() {
+        return "TaskDto{" +
+                "description='" + description + '\'' +
+                ", createdBy='" + createdBy + '\'' +
+                ", createdAt=" + createdAt +
+                ", lastUpdatedAt=" + lastUpdatedAt +
+                ", lastModifiedBy='" + lastModifiedBy + '\'' +
+                ", estimate=" + estimate +
+                ", logged=" + logged +
+                ", storyPoints=" + storyPoints +
+                ", isEpic=" + isEpic +
+                ", sprint='" + sprint + '\'' +
+                ", project='" + project + '\'' +
+                ", parent=" + parent +
+                ", epic=" + epic +
+                ", partOf=" + partOf +
+                ", subtaskOf=" + subtaskOf +
+                ", blocks=" + blocks +
+                ", id=" + id +
+                ", taskId='" + taskId + '\'' +
+                ", title='" + title + '\'' +
+                ", assignedTo='" + assignedTo + '\'' +
+                ", dueDate=" + dueDate +
+                ", type=" + type +
+                ", status=" + status +
+                ", priority=" + priority +
+                '}';
+    }
 }
