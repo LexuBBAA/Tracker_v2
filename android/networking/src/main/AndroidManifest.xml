@@ -1,0 +1,6 @@
+<!--
+  ~ Copyright (c) Bogdan Andrei Alexandru - 2017.
+  -->
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.lexu.networking"/>
