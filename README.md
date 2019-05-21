@@ -21,24 +21,33 @@ Starting the services is easy; the services have been developed to be packaged i
 **Start a service:**
 ```
 // To start a service, first you must navigate to the module's directory:
-cd path-to-project/tracker_auth/
+cd path-to-project/ws/tracker_auth/
 
 // Now you can just type the below command, and the Auth WS will start running:
-sh start_ws.sh	//for Mac
-// or
-./start_ws	//for Linux
+./start_ws
 ```
 
 **Stop a service:** (the recommended way)
 ```
 // To stop a running service, navigate to the module's directory:
-cd path-to-project/tracker_auth/
+cd path-to-project/ws/tracker_auth/
 
 // Now you only need to type the following command:
-sh stop_ws.sh	//for Mac
-// or
-./stop_ws	//for Linux
+./stop_ws
 ```
+
+**Start & stop all services:**
+```
+// Navigate to the project directory:
+cd path-to-project/ws
+
+// To start all Tracker services, use the command below:
+./start
+
+// To stop all Tracker services, use the below command:
+./stop
+```
+
 
 ### Contact
 **Thank you for your interest in this project**

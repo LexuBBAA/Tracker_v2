@@ -1,2 +1,4 @@
 #!/bin/bash
-kill $(cat ./users_ws_pid.file)
+
+pidfile=users_ws_pid.file
+test -f "$pidfile" && echo "Stopping users_ws" && kill $(cat "$pidfile") && rm "$pidfile"

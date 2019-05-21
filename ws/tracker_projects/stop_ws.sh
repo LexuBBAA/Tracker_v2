@@ -1,2 +1,4 @@
 #!/bin/bash
-kill $(cat ./projects_ws_pid.file)
+
+pidfile=projects_ws_pid.file
+test -f "$pidfile" && echo "Stopping tracker_projects" && kill $(cat "$pidfile") && rm "$pidfile"
