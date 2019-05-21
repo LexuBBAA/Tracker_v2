@@ -12,6 +12,7 @@
 	<artifactId>tracker_auth</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>tracker_auth</name>
+	<packaging>jar</packaging>
 	<description>Tracker v2 Auth server</description>
 
 	<properties>

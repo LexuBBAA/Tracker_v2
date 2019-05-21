@@ -12,6 +12,7 @@
 	<artifactId>tracker_logging</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>tracker_logging</name>
+	<packaging>jar</packaging>
 	<description>Tracker v2 Projects server</description>
 
 	<properties>

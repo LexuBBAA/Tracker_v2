@@ -12,6 +12,7 @@
 	<artifactId>EurekaServer</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>EurekaServer</name>
+	<packaging>jar</packaging>
 	<description>Eureka server for service discovery</description>
 
 	<properties>
