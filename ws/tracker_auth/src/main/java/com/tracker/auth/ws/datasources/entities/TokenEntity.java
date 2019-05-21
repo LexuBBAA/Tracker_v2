@@ -54,6 +54,7 @@ public class TokenEntity implements Serializable {
 
     public void setToken(@NonNull String token) {
         this.token = token;
+        this.expiresAt = LocalDateTime.now().plusDays(TOKEN_LIFE_SPAN_DAYS);
     }
 
     @NonNull

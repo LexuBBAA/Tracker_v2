@@ -6,9 +6,16 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public interface TokensRepository extends JpaRepository<TokenEntity, Integer> {
-    TokenEntity findByDeviceId(@NonNull @Param("deviceId") String deviceId);
+import javax.transaction.Transactional;
 
-    boolean existsByToken(@NonNull @Param("token") String token);
+@Repository
+public interface TokensRepository extends JpaRepository<TokenEntity, Long> {
+    TokenEntity findByToken(String token);
+    TokenEntity findByRefreshToken(String refreshToken);
+
+    boolean existsByToken(String token);
+    boolean existsByRefreshToken(String refreshToken);
+
+    @Transactional
+    void deleteByToken(String token);
 }

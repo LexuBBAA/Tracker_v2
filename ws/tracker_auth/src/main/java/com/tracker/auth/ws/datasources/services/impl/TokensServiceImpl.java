@@ -4,115 +4,110 @@ import com.tracker.auth.ws.datasources.dtos.TokenDto;
 import com.tracker.auth.ws.datasources.entities.TokenEntity;
 import com.tracker.auth.ws.datasources.repositories.TokensRepository;
 import com.tracker.auth.ws.datasources.services.TokensService;
-import com.tracker.auth.ws.datasources.users.dto.UserDto;
+import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.sql.Date;
-import java.util.UUID;
+import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 public class TokensServiceImpl implements TokensService {
-    @SuppressWarnings("all")
     @Autowired
     private TokensRepository repository;
 
     @Override
-    public TokenDto getToken(UserDto userDto) {
-        TokenDto generatedToken = null;
-        TokenEntity tokenEntity = repository.findByDeviceId(userDto.deviceId);
-        if(tokenEntity != null) {
-            generatedToken = new TokenDto();
-            generatedToken.id = tokenEntity.getId();
-            generatedToken.token = tokenEntity.getToken();
-            generatedToken.createdAt = tokenEntity.getCreatedAt();
-            generatedToken.expiresAt = tokenEntity.getExpiresAt();
-            generatedToken.deviceId = tokenEntity.getDeviceId();
+    public TokenDto findByTokenId(Long tokenId) {
+        Optional<TokenEntity> tokenEntity = repository.findById(tokenId);
+        return tokenEntity.map(TokenDto::new).orElse(null);
+    }
+
+    @Override
+    public TokenDto generateToken() {
+        TokenEntity newToken = new TokenEntity(generateUniqueToken(), generateRefreshToken());
+        TokenEntity storedEntity = repository.save(newToken);
+        if(storedEntity != null) {
+            return new TokenDto(storedEntity);
+        }
+        return null;
+    }
+
+    @Override
+    public TokenDto refreshToken(TokenDto token) {
+        if(!repository.existsByToken(token.token)) {
+            return null;
         }
 
-        if(generatedToken == null) {
-            try {
-                generatedToken = generateToken(userDto);
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            }
-        } else if(!isValidToken(generatedToken)) {
-            try {
-                generatedToken = refreshToken(generatedToken);
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            }
+        TokenEntity storedToken = repository.findByToken(token.token);
+        if(!storedToken.getRefreshToken().equals(token.refreshToken)) {
+            return null;
+        }
+
+        storedToken.setToken(generateUniqueToken());
+
+        TokenEntity updatedToken = repository.save(storedToken);
+        if(updatedToken != null) {
+            return new TokenDto(updatedToken);
+        }
+        return null;
+    }
+
+    @Override
+    public TokenDto getToken(String token) {
+        TokenEntity storedEntity = repository.findByToken(token);
+        if(storedEntity != null) {
+            return new TokenDto(storedEntity);
+        }
+
+        return null;
+    }
+
+    @Override
+    public TokenDto getByRefreshToken(String refreshToken) {
+        TokenEntity storedToken = repository.findByRefreshToken(refreshToken);
+        if(storedToken != null) {
+            return new TokenDto(storedToken);
+        }
+        return null;
+    }
+
+    @Override
+    public boolean validateToken(String token) {
+        if(!repository.existsByToken(token)) {
+            return false;
+        }
+
+        TokenEntity storedToken = repository.findByToken(token);
+        return !storedToken.getExpiresAt().isBefore(LocalDateTime.now());
+    }
+
+    @Override
+    public boolean deleteToken(String token) {
+        if(repository.existsByToken(token)) {
+            repository.deleteByToken(token);
+            return true;
+        }
+        return false;
+    }
+
+    @NonNull
+    private String generateUniqueToken() {
+        String generatedToken = RandomStringUtils.randomAlphanumeric(100);
+        if(repository.existsByToken(generatedToken)) {
+            return generateUniqueToken();
         }
 
         return generatedToken;
     }
 
-    @Override
-    public boolean validateToken(String token) {
-        return repository.existsByToken(token);
-    }
-
-    private TokenDto generateToken(@NonNull UserDto userDto) throws NoSuchAlgorithmException {
-        String newToken = generateNewToken();
-
-        TokenDto tokenDto = null;
-        if(!newToken.isEmpty()) {
-            if(repository.existsByToken(newToken)) {
-                return generateToken(userDto);
-            } else {
-                tokenDto = saveNewToken(newToken, userDto.deviceId);
-            }
-        }
-        return tokenDto;
-    }
-
-    private TokenDto refreshToken(@NonNull TokenDto tokenDto) throws NoSuchAlgorithmException {
-        String newToken = generateNewToken();
-
-        TokenDto newTokenDto = null;
-        if(!newToken.isEmpty()) {
-            if(repository.existsByToken(newToken)) {
-                return refreshToken(tokenDto);
-            } else {
-                newTokenDto = saveNewToken(newToken, tokenDto.deviceId);
-            }
-        }
-        return newTokenDto;
-    }
-
-    private boolean isValidToken(@NonNull TokenDto tokenDto) {
-        return tokenDto.createdAt.before(tokenDto.expiresAt) &&
-                tokenDto.expiresAt.after(new Date(System.currentTimeMillis()));
-    }
-
-    private String generateNewToken() throws NoSuchAlgorithmException {
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        digest.update(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
-        return bytesToHex(digest);
-    }
-
-    private TokenDto saveNewToken(@NonNull String newToken, @NonNull String deviceId) {
-        TokenEntity savedToken = repository.save(new TokenEntity(newToken, deviceId));
-        TokenDto tokenDto = new TokenDto();
-        tokenDto.id = savedToken.getId();
-        tokenDto.token = savedToken.getToken();
-        tokenDto.deviceId = savedToken.getDeviceId();
-        tokenDto.createdAt = savedToken.getCreatedAt();
-        tokenDto.expiresAt = savedToken.getExpiresAt();
-        return tokenDto;
-    }
-
-    private String bytesToHex(MessageDigest digest) {
-        byte[] bytes = digest.digest();
-        StringBuilder sb = new StringBuilder();
-        for(byte b: bytes) {
-            sb.append(String.format("%02x", b));
+    @NonNull
+    private String generateRefreshToken() {
+        String generatedToken = RandomStringUtils.randomAlphanumeric(100);
+        if(repository.existsByRefreshToken(generatedToken)) {
+            return generateRefreshToken();
         }
 
-        return sb.toString();
+        return generatedToken;
     }
 }

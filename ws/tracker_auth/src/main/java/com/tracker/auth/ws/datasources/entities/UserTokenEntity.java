@@ -14,7 +14,7 @@ public class UserTokenEntity implements Serializable {
     private Long id;
     @Column(name = "tokenid", nullable = false, updatable = false, unique = true)
     private Long tokenId;
-    @Column(name = "userId", nullable = false, updatable = false)
+    @Column(name = "userid", nullable = false, updatable = false)
     private String userId;
 
     public UserTokenEntity() {
@@ -42,5 +42,14 @@ public class UserTokenEntity implements Serializable {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    @Override
+    public String toString() {
+        return "UserTokenEntity{" +
+                "id=" + id +
+                ", tokenId=" + tokenId +
+                ", userId='" + userId + '\'' +
+                '}';
     }
 }
