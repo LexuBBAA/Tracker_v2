@@ -14,6 +14,39 @@ Tracker_v2
 	- Tracker_v2_web > The Tracker Web application & admin pannel
 ```
 
+### Running an individual service
+
+Starting the services is easy; the services have been developed to be packaged into executable JARs, so you can use the commands below to manage the ecosystem:
+
+**Start a service:**
+```
+// To start a service, first you must navigate to the module's directory:
+cd path-to-project/tracker_auth/
+
+// Now you can just type the below command, and the Auth WS will start running:
+sh start_ws.sh	//for Mac
+// or
+./start_ws	//for Linux
+```
+
+**Stop a service:** (the recommended way)
+```
+// To stop a running service, navigate to the module's directory:
+cd path-to-project/tracker_auth/
+
+// Now you only need to type the following command:
+sh stop_ws.sh	//for Mac
+// or
+./stop_ws	//for Linux
+```
+
+### Contact
+**Thank you for your interest in this project**
+If you have any questions, feedback, or want to contribute, you can contact us at:
+> **Facebook:** *Bogdan Andrei Alexandru*
+> **Email:** *a.birsasteanu@gmail.com*
+
+
 ## Authors
 * *Android Developer* - **Bogdan Birsasteanu** - [LexuBBAA](https://github.com/LexuBBAA/)
 * *Back-end Developer* - **Bogdan Birsasteanu** - [LexuBBAA](https://github.com/LexuBBAA/)
