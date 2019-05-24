@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "215727644562",
+    "firebase_url": "https://tracker-v2-6173c.firebaseio.com",
+    "project_id": "tracker-v2-6173c",
+    "storage_bucket": "tracker-v2-6173c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:215727644562:android:b1320e9cb07ba815",
+        "android_client_info": {
+          "package_name": "com.tracker.trackerv2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "215727644562-s31d2gklgs1i4fst7pqc60nb15gimk8k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-uYZNoTGpU5eqUi9VR8VKIwFuTGswYow"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "215727644562-s31d2gklgs1i4fst7pqc60nb15gimk8k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:215727644562:android:1baa489ef8475a9c",
+        "android_client_info": {
+          "package_name": "com.tracker.trackerv2.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "215727644562-s31d2gklgs1i4fst7pqc60nb15gimk8k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-uYZNoTGpU5eqUi9VR8VKIwFuTGswYow"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "215727644562-s31d2gklgs1i4fst7pqc60nb15gimk8k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
