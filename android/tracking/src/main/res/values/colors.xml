@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) Bogdan Andrei Alexandru - 2017.
+  -->
+
+<resources>
+    <color name="color_accent">@color/default_accent</color>
+    <color name="color_accent_dark">@color/default_accent_dark</color>
+
+    <color name="default_accent">#ff80cbc4</color>
+    <color name="default_accent_dark">#ff009688</color>
+</resources>
