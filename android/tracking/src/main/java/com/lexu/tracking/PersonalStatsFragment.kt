@@ -51,6 +51,10 @@ class PersonalStatsFragment: Fragment() {
         }
 
         val barDataSet = BarDataSet(entries, "")
+        context?.let {
+            barDataSet.valueTextColor = ResourcesCompat.getColor(it.resources, android.R.color.white, it.theme)
+        }
+
         barDataSet.valueFormatter = object : ValueFormatter() {
             override fun getFormattedValue(value: Float): String = if(value != 0F) value.toString()
             else ""

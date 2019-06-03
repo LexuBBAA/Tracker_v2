@@ -3,18 +3,43 @@
   ~ Copyright (c) Bogdan Andrei Alexandru - 2017.
   -->
 
-<RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context="com.tracker.trackerv2.DashboardActivity">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            tools:context="com.tracker.trackerv2.DashboardActivity"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <fragment
-            android:id="@+id/dashboardPersonalStatsFragment"
+    <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:name="com.lexu.tracking.PersonalStatsFragment"
-            tools:layout="@layout/fragment_personal_stats"/>
+            android:orientation="vertical">
 
-</RelativeLayout>
+        <fragment
+                android:id="@+id/dashboardPersonalStatsFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:name="com.lexu.tracking.PersonalStatsFragment"
+                tools:layout="@layout/fragment_personal_stats"/>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="24dp">
+
+            <fragment
+                    android:id="@+id/dashboardTeamStatsFragment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:name="com.lexu.tracking.TeamStatsFragment"
+                    tools:layout="@layout/fragment_team_stats"/>
+
+            <!--todo replace with unresolved tasks counter-->
+            <View android:layout_width="100dp"
+                  android:layout_height="match_parent"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
