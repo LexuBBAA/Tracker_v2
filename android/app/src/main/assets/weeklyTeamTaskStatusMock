@@ -1,0 +1,112 @@
+[
+  {
+    "type": "STORY",
+    "status": "OPEN",
+    "title": "Project"
+  },
+  {
+    "type": "ISSUE",
+    "status": "REOPENED",
+    "title": "Crash"
+  },
+  {
+    "type": "ISSUE",
+    "status": "OPEN",
+    "title": "No data displayed"
+  },
+  {
+    "type": "TASK",
+    "status": "DONE",
+    "title": "Create Dashboard"
+  },
+  {
+    "type": "TASK",
+    "status": "ON_HOLD",
+    "title": "Refactor Dashboard"
+  },
+  {
+    "type": "SUBTASK",
+    "status": "OPEN",
+    "title": "[Dashboard]Create searchView"
+  },
+  {
+    "type": "ISSUE",
+    "status": "OPEN",
+    "title": "Texts not aligned"
+  },
+  {
+    "type": "ISSUE",
+    "status": "OPEN",
+    "title": "Cannot login"
+  },
+  {
+    "type": "SUBTASK",
+    "status": "IN_PROGRESS",
+    "title": "Review Dashboard"
+  },
+  {
+    "type": "STORY",
+    "status": "CLOSED",
+    "title": "Review reqs"
+  },
+  {
+    "type": "ISSUE",
+    "status": "OPEN",
+    "title": "Cannot register"
+  },
+  {
+    "type": "TASK",
+    "status": "OPEN",
+    "title": "Design"
+  },
+  {
+    "type": "QUESTION",
+    "status": "OPEN",
+    "title": "Should you be able to update task?"
+  },
+  {
+    "type": "QUESTION",
+    "status": "CLOSED",
+    "title": "Should I be able to logout?"
+  },
+  {
+    "type": "QUESTION",
+    "status": "OPEN",
+    "title": "[Suggestion]Biometrics Auth"
+  },
+  {
+    "type": "STORY",
+    "status": "IN_PROGRESS",
+    "title": "Test data"
+  },
+  {
+    "type": "SUBTASK",
+    "status": "DONE",
+    "title": "Create Timer"
+  },
+  {
+    "type": "SUBTASK",
+    "status": "OPEN",
+    "title": "Tasks API integration"
+  },
+  {
+    "type": "STORY",
+    "status": "IN_QA",
+    "title": "New Task screen"
+  },
+  {
+    "type": "STORY",
+    "status": "IN_PROGRESS",
+    "title": "Task Details screen"
+  },
+  {
+    "type": "STORY",
+    "status": "OPEN",
+    "title": "Mock e2e flow"
+  },
+  {
+    "type": "TASK",
+    "status": "ON_HOLD",
+    "title": "Refactor Auth"
+  }
+]

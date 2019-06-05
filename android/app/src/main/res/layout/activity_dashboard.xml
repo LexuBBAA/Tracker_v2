@@ -15,30 +15,26 @@
             android:orientation="vertical">
 
         <fragment
+                android:id="@+id/ongoingTaskFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:name="com.lexu.tracking.OngoingTaskFragment"
+                tools:layout="@layout/fragment_ongoing_task"/>
+
+        <fragment
                 android:id="@+id/dashboardPersonalStatsFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:name="com.lexu.tracking.PersonalStatsFragment"
                 tools:layout="@layout/fragment_personal_stats"/>
 
-        <LinearLayout
+        <fragment
+                android:id="@+id/dashboardTeamStatsFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="24dp">
-
-            <fragment
-                    android:id="@+id/dashboardTeamStatsFragment"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:name="com.lexu.tracking.TeamStatsFragment"
-                    tools:layout="@layout/fragment_team_stats"/>
-
-            <!--todo replace with unresolved tasks counter-->
-            <View android:layout_width="100dp"
-                  android:layout_height="match_parent"/>
-        </LinearLayout>
+                android:name="com.lexu.tracking.TeamStatsFragment"
+                tools:layout="@layout/fragment_team_stats"/>
 
     </LinearLayout>
 

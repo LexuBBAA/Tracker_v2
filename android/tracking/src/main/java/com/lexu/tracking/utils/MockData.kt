@@ -4,6 +4,8 @@
 
 package com.lexu.tracking.utils
 
+import com.lexu.models.Status
+import com.lexu.models.Type
 import java.util.*
 
 object MockData {
@@ -48,11 +50,3 @@ object MockData {
 data class DayLog(val day: Int, val loggedTime: Float)
 
 data class TeamTask(val type: Type, val status: Status, val title: String)
-
-enum class Type {
-    STORY, TASK, SUBTASK, ISSUE, QUESTION
-}
-
-enum class Status {
-    OPEN, IN_PROGRESS, ON_HOLD, DONE, CLOSED, REOPENED, IN_QA
-}

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) Bogdan Andrei Alexandru - 2017.
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="4dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginBottom="12dp"
+            android:layout_marginEnd="24dp">
+        <LinearLayout
+                android:id="@+id/ongoingTaskDetailsContainer"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="3"
+                android:visibility="gone">
+
+            <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2">
+                <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/ongoingTaskIcon"
+                        android:layout_width="40dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="4dp"
+                        android:src="@drawable/ic_alarm_white_24dp"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/ongoingTaskTitleLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Task Title"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:ellipsize="end"
+                        android:layout_marginBottom="4dp"
+                        android:layout_toEndOf="@+id/ongoingTaskIcon"
+                        android:layout_alignTop="@+id/ongoingTaskIcon"
+                        android:layout_alignParentEnd="true"/>
+
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_toEndOf="@+id/ongoingTaskIcon"
+                        android:layout_alignEnd="@+id/ongoingTaskTitleLabel"
+                        android:layout_below="@+id/ongoingTaskTitleLabel"
+                        android:layout_alignBottom="@+id/ongoingTaskIcon"
+                        android:weightSum="3">
+                    <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/ongoingTaskTypeLabel"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Type"
+                            android:textSize="16sp"/>
+                    <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/ongoingTaskStatusLabel"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Status"
+                            android:textSize="16sp"/>
+                    <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/ongoingTaskPriorityLabel"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Priority"
+                            android:textSize="16sp"/>
+                </LinearLayout>
+            </RelativeLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/ongoingTaskDurationLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="0m"
+                    android:gravity="center"
+                    android:maxLines="3"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+        </LinearLayout>
+
+        <RelativeLayout
+                android:id="@+id/ongoingTaskErrorMessageContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/ongoingTaskErrorMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="75dp"
+                    android:layout_margin="4dp"
+                    android:layout_centerInParent="true"
+                    android:background="@color/blocking_view_color"
+                    android:text="No ongoing task available"
+                    android:textSize="18sp"
+                    android:gravity="center"/>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+            android:id="@+id/ongoingTaskActionButtonsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="4dp"
+            android:visibility="gone">
+        <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/ongoingTaskEditButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:background="@drawable/rounded_corner_background_shape"
+                android:src="@drawable/ic_edit_white_24dp"/>
+
+        <View android:layout_width="0dp"
+              android:layout_height="match_parent"
+              android:layout_weight="1"/>
+
+        <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/ongoingTaskStopButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:background="@drawable/round_dark_background_48dp"
+                android:src="@drawable/ic_stop_white_24dp"
+                android:tint="@color/stop_red"/>
+
+        <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/ongoingTaskPauseButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/round_dark_background_48dp"
+                android:src="@drawable/ic_pause_circle_filled_white_24dp"
+                android:tint="@color/color_accent_dark"/>
+
+        <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/ongoingTaskStartButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:background="@drawable/round_dark_background_48dp"
+                android:src="@drawable/ic_play_circle_outline_white_24dp"
+                android:tint="@color/color_accent_dark"/>
+    </LinearLayout>
+</RelativeLayout>

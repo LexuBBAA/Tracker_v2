@@ -9,6 +9,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import com.github.mikephil.charting.charts.BarChart
@@ -17,7 +20,7 @@ import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.ValueFormatter
-import com.lexu.tracking.utils.MockData
+import com.lexu.tracking.utils.DayLog
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -26,6 +29,9 @@ class PersonalStatsFragment: Fragment() {
     private lateinit var rootView: View
 
     private lateinit var statsChartView: BarChart
+    private lateinit var loadingContainer: FrameLayout
+    private lateinit var loadingView: ProgressBar
+    private lateinit var errorMessageLabel: TextView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.fragment_personal_stats, container, false)
@@ -35,37 +41,25 @@ class PersonalStatsFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         statsChartView = rootView.findViewById(R.id.personalStatsChartView) as BarChart
+        loadingContainer = rootView.findViewById(R.id.personalStatsLoadingContainer) as FrameLayout
+        loadingView = rootView.findViewById(R.id.personalStatsProgressBar) as ProgressBar
+        errorMessageLabel = rootView.findViewById(R.id.personalStatsErrorMessage) as TextView
+
+        loadingContainer.visibility = View.VISIBLE
+        loadingView.visibility = View.VISIBLE
+        errorMessageLabel.visibility = View.GONE
 
         configChart()
 
-        val entryValues = MockData.lastWeekTimes()
-        val currentDay = Calendar.getInstance()[Calendar.DAY_OF_WEEK]
-        val entries = ArrayList<BarEntry>()
-        entryValues.forEach { dayLog ->
-            Log.e(PersonalStatsFragment::class.simpleName, "$currentDay ? ${dayLog.day}")
-            entries.add(BarEntry(
-                dayLog.day.toFloat(),
-                if(currentDay >= dayLog.day) dayLog.loggedTime
-                else 0F
-            ))
-        }
+        val entryValues = emptyList<DayLog>()
+        val barDataSet = BarDataSet(generateEntries(entryValues), "")
 
-        val barDataSet = BarDataSet(entries, "")
-        context?.let {
-            barDataSet.valueTextColor = ResourcesCompat.getColor(it.resources, android.R.color.white, it.theme)
-        }
-
-        barDataSet.valueFormatter = object : ValueFormatter() {
-            override fun getFormattedValue(value: Float): String = if(value != 0F) value.toString()
-            else ""
-        }
-        statsChartView.data = BarData(barDataSet)
-        statsChartView.invalidate()
+        updateUI(barDataSet, false)
     }
 
     private fun configChart() {
         statsChartView.description.isEnabled = false
-        statsChartView.setDrawValueAboveBar(true)
+        statsChartView.setDrawValueAboveBar(false)
         statsChartView.legend.isEnabled = false
 
         val xAxis = statsChartView.xAxis
@@ -94,7 +88,57 @@ class PersonalStatsFragment: Fragment() {
 
         statsChartView.axisLeft.setDrawZeroLine(false)
         statsChartView.axisLeft.granularity = 3F
-        statsChartView.axisLeft.axisMaximum = 9F
         statsChartView.axisRight.isEnabled = false
+    }
+
+    private fun updateUI(dataSet: BarDataSet, dismissLoading: Boolean = true) {
+        dataSet.valueFormatter = object : ValueFormatter() {
+            override fun getFormattedValue(value: Float): String = if(value != 0F) value.toString()
+            else ""
+        }
+
+        setDataSetColors(dataSet)
+
+        if(dismissLoading) {
+            dismissLoading()
+            if(dataSet.entryCountStacks == 0) showError()
+        }
+
+        statsChartView.data = BarData(dataSet)
+        statsChartView.invalidate()
+    }
+
+    private fun dismissLoading() {
+        loadingContainer.visibility = View.GONE
+    }
+
+    private fun showError() {
+        loadingContainer.visibility = View.VISIBLE
+        loadingView.visibility = View.GONE
+        errorMessageLabel.visibility = View.VISIBLE
+    }
+
+    private fun generateEntries(dailyWorklogs: List<DayLog>): List<BarEntry> {
+        val currentDay = Calendar.getInstance()[Calendar.DAY_OF_WEEK]
+        val entries = ArrayList<BarEntry>()
+        dailyWorklogs.forEach { dayLog ->
+            Log.e(PersonalStatsFragment::class.simpleName, "$currentDay ? ${dayLog.day}")
+            entries.add(BarEntry(
+                dayLog.day.toFloat(),
+                if(currentDay >= dayLog.day) dayLog.loggedTime
+                else 0F
+            ))
+        }
+
+        return entries
+    }
+
+    private fun setDataSetColors(dataSet: BarDataSet) = context?.let {
+        dataSet.valueTextColor = ResourcesCompat.getColor(it.resources, android.R.color.white, it.theme)
+    }
+
+    fun updateStats(dailyWorklogs: List<DayLog>) {
+        val entries = generateEntries(dailyWorklogs)
+        updateUI(BarDataSet(entries, ""))
     }
 }
