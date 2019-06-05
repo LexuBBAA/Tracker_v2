@@ -6,7 +6,7 @@ package com.lexu.tracking.delegates
 
 import com.lexu.tracking.utils.TeamTask
 
-interface OngoingTaskDelegate {
+interface OngoingTaskContract {
 
     interface OngoingTaskView {
         fun setTask(task: TeamTask)

@@ -15,12 +15,12 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.Fragment
 import com.lexu.models.Type
-import com.lexu.tracking.delegates.OngoingTaskDelegate
+import com.lexu.tracking.delegates.OngoingTaskContract
 import com.lexu.tracking.utils.TeamTask
 import kotlinx.coroutines.*
 
-class OngoingTaskFragment(private val delegate: OngoingTaskDelegate.OngoingTaskDelegate) : Fragment(),
-    OngoingTaskDelegate.OngoingTaskView {
+class OngoingTaskFragment(private val contract: OngoingTaskContract.OngoingTaskDelegate) : Fragment(),
+    OngoingTaskContract.OngoingTaskView {
     private var ongoingTask: TeamTask? = null
     private var loggedTime: Long = 0
 
@@ -73,19 +73,19 @@ class OngoingTaskFragment(private val delegate: OngoingTaskDelegate.OngoingTaskD
         updateUI()
 
         detailsContainer.setOnClickListener {
-            delegate.onNavigateToTaskDetails(ongoingTask!!, false)
+            contract.onNavigateToTaskDetails(ongoingTask!!, false)
         }
 
         editButton.setOnClickListener {
             stopTaskTracking()
-            delegate.onNavigateToTaskDetails(ongoingTask!!, true)
+            contract.onNavigateToTaskDetails(ongoingTask!!, true)
         }
         stopButton.setOnClickListener { stopTaskTracking() }
         pauseButton.setOnClickListener { pauseTaskTracking() }
         startButton.setOnClickListener { startTaskTracking() }
 
         errorMessageContainer.setOnClickListener {
-            delegate.onNavigateToTaskList()
+            contract.onNavigateToTaskList()
         }
     }
 
@@ -152,7 +152,7 @@ class OngoingTaskFragment(private val delegate: OngoingTaskDelegate.OngoingTaskD
                     }
                 }
             }
-            delegate.onTaskTrackingStarted(task)
+            contract.onTaskTrackingStarted(task)
         }
     }
 
@@ -160,7 +160,7 @@ class OngoingTaskFragment(private val delegate: OngoingTaskDelegate.OngoingTaskD
         if(!isTracking || isPaused) return
         isPaused = true
         ongoingTask?.let { task ->
-            delegate.onTaskTrackingPaused(task)
+            contract.onTaskTrackingPaused(task)
         }
     }
 
@@ -170,7 +170,7 @@ class OngoingTaskFragment(private val delegate: OngoingTaskDelegate.OngoingTaskD
         isPaused = false
         ongoingTask?.let { task ->
             updateUI()
-            delegate.onTaskTrackingStopped(task, loggedTime)
+            contract.onTaskTrackingStopped(task, loggedTime)
         }
     }
 }

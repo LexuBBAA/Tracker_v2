@@ -36,6 +36,10 @@
         <!-- android:resource="@color/colorAccent"/> -->
         <activity android:name=".DashboardActivity">
         </activity>
+        <activity android:name=".TaskListActivity">
+        </activity>
+        <activity android:name=".PersonalStatusDetailsActivity">
+        </activity>
     </application>
 
 </manifest>

@@ -4,19 +4,26 @@
 
 package com.tracker.trackerv2
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.lexu.models.Type
 import com.lexu.tracking.OngoingTaskFragment
 import com.lexu.tracking.PersonalStatsFragment
 import com.lexu.tracking.TeamStatsFragment
-import com.lexu.tracking.delegates.OngoingTaskDelegate
+import com.lexu.tracking.delegates.OngoingTaskContract
+import com.lexu.tracking.delegates.PersonalStatsContract
+import com.lexu.tracking.delegates.TeamStatsContract
+import com.lexu.tracking.utils.DayLog
 import com.lexu.tracking.utils.TeamTask
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.coroutines.*
 
-class DashboardActivity : AppCompatActivity(), OngoingTaskDelegate.OngoingTaskDelegate {
+class DashboardActivity : AppCompatActivity(), OngoingTaskContract.OngoingTaskDelegate,
+    TeamStatsContract.TeamStatsDelegate, PersonalStatsContract.PersonalStatsDelegate {
+
     private val mockDataParser = MockDataParser(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +42,9 @@ class DashboardActivity : AppCompatActivity(), OngoingTaskDelegate.OngoingTaskDe
 
             runBlocking {
                 runOnUiThread {
-                    (dashboardPersonalStatsFragment as PersonalStatsFragment).updateStats(stats)
+                    val personalStatsFragment = (dashboardPersonalStatsFragment as PersonalStatsFragment)
+                    personalStatsFragment.registerDelegate(this@DashboardActivity)
+                    personalStatsFragment.updateStats(stats)
                 }
             }
         }
@@ -49,10 +58,26 @@ class DashboardActivity : AppCompatActivity(), OngoingTaskDelegate.OngoingTaskDe
                     ongoingTaskFragmentContainer.visibility = View.VISIBLE
                     ongoingTaskFragment.setTask(stats[0])
 
-                    (dashboardTeamStatsFragment as TeamStatsFragment).updateStats(stats)
+                    val teamStatsFragment = (dashboardTeamStatsFragment as TeamStatsFragment)
+                    teamStatsFragment.registerDelegate(this@DashboardActivity)
+                    teamStatsFragment.updateStats(stats)
                 }
             }
         }
+    }
+
+    override fun onWorklogSelected(worklog: DayLog) {
+        Log.i(DashboardActivity::class.simpleName, "Worklog selected: $worklog")
+    }
+
+    override fun onNavigateToWorklogList() {
+        val intent = Intent(this, PersonalStatusDetailsActivity::class.java)
+        startActivity(intent)
+    }
+
+    override fun onCategorySelected(taskType: Type) {
+        val intent = Intent(this, TaskListActivity::class.java)
+        startActivity(intent)
     }
 
     override fun onTaskTrackingStarted(task: TeamTask) {

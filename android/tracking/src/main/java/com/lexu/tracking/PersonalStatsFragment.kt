@@ -20,18 +20,20 @@ import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.ValueFormatter
+import com.lexu.tracking.delegates.PersonalStatsContract
 import com.lexu.tracking.utils.DayLog
 import java.util.*
 import kotlin.collections.ArrayList
 
-class PersonalStatsFragment: Fragment() {
-
+class PersonalStatsFragment : Fragment(), PersonalStatsContract.PersonalStatsView {
     private lateinit var rootView: View
 
     private lateinit var statsChartView: BarChart
     private lateinit var loadingContainer: FrameLayout
     private lateinit var loadingView: ProgressBar
     private lateinit var errorMessageLabel: TextView
+
+    private var delegate: PersonalStatsContract.PersonalStatsDelegate? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.fragment_personal_stats, container, false)
@@ -65,9 +67,9 @@ class PersonalStatsFragment: Fragment() {
         statsChartView.legend.isEnabled = false
 
         val xAxis = statsChartView.xAxis
-        xAxis.valueFormatter = object: ValueFormatter() {
+        xAxis.valueFormatter = object : ValueFormatter() {
             override fun getFormattedValue(value: Float): String {
-                return when(value.toInt()) {
+                return when (value.toInt()) {
                     Calendar.SUNDAY -> "Sun."
                     Calendar.MONDAY -> "Mon."
                     Calendar.TUESDAY -> "Tue."
@@ -88,6 +90,8 @@ class PersonalStatsFragment: Fragment() {
             statsChartView.axisLeft.textColor = accentColor
         }
 
+        statsChartView.setOnClickListener { delegate?.onNavigateToWorklogList() }
+
         statsChartView.axisLeft.setDrawZeroLine(false)
         statsChartView.axisLeft.granularity = 3F
         statsChartView.axisRight.isEnabled = false
@@ -95,15 +99,15 @@ class PersonalStatsFragment: Fragment() {
 
     private fun updateUI(dataSet: BarDataSet, dismissLoading: Boolean = true) {
         dataSet.valueFormatter = object : ValueFormatter() {
-            override fun getFormattedValue(value: Float): String = if(value != 0F) value.toString()
+            override fun getFormattedValue(value: Float): String = if (value != 0F) value.toString()
             else ""
         }
 
         setDataSetColors(dataSet)
 
-        if(dismissLoading) {
+        if (dismissLoading) {
             dismissLoading()
-            if(dataSet.entryCountStacks == 0) showError()
+            if (dataSet.entryCountStacks == 0) showError()
         }
 
         statsChartView.data = BarData(dataSet)
@@ -125,11 +129,13 @@ class PersonalStatsFragment: Fragment() {
         val entries = ArrayList<BarEntry>()
         dailyWorklogs.forEach { dayLog ->
             Log.e(PersonalStatsFragment::class.simpleName, "$currentDay ? ${dayLog.day}")
-            entries.add(BarEntry(
-                dayLog.day.toFloat(),
-                if(currentDay >= dayLog.day) dayLog.loggedTime
-                else 0F
-            ))
+            entries.add(
+                BarEntry(
+                    dayLog.day.toFloat(),
+                    if (currentDay >= dayLog.day) dayLog.loggedTime
+                    else 0F
+                )
+            )
         }
 
         return entries
@@ -139,8 +145,16 @@ class PersonalStatsFragment: Fragment() {
         dataSet.valueTextColor = ResourcesCompat.getColor(it.resources, android.R.color.white, it.theme)
     }
 
-    fun updateStats(dailyWorklogs: List<DayLog>) {
-        val entries = generateEntries(dailyWorklogs)
+    override fun registerDelegate(delegate: PersonalStatsContract.PersonalStatsDelegate) {
+        this.delegate = delegate
+    }
+
+    override fun unregisterDelegate() {
+        this.delegate = null
+    }
+
+    override fun updateStats(stats: List<DayLog>) {
+        val entries = generateEntries(stats)
         updateUI(BarDataSet(entries, ""))
     }
 }

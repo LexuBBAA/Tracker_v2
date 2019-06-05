@@ -19,9 +19,11 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.lexu.models.Status
+import com.lexu.models.Type
+import com.lexu.tracking.delegates.TeamStatsContract
 import com.lexu.tracking.utils.TeamTask
 
-class TeamStatsFragment : Fragment() {
+class TeamStatsFragment: Fragment(), TeamStatsContract.TeamStatsView {
 
     private lateinit var rootView: View
 
@@ -29,6 +31,8 @@ class TeamStatsFragment : Fragment() {
     private lateinit var loadingContainer: FrameLayout
     private lateinit var loadingView: ProgressBar
     private lateinit var errorMessageLabel: TextView
+
+    private var delegate: TeamStatsContract.TeamStatsDelegate? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.fragment_team_stats, container, false)
@@ -82,6 +86,8 @@ class TeamStatsFragment : Fragment() {
         }
         statsChartView.description.isEnabled = false
         statsChartView.legend.isEnabled = false
+        statsChartView.setTouchEnabled(false)
+        statsChartView.setOnClickListener { delegate?.onCategorySelected(Type.TASK) }
     }
 
     private fun generateEntries(tasks: List<TeamTask>): List<PieEntry> {
@@ -142,8 +148,16 @@ class TeamStatsFragment : Fragment() {
         )
     }
 
-    fun updateStats(tasks: List<TeamTask>) {
-        val newEntries = generateEntries(tasks)
+    override fun updateStats(stats: List<TeamTask>) {
+        val newEntries = generateEntries(stats)
         updateUI(PieDataSet(newEntries, ""))
+    }
+
+    override fun registerDelegate(delegate: TeamStatsContract.TeamStatsDelegate) {
+        this.delegate = delegate
+    }
+
+    override fun unregisterDelegate() {
+        this.delegate = null
     }
 }
