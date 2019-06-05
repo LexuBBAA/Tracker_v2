@@ -58,6 +58,8 @@ class PersonalStatsFragment: Fragment() {
     }
 
     private fun configChart() {
+        statsChartView.isClickable = false
+        statsChartView.isFocusable = false
         statsChartView.description.isEnabled = false
         statsChartView.setDrawValueAboveBar(false)
         statsChartView.legend.isEnabled = false

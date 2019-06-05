@@ -66,6 +66,8 @@ class TeamStatsFragment : Fragment() {
     }
 
     private fun configStatsView() {
+        statsChartView.isClickable = false
+        statsChartView.isFocusable = false
         statsChartView.holeRadius = 30F
         statsChartView.setDrawSlicesUnderHole(false)
         statsChartView.transparentCircleRadius = 0F

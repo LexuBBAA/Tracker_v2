@@ -14,11 +14,20 @@ import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.Fragment
-import com.lexu.models.TrackerTask
 import com.lexu.models.Type
+import com.lexu.tracking.delegates.OngoingTaskDelegate
+import com.lexu.tracking.utils.TeamTask
+import kotlinx.coroutines.*
 
-class OngoingTaskFragment: Fragment() {
-    private var ongoingTask: TrackerTask? = null
+class OngoingTaskFragment(private val delegate: OngoingTaskDelegate.OngoingTaskDelegate) : Fragment(),
+    OngoingTaskDelegate.OngoingTaskView {
+    private var ongoingTask: TeamTask? = null
+    private var loggedTime: Long = 0
+
+    private var isTracking = false
+    private var isPaused = false
+
+    private var ongoingJob: Job? = null
 
     private lateinit var rootView: View
 
@@ -61,21 +70,107 @@ class OngoingTaskFragment: Fragment() {
         pauseButton = rootView.findViewById(R.id.ongoingTaskPauseButton)
         startButton = rootView.findViewById(R.id.ongoingTaskStartButton)
 
-        ongoingTask?.let { task ->
+        updateUI()
+
+        detailsContainer.setOnClickListener {
+            delegate.onNavigateToTaskDetails(ongoingTask!!, false)
+        }
+
+        editButton.setOnClickListener {
+            stopTaskTracking()
+            delegate.onNavigateToTaskDetails(ongoingTask!!, true)
+        }
+        stopButton.setOnClickListener { stopTaskTracking() }
+        pauseButton.setOnClickListener { pauseTaskTracking() }
+        startButton.setOnClickListener { startTaskTracking() }
+
+        errorMessageContainer.setOnClickListener {
+            delegate.onNavigateToTaskList()
+        }
+    }
+
+    private fun increaseTime() {
+        loggedTime++
+        updateUI()
+    }
+
+    private fun updateUI() {
+        if(ongoingTask != null) {
             detailsContainer.visibility = View.VISIBLE
             errorMessageContainer.visibility = View.GONE
             actionButtonsContainer.visibility = View.VISIBLE
 
-            titleLabel.text = task.title
-            typeLabel.text = task.type.name
-            statusLabel.text = task.status.name
-            priorityLabel.text = if(task.type == Type.ISSUE) "High"
+            titleLabel.text = ongoingTask!!.title
+            typeLabel.text = ongoingTask!!.type.name
+            statusLabel.text = ongoingTask!!.status.name
+            priorityLabel.text = if (ongoingTask!!.type == Type.ISSUE) "High"
             else "Normal"
-        }
 
-        editButton.setOnClickListener {  }
-        stopButton.setOnClickListener {  }
-        pauseButton.setOnClickListener {  }
-        startButton.setOnClickListener {  }
+            val loggedSeconds = loggedTime % 60L
+            var loggedMins = loggedTime / 60L
+            var loggedHours = if(loggedMins >= 60L) {
+                val hours = loggedMins / 60L
+                loggedMins %= 60L
+                hours
+            } else 0L
+            val loggedDays = if(loggedHours >= 8L) {
+                val days = loggedHours / 8L
+                loggedHours %= 8L
+                days
+            } else 0L
+
+            val formattedDuration = when {
+                loggedDays != 0L -> "${loggedMins}m\n${loggedHours}h\n${loggedDays}d"
+                else -> "${loggedSeconds}s\n${loggedMins}m\n${loggedHours}h"
+            }
+
+            durationLabel.text = formattedDuration
+        } else {
+            detailsContainer.visibility = View.GONE
+            errorMessageContainer.visibility = View.VISIBLE
+            actionButtonsContainer.visibility = View.GONE
+        }
+    }
+
+    override fun setTask(task: TeamTask) {
+        ongoingTask = task
+        loggedTime = 0L
+        updateUI()
+    }
+
+    override fun startTaskTracking() {
+        isPaused = false
+        if(isTracking) return
+        isTracking = true
+        ongoingTask?.let { task ->
+            ongoingJob = GlobalScope.launch {
+                while (isTracking) {
+                    delay(1000)
+
+                    GlobalScope.launch(Dispatchers.Main) {
+                        if(!isPaused) increaseTime()
+                    }
+                }
+            }
+            delegate.onTaskTrackingStarted(task)
+        }
+    }
+
+    override fun pauseTaskTracking() {
+        if(!isTracking || isPaused) return
+        isPaused = true
+        ongoingTask?.let { task ->
+            delegate.onTaskTrackingPaused(task)
+        }
+    }
+
+    override fun stopTaskTracking() {
+        if(!isTracking) return
+        isTracking = false
+        isPaused = false
+        ongoingTask?.let { task ->
+            updateUI()
+            delegate.onTaskTrackingStopped(task, loggedTime)
+        }
     }
 }
