@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) Bogdan Andrei Alexandru - 2017.
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/registerFragmentLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/registerCardView"
+            android:layout_alignStart="@+id/registerCardView"
+            android:layout_alignEnd="@+id/registerCardView"
+            android:layout_marginBottom="8dp"
+            android:textSize="24sp"
+            android:text="Create Account"/>
+
+    <androidx.cardview.widget.CardView
+            android:id="@+id/registerCardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="48dp"
+            android:layout_marginEnd="48dp"
+            app:cardBackgroundColor="@color/dark_semitransparent_background_color">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/registerUsernameInputContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp">
+                <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/registerUsernameInputField"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="24sp"
+                        android:hint="Username"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/registerEmailInputContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp">
+                <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/registerEmailInputField"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="24sp"
+                        android:inputType="textEmailAddress"
+                        android:hint="Email"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/registerPasswordInputContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp">
+                <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/registerPasswordInputField"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="24sp"
+                        android:hint="Password"
+                        android:inputType="textPassword"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/registerConfirmPasswordInputContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp">
+                <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/registerConfirmPasswordInputField"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="24sp"
+                        android:hint="Confirm Password"
+                        android:inputType="textPassword"/>
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:layout_below="@+id/registerCardView"
+            android:layout_alignStart="@+id/registerCardView"
+            android:layout_alignEnd="@+id/registerCardView">
+
+        <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/registerBackButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="4dp"
+                android:background="@drawable/round_dark_background_48dp"
+                android:src="@drawable/ic_navigate_before_white_24dp"/>
+
+        <View android:layout_width="0dp"
+              android:layout_height="match_parent"
+              android:layout_weight="1"/>
+
+        <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/registerActionButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="4dp"
+                android:background="@drawable/round_dark_background_48dp"
+                android:src="@drawable/ic_navigate_next_white_24dp"/>
+    </LinearLayout>
+
+</RelativeLayout>
