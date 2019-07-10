@@ -10,7 +10,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.tracker.trackerv2"
-        minSdkVersion 15
+        minSdkVersion 21
         targetSdkVersion 28
         versionCode 100
         versionName "1.0.0.12.04.18"
@@ -22,6 +22,8 @@ android {
 
     buildTypes {
         debug {
+            applicationIdSuffix = ".dev"
+            versionNameSuffix = "-Dev"
             minifyEnabled false
         }
 
@@ -55,10 +57,9 @@ dependencies {
     //  Google Gson - JSON Parsing
     implementation 'com.google.code.gson:gson:2.8.5'
 
+    //  Firebase FCM
+    implementation 'com.google.firebase:firebase-messaging:18.0.0'
+    implementation 'com.google.firebase:firebase-core:16.0.9'
 }
 
-kotlin {
-    experimental {
-        coroutines "enable"
-    }
-}
+apply plugin: 'com.google.gms.google-services'
