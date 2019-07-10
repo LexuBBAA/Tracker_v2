@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<!--
+  ~ Copyright (c) Bogdan Andrei Alexandru - 2017.
+  -->
+
+<RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity">
+        tools:context="com.tracker.trackerv2.TaskListActivity">
 
-    <FrameLayout
-            android:id="@+id/mainFragmentContainer"
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/taskListRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
-</LinearLayout>
+
+</RelativeLayout>

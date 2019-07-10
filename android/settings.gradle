@@ -1,1 +1,1 @@
-include ':app', ':networking', ':persistance', ':tracking', ':auth', ':profile', ':reporting'
+include ':app', ':networking', ':persistance', ':tracking', ':auth', ':profile', ':reporting', ':models'

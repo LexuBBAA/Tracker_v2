@@ -2,15 +2,16 @@
  * Copyright (c) Bogdan Andrei Alexandru - 2017.
  */
 
-package com.lexu.tracking;
+package com.lexu.models;
 
 import android.content.Context;
-import androidx.test.InstrumentationRegistry;
-import androidx.test.runner.AndroidJUnit4;
+import android.support.test.InstrumentationRegistry;
+import android.support.test.runner.AndroidJUnit4;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -24,6 +25,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.lexu.tracking.test", appContext.getPackageName());
+        assertEquals("com.lexu.models.test", appContext.getPackageName());
     }
 }
