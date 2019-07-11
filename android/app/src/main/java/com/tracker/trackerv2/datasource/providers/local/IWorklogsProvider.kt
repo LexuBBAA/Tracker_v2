@@ -1,6 +1,6 @@
 package com.tracker.trackerv2.datasource.providers.local
 
-import com.tracker.trackerv2.datasource.providers.room.entity.WorklogEntity
+import com.tracker.trackerv2.datasource.providers.local.room.entity.WorklogEntity
 
 interface IWorklogsProvider {
     fun getAllForTask(taskId: String): List<WorklogEntity>

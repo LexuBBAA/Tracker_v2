@@ -1,6 +1,6 @@
 package com.tracker.trackerv2.datasource.providers.local
 
-import com.tracker.trackerv2.datasource.providers.room.entity.UserEntity
+import com.tracker.trackerv2.datasource.providers.local.room.entity.UserEntity
 
 interface IUsersProvider {
     fun getAll(): List<UserEntity>

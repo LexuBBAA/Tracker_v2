@@ -1,7 +1,7 @@
 package com.tracker.trackerv2.datasource.providers.local
 
-import com.tracker.trackerv2.datasource.providers.room.dao.TasksDao
-import com.tracker.trackerv2.datasource.providers.room.entity.TaskEntity
+import com.tracker.trackerv2.datasource.providers.local.room.dao.TasksDao
+import com.tracker.trackerv2.datasource.providers.local.room.entity.TaskEntity
 
 class TasksProvider(private val dao: TasksDao): ITasksProvider {
     override fun getAll(): List<TaskEntity> = dao.getAll()

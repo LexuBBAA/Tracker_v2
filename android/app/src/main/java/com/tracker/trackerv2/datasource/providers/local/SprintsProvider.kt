@@ -1,7 +1,7 @@
 package com.tracker.trackerv2.datasource.providers.local
 
-import com.tracker.trackerv2.datasource.providers.room.dao.SprintsDao
-import com.tracker.trackerv2.datasource.providers.room.entity.SprintEntity
+import com.tracker.trackerv2.datasource.providers.local.room.dao.SprintsDao
+import com.tracker.trackerv2.datasource.providers.local.room.entity.SprintEntity
 
 class SprintsProvider(private val dao: SprintsDao): ISprintsProvider {
     override fun getAllForProject(projectId: String): List<SprintEntity> = dao.getAllForProject(projectId)

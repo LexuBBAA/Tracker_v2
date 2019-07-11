@@ -1,6 +1,6 @@
 package com.tracker.trackerv2.datasource.providers.local
 
-import com.tracker.trackerv2.datasource.providers.room.entity.ProjectEntity
+import com.tracker.trackerv2.datasource.providers.local.room.entity.ProjectEntity
 
 interface IProjectsProvider {
     fun getAll(): List<ProjectEntity>

@@ -1,7 +1,7 @@
-package com.tracker.trackerv2.datasource.providers.room.dao
+package com.tracker.trackerv2.datasource.providers.local.room.dao
 
 import androidx.room.*
-import com.tracker.trackerv2.datasource.providers.room.entity.SprintEntity
+import com.tracker.trackerv2.datasource.providers.local.room.entity.SprintEntity
 
 @Dao
 interface SprintsDao {

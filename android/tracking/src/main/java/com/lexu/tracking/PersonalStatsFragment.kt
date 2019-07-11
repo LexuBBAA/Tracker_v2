@@ -132,7 +132,7 @@ class PersonalStatsFragment : Fragment(), PersonalStatsContract.PersonalStatsVie
             entries.add(
                 BarEntry(
                     dayLog.day.toFloat(),
-                    if (currentDay >= dayLog.day) dayLog.loggedTime
+                    if (currentDay >= dayLog.day) dayLog.loggedTime.toFloat()
                     else 0F
                 )
             )

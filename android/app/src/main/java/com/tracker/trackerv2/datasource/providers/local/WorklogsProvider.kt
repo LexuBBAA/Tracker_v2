@@ -1,7 +1,7 @@
 package com.tracker.trackerv2.datasource.providers.local
 
-import com.tracker.trackerv2.datasource.providers.room.dao.WorklogsDao
-import com.tracker.trackerv2.datasource.providers.room.entity.WorklogEntity
+import com.tracker.trackerv2.datasource.providers.local.room.dao.WorklogsDao
+import com.tracker.trackerv2.datasource.providers.local.room.entity.WorklogEntity
 
 class WorklogsProvider(private val dao: WorklogsDao) : IWorklogsProvider {
     override fun getAllForTask(taskId: String): List<WorklogEntity> = dao.getForTask(taskId)

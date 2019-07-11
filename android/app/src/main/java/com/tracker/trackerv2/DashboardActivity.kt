@@ -19,7 +19,11 @@ import com.lexu.tracking.delegates.TeamStatsContract
 import com.lexu.tracking.utils.DayLog
 import com.lexu.tracking.utils.TeamTask
 import kotlinx.android.synthetic.main.activity_dashboard.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 
 class DashboardActivity : AppCompatActivity(), OngoingTaskContract.OngoingTaskDelegate,
     TeamStatsContract.TeamStatsDelegate, PersonalStatsContract.PersonalStatsDelegate {

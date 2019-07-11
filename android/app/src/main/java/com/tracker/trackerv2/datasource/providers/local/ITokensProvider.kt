@@ -1,6 +1,6 @@
 package com.tracker.trackerv2.datasource.providers.local
 
-import com.tracker.trackerv2.datasource.providers.room.entity.TokenEntity
+import com.tracker.trackerv2.datasource.providers.local.room.entity.TokenEntity
 
 interface ITokensProvider {
     fun getUserToken(userId: String): TokenEntity

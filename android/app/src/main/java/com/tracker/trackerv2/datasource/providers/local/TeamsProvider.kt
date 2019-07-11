@@ -1,7 +1,7 @@
 package com.tracker.trackerv2.datasource.providers.local
 
-import com.tracker.trackerv2.datasource.providers.room.dao.TeamsDao
-import com.tracker.trackerv2.datasource.providers.room.entity.TeamEntity
+import com.tracker.trackerv2.datasource.providers.local.room.dao.TeamsDao
+import com.tracker.trackerv2.datasource.providers.local.room.entity.TeamEntity
 
 class TeamsProvider(private val dao: TeamsDao): ITeamsProvider {
     override fun getAll(): List<TeamEntity> = dao.getAll()

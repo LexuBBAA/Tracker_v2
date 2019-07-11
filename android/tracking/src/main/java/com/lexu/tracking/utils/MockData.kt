@@ -12,13 +12,13 @@ object MockData {
     private val currentDate = Calendar.getInstance()[Calendar.DAY_OF_WEEK]
 
     fun lastWeekTimes() = arrayListOf(
-        DayLog(Calendar.SUNDAY, 0F),
-        DayLog(Calendar.MONDAY, 8F),
-        DayLog(Calendar.TUESDAY, 5.7F),
-        DayLog(Calendar.WEDNESDAY, 4.9F),
-        DayLog(Calendar.THURSDAY, 7.6F),
-        DayLog(Calendar.FRIDAY, 6.35F),
-        DayLog(Calendar.SATURDAY, 0F)
+        DayLog(Calendar.SUNDAY, 0.0),
+        DayLog(Calendar.MONDAY, 8.0),
+        DayLog(Calendar.TUESDAY, 5.7),
+        DayLog(Calendar.WEDNESDAY, 4.9),
+        DayLog(Calendar.THURSDAY, 7.6),
+        DayLog(Calendar.FRIDAY, 6.35),
+        DayLog(Calendar.SATURDAY, 0.0)
     )
 
     fun lastTeamTasks() = arrayListOf(
@@ -47,6 +47,6 @@ object MockData {
     )
 }
 
-data class DayLog(val day: Int, val loggedTime: Float)
+data class DayLog(val day: Int, val loggedTime: Double)
 
 data class TeamTask(val type: Type, val status: Status, val title: String)

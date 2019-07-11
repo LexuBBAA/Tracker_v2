@@ -1,6 +1,6 @@
 package com.tracker.trackerv2.datasource.providers.local
 
-import com.tracker.trackerv2.datasource.providers.room.entity.TaskEntity
+import com.tracker.trackerv2.datasource.providers.local.room.entity.TaskEntity
 
 interface ITasksProvider {
     fun getAll() : List<TaskEntity>

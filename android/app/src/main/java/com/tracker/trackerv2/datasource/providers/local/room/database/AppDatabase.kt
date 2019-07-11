@@ -1,12 +1,12 @@
-package com.tracker.trackerv2.datasource.providers.room.database
+package com.tracker.trackerv2.datasource.providers.local.room.database
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.tracker.trackerv2.datasource.providers.local.*
-import com.tracker.trackerv2.datasource.providers.room.dao.*
-import com.tracker.trackerv2.datasource.providers.room.entity.*
+import com.tracker.trackerv2.datasource.providers.local.room.dao.*
+import com.tracker.trackerv2.datasource.providers.local.room.entity.*
 
 @Database(
     entities = [

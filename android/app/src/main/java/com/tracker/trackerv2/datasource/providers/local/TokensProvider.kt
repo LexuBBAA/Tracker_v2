@@ -1,7 +1,7 @@
 package com.tracker.trackerv2.datasource.providers.local
 
-import com.tracker.trackerv2.datasource.providers.room.dao.TokensDao
-import com.tracker.trackerv2.datasource.providers.room.entity.TokenEntity
+import com.tracker.trackerv2.datasource.providers.local.room.dao.TokensDao
+import com.tracker.trackerv2.datasource.providers.local.room.entity.TokenEntity
 import java.sql.Date
 
 class TokensProvider(private val dao: TokensDao): ITokensProvider {

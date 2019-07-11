@@ -1,7 +1,7 @@
 package com.tracker.trackerv2.datasource.providers.local
 
-import com.tracker.trackerv2.datasource.providers.room.dao.UsersDao
-import com.tracker.trackerv2.datasource.providers.room.entity.UserEntity
+import com.tracker.trackerv2.datasource.providers.local.room.dao.UsersDao
+import com.tracker.trackerv2.datasource.providers.local.room.entity.UserEntity
 
 class UsersProvider(private val dao: UsersDao): IUsersProvider {
     override fun getAll(): List<UserEntity> = dao.getAll()

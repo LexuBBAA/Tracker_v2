@@ -1,6 +1,6 @@
 package com.tracker.trackerv2.datasource.providers.local
 
-import com.tracker.trackerv2.datasource.providers.room.entity.TeamEntity
+import com.tracker.trackerv2.datasource.providers.local.room.entity.TeamEntity
 
 interface ITeamsProvider {
     fun getAll(): List<TeamEntity>

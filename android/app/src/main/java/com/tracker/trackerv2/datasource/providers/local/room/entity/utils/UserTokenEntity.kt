@@ -1,4 +1,4 @@
-package com.tracker.trackerv2.datasource.providers.room.entity.utils
+package com.tracker.trackerv2.datasource.providers.local.room.entity.utils
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
