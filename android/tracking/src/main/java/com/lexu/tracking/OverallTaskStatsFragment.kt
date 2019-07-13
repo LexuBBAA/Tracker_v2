@@ -110,7 +110,7 @@ class OverallTaskStatsFragment(delegate: PersonalStatsContract.PersonalStatsDele
     private fun generateEntries(tasks: List<DayLog>): List<BarEntry> {
         val entries = ArrayList<BarEntry>()
         tasks.forEach { task ->
-            entries.add(BarEntry(task.day.toFloat(), task.loggedTime))
+            entries.add(BarEntry(task.day.toFloat(), task.loggedTime.toFloat()))
         }
 
         return entries

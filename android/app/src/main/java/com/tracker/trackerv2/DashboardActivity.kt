@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.lexu.models.Status
 import com.lexu.models.Type
 import com.lexu.tracking.OngoingTaskFragment
 import com.lexu.tracking.PersonalStatsFragment
@@ -18,21 +19,27 @@ import com.lexu.tracking.delegates.PersonalStatsContract
 import com.lexu.tracking.delegates.TeamStatsContract
 import com.lexu.tracking.utils.DayLog
 import com.lexu.tracking.utils.TeamTask
+import com.tracker.trackerv2.datasource.providers.local.UserSessionProvider
+import com.tracker.trackerv2.datasource.providers.local.room.database.AppDatabase
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
+import java.sql.Date
 
 class DashboardActivity : AppCompatActivity(), OngoingTaskContract.OngoingTaskDelegate,
     TeamStatsContract.TeamStatsDelegate, PersonalStatsContract.PersonalStatsDelegate {
-
-    private val mockDataParser = MockDataParser(this)
+    private lateinit var userId: String
+    private lateinit var appDatabase : AppDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
+
+        userId = UserSessionProvider(this).getUserId() ?: ""
+        appDatabase = AppDatabase.getDatabase(this)
 
         val ongoingTaskFragment = OngoingTaskFragment(this)
 
@@ -41,8 +48,33 @@ class DashboardActivity : AppCompatActivity(), OngoingTaskContract.OngoingTaskDe
             .commit()
 
         CoroutineScope(Dispatchers.IO).async {
-            val stats = mockDataParser.getPersonalWeekStats()
+            val userOngoingTasks = appDatabase.getTasksProvider()
+                .getAllAssignedToUser(userId)
+                .firstOrNull { it.status.capitalize().contentEquals("IN_PROGRESS") }
+
+            val widgetTask = if(userOngoingTasks != null)
+                TeamTask(
+                Type.valueOf(userOngoingTasks.type),
+                Status.valueOf(userOngoingTasks.status),
+                userOngoingTasks.title,
+                userOngoingTasks.taskId
+            ) else null
+
+            ongoingTaskFragmentContainer.visibility = View.VISIBLE
+            ongoingTaskFragment.setTask(widgetTask)
+        }
+
+        CoroutineScope(Dispatchers.IO).async {
+//            val stats = mockDataParser.getPersonalWeekStats()
+            val data = appDatabase.getWorklogsProvider().getAllForUser(userId)
+                .filter { it.createdDate.after(Date(System.currentTimeMillis() - 7 * 24 * 60 * 60 * 1000)) }
+                .groupBy { it.createdDate }
+                .toList().sortedBy { it.first }
             delay(1500)
+
+            val stats = data.mapIndexed { index, pair ->
+                DayLog(index, pair.second.sumByDouble { it.value })
+            }
 
             runBlocking {
                 runOnUiThread {
@@ -54,17 +86,28 @@ class DashboardActivity : AppCompatActivity(), OngoingTaskContract.OngoingTaskDe
         }
 
         CoroutineScope(Dispatchers.IO).async {
-            val stats = mockDataParser.getTeamWeekStats()
-            delay(2000)
+//            val stats = mockDataParser.getTeamWeekStats()
+            appDatabase.getUserTeamProvider().getForUser(userId)?.apply {
+                val teamMembersIds = appDatabase.getUserTeamProvider().getForTeam(teamId).map { it.userId }
+                val teamTasks = appDatabase.getTasksProvider().getAll()
+                    .filter { task -> task.assignedTo in teamMembersIds }
+                    .map { task ->
+                        TeamTask(
+                            Type.valueOf(task.type),
+                            Status.valueOf(task.status),
+                            task.title,
+                            task.taskId
+                        )
+                    }
 
-            runBlocking {
-                runOnUiThread {
-                    ongoingTaskFragmentContainer.visibility = View.VISIBLE
-                    ongoingTaskFragment.setTask(stats[0])
+                delay(1500)
 
-                    val teamStatsFragment = (dashboardTeamStatsFragment as TeamStatsFragment)
-                    teamStatsFragment.registerDelegate(this@DashboardActivity)
-                    teamStatsFragment.updateStats(stats)
+                runBlocking {
+                    runOnUiThread {
+                        val teamStatsFragment = (dashboardTeamStatsFragment as TeamStatsFragment)
+                        teamStatsFragment.registerDelegate(this@DashboardActivity)
+                        teamStatsFragment.updateStats(teamTasks)
+                    }
                 }
             }
         }

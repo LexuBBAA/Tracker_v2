@@ -9,8 +9,8 @@ interface ITasksProvider {
     fun getAllForEpic(epicId: String): List<TaskEntity>
     fun getAllAssignedToUser(userId: String): List<TaskEntity>
     fun getAllCreatedByUser(userId: String): List<TaskEntity>
-    fun getDetails(taskId: String): TaskEntity
-    fun create(newTask: TaskEntity)
+    fun getDetails(taskId: String): TaskEntity?
+    fun create(newTask: TaskEntity): TaskEntity?
     fun update(task: TaskEntity)
     fun delete(task: TaskEntity)
 }

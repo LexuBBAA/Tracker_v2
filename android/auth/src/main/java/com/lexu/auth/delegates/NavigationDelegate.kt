@@ -4,6 +4,9 @@
 
 package com.lexu.auth.delegates
 
+import com.lexu.auth.models.LoginBody
+import com.lexu.auth.models.RegisterBody
+
 interface NavigationDelegate {
 
     interface NavigationView {
@@ -16,10 +19,9 @@ interface NavigationDelegate {
         fun onNavigateToRegister()
         fun onNavigateToResetPass()
 
-        //  TODO: refactor success payload
-        fun onLoginSuccessful()
-        fun onRegisterSuccessful()
-        fun onResetPassSuccessful()
+        fun onLoginClicked(loginBody: LoginBody)
+        fun onRegisterClicked(registerBody: RegisterBody)
+        fun onResetPassClicked(email: String)
 
         fun onLoginFailure(exception: Exception)
         fun onRegisterFailure(exception: Exception)

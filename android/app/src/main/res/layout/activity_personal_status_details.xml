@@ -11,4 +11,39 @@
         android:layout_height="match_parent"
         tools:context=".PersonalStatusDetailsActivity">
 
+    <LinearLayout
+        android:id="@+id/personalStatusDetailsToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/personalStatusDetailsBackButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_arrow_back_black_24dp"
+            android:layout_margin="8dp"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:textSize="16sp"
+            android:text="User Profile"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/personalStatusDetailsScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/personalStatusDetailsToolbar">
+
+        <fragment
+            android:id="@+id/personalStatusStatsInfoFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:name="com.lexu.tracking.StatsInfoFragment"
+            tools:layout="@layout/fragment_stats_info"/>
+    </ScrollView>
+
 </RelativeLayout>

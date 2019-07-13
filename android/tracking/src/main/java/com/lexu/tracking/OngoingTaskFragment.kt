@@ -132,7 +132,7 @@ class OngoingTaskFragment(private val contract: OngoingTaskContract.OngoingTaskD
         }
     }
 
-    override fun setTask(task: TeamTask) {
+    override fun setTask(task: TeamTask?) {
         ongoingTask = task
         loggedTime = 0L
         updateUI()

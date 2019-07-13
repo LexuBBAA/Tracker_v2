@@ -6,6 +6,6 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "sprintstatusvalues")
 data class SprintStatusValueEntity(
-    @PrimaryKey val id: Int,
+    @PrimaryKey val id: Int? = null,
     @ColumnInfo(name = "status") val status: String
 )

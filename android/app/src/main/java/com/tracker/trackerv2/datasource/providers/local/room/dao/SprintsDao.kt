@@ -12,10 +12,13 @@ interface SprintsDao {
     fun getAllForProject(projectId: String) : List<SprintEntity>
 
     @Query("SELECT * FROM SPRINTS WHERE sprintId = :sprintId LIMIT 1")
-    fun getSprintById(sprintId: String): SprintEntity
+    fun getSprintById(sprintId: String): SprintEntity?
+
+    @Query("SELECT * FROM SPRINTS WHERE id = :id LIMIT 1")
+    fun getSprintById(id: Long): SprintEntity?
 
     @Insert
-    fun insert(sprint: SprintEntity)
+    fun insert(sprint: SprintEntity): Long
 
     @Update
     fun update(sprint: SprintEntity)

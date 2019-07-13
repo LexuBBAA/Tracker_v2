@@ -49,4 +49,4 @@ object MockData {
 
 data class DayLog(val day: Int, val loggedTime: Double)
 
-data class TeamTask(val type: Type, val status: Status, val title: String)
+data class TeamTask(val type: Type, val status: Status, val title: String, val id: String? = null)

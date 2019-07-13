@@ -7,12 +7,12 @@ import java.sql.Date
 
 @Entity(tableName = "projects")
 data class ProjectEntity(
-    @PrimaryKey val id: Int,
-    @ColumnInfo(name = "projectId") val projectId: String,
+    @PrimaryKey(autoGenerate = true) val id: Int? = null,
+    @ColumnInfo(name = "projectId") val projectId: String? = null,
     @ColumnInfo(name = "title") val title: String,
-    @ColumnInfo(name = "description") val description: String,
+    @ColumnInfo(name = "description") val description: String? = null,
     @ColumnInfo(name = "createdBy") val createdBy: String,
-    @ColumnInfo(name = "createdDate") val createdDate: Date,
-    @ColumnInfo(name = "activeSprint") val activeSprint: String,
-    @ColumnInfo(name = "assignedTeam") val assignedTeam: String
+    @ColumnInfo(name = "createdDate") val createdDate: Date = Date(System.currentTimeMillis()),
+    @ColumnInfo(name = "activeSprint") val activeSprint: String? = null,
+    @ColumnInfo(name = "assignedTeam") val assignedTeam: String? = null
 )

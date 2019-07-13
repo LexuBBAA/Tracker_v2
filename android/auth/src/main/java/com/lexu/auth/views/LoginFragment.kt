@@ -15,6 +15,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.lexu.auth.R
 import com.lexu.auth.delegates.NavigationDelegate
+import com.lexu.auth.models.LoginBody
 import com.lexu.auth.views.support.SupportFragment
 
 class LoginFragment(presenter: NavigationDelegate.NavigationPresenter) :
@@ -45,9 +46,24 @@ class LoginFragment(presenter: NavigationDelegate.NavigationPresenter) :
         registerButton = rootView.findViewById(R.id.loginSignUpButton)
         loginActionButton = rootView.findViewById(R.id.loginActionButton)
 
-        //  TODO: refactor this
-        resetPasswordLabel.setOnClickListener { presenter.onNavigateToResetPass() }
-        registerButton.setOnClickListener { presenter.onNavigateToRegister() }
-        loginActionButton.setOnClickListener { presenter.onLoginSuccessful() }
+        resetPasswordLabel.setOnClickListener {
+            passwordInputField.setText("")
+
+            presenter.onNavigateToResetPass()
+        }
+        registerButton.setOnClickListener {
+            passwordInputField.setText("")
+
+            presenter.onNavigateToRegister()
+        }
+        loginActionButton.setOnClickListener {
+            val validData = !usernameInputField.text?.toString().isNullOrEmpty() &&
+                !passwordInputField.text?.toString().isNullOrEmpty()
+
+            if(validData) presenter.onLoginClicked(LoginBody(
+                username = usernameInputField.text.toString(),
+                password = passwordInputField.text.toString()
+            ))
+        }
     }
 }

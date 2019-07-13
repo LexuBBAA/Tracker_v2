@@ -6,6 +6,6 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "taskstatusvalues")
 data class TaskStatusValueEntity(
-    @PrimaryKey val id: Int,
+    @PrimaryKey val id: Int? = null,
     @ColumnInfo(name = "status") val status: String
 )

@@ -4,15 +4,47 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.tracker.trackerv2.datasource.providers.local.*
-import com.tracker.trackerv2.datasource.providers.local.room.dao.*
-import com.tracker.trackerv2.datasource.providers.local.room.entity.*
+import androidx.room.TypeConverters
+import androidx.sqlite.db.SupportSQLiteDatabase
+import com.tracker.trackerv2.datasource.providers.local.IProjectsProvider
+import com.tracker.trackerv2.datasource.providers.local.ISprintsProvider
+import com.tracker.trackerv2.datasource.providers.local.ITasksProvider
+import com.tracker.trackerv2.datasource.providers.local.ITeamsProvider
+import com.tracker.trackerv2.datasource.providers.local.ITokensProvider
+import com.tracker.trackerv2.datasource.providers.local.IUserTeamProvider
+import com.tracker.trackerv2.datasource.providers.local.IUsersProvider
+import com.tracker.trackerv2.datasource.providers.local.IWorklogsProvider
+import com.tracker.trackerv2.datasource.providers.local.ProjectsProvider
+import com.tracker.trackerv2.datasource.providers.local.SprintsProvider
+import com.tracker.trackerv2.datasource.providers.local.TasksProvider
+import com.tracker.trackerv2.datasource.providers.local.TeamsProvider
+import com.tracker.trackerv2.datasource.providers.local.TokensProvider
+import com.tracker.trackerv2.datasource.providers.local.UserTeamProvider
+import com.tracker.trackerv2.datasource.providers.local.UsersProvider
+import com.tracker.trackerv2.datasource.providers.local.WorklogsProvider
+import com.tracker.trackerv2.datasource.providers.local.room.dao.ProjectsDao
+import com.tracker.trackerv2.datasource.providers.local.room.dao.SprintsDao
+import com.tracker.trackerv2.datasource.providers.local.room.dao.TasksDao
+import com.tracker.trackerv2.datasource.providers.local.room.dao.TeamsDao
+import com.tracker.trackerv2.datasource.providers.local.room.dao.TokensDao
+import com.tracker.trackerv2.datasource.providers.local.room.dao.UserTeamDao
+import com.tracker.trackerv2.datasource.providers.local.room.dao.UsersDao
+import com.tracker.trackerv2.datasource.providers.local.room.dao.WorklogsDao
+import com.tracker.trackerv2.datasource.providers.local.room.entity.ProjectEntity
+import com.tracker.trackerv2.datasource.providers.local.room.entity.SprintEntity
+import com.tracker.trackerv2.datasource.providers.local.room.entity.TaskEntity
+import com.tracker.trackerv2.datasource.providers.local.room.entity.TeamEntity
+import com.tracker.trackerv2.datasource.providers.local.room.entity.TokenEntity
+import com.tracker.trackerv2.datasource.providers.local.room.entity.UserEntity
+import com.tracker.trackerv2.datasource.providers.local.room.entity.WorklogEntity
+import com.tracker.trackerv2.datasource.providers.local.room.entity.utils.UserTeamEntity
 
 @Database(
     entities = [
         TokenEntity::class,
         UserEntity::class,
         TeamEntity::class,
+        UserTeamEntity::class,
         ProjectEntity::class,
         SprintEntity::class,
         TaskEntity::class,
@@ -20,10 +52,12 @@ import com.tracker.trackerv2.datasource.providers.local.room.entity.*
     ],
     version = 1
 )
+@TypeConverters(com.tracker.trackerv2.datasource.providers.local.room.database.TypeConverters::class)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun tokensDao(): TokensDao
     abstract fun usersDao(): UsersDao
     abstract fun teamsDao(): TeamsDao
+    abstract fun userTeamDao(): UserTeamDao
     abstract fun projectsDao(): ProjectsDao
     abstract fun sprintsDao(): SprintsDao
     abstract fun tasksDao(): TasksDao
@@ -32,6 +66,7 @@ abstract class AppDatabase: RoomDatabase() {
     fun getTokensProvider(): ITokensProvider = TokensProvider(tokensDao())
     fun getUsersProvider(): IUsersProvider = UsersProvider(usersDao())
     fun getTeamsProvider(): ITeamsProvider = TeamsProvider(teamsDao())
+    fun getUserTeamProvider(): IUserTeamProvider = UserTeamProvider(userTeamDao())
     fun getProjectsProvider(): IProjectsProvider = ProjectsProvider(projectsDao())
     fun getSprintsProvider(): ISprintsProvider = SprintsProvider(sprintsDao())
     fun getTasksProvider(): ITasksProvider = TasksProvider(tasksDao())
@@ -47,7 +82,12 @@ abstract class AppDatabase: RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "tracker_v2_local_database"
-                ).build()
+                ).addCallback(object: Callback() {
+                    override fun onCreate(db: SupportSQLiteDatabase) {
+                        super.onCreate(db)
+                        DbPrePopulator(getDatabase(context)).execute()
+                    }
+                }).build()
                 return INSTANCE!!
             }
         }

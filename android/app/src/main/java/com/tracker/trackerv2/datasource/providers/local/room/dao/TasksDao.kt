@@ -24,10 +24,13 @@ interface TasksDao {
     fun getAllCreatedBy(createdBy: String): List<TaskEntity>
 
     @Query("SELECT * FROM TASKS WHERE taskId = :taskId LIMIT 1")
-    fun getDetails(taskId: String) : TaskEntity
+    fun getDetails(taskId: String) : TaskEntity?
+
+    @Query("SELECT * FROM TASKS WHERE id = :id LIMIT 1")
+    fun getDetails(id: Long) : TaskEntity?
 
     @Insert
-    fun insert(task: TaskEntity)
+    fun insert(task: TaskEntity): Long
 
     @Update
     fun update(task: TaskEntity)

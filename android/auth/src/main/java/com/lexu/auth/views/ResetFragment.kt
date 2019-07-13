@@ -12,10 +12,14 @@ import androidx.appcompat.widget.AppCompatImageButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.lexu.auth.R
+import com.lexu.auth.delegates.EmailValidator
 import com.lexu.auth.delegates.NavigationDelegate
 import com.lexu.auth.views.support.SupportFragment
 
-class ResetFragment(presenter: NavigationDelegate.NavigationPresenter) :
+class ResetFragment(
+    presenter: NavigationDelegate.NavigationPresenter,
+    private val emailValidator: EmailValidator = object : EmailValidator {}
+) :
     SupportFragment<NavigationDelegate.NavigationPresenter>(presenter) {
 
     private lateinit var emailInputContainer: TextInputLayout
@@ -38,8 +42,15 @@ class ResetFragment(presenter: NavigationDelegate.NavigationPresenter) :
         cancelButton = rootView.findViewById(R.id.resetPasswordBackButton)
         submitButton = rootView.findViewById(R.id.resetPasswordActionButton)
 
-        //  TODO: refactor this
-        cancelButton.setOnClickListener { presenter.onNavigateToLogin() }
-        submitButton.setOnClickListener { presenter.onNavigateToLogin() }
+        cancelButton.setOnClickListener {
+            emailInputField.setText("")
+
+            presenter.onNavigateToLogin()
+        }
+        submitButton.setOnClickListener {
+            emailInputField.text?.toString()
+                ?.takeIf { email -> emailValidator.validate(email) }
+                ?.apply { presenter.onResetPassClicked(this) }
+        }
     }
 }

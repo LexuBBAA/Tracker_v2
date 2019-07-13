@@ -7,13 +7,13 @@ import java.sql.Date
 
 @Entity(tableName = "worklogs")
 data class WorklogEntity(
-    @PrimaryKey val id: Int,
-    @ColumnInfo(name = "worklogId") val worklogId: String,
+    @PrimaryKey(autoGenerate = true) val id: Int? = null,
+    @ColumnInfo(name = "worklogId") val worklogId: String? = null,
     @ColumnInfo(name = "value") val value: Double,
-    @ColumnInfo(name = "comment") val comment: String,
+    @ColumnInfo(name = "comment") val comment: String? = null,
     @ColumnInfo(name = "relatesTo") val relatesTo: String,
-    @ColumnInfo(name = "createdAt") val createdDate: Date,
+    @ColumnInfo(name = "createdAt") val createdDate: Date = Date(System.currentTimeMillis()),
     @ColumnInfo(name = "createdBy") val createdBy: String,
-    @ColumnInfo(name = "lastModifiedBy") val lastModifiedBy: String,
-    @ColumnInfo(name = "lastModifiedAt") val lastModifiedAt: Date
+    @ColumnInfo(name = "lastModifiedBy") val lastModifiedBy: String = createdBy,
+    @ColumnInfo(name = "lastModifiedAt") val lastModifiedAt: Date = Date(System.currentTimeMillis())
 )

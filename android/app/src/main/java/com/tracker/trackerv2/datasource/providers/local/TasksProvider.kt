@@ -16,9 +16,9 @@ class TasksProvider(private val dao: TasksDao): ITasksProvider {
 
     override fun getAllCreatedByUser(userId: String): List<TaskEntity> = dao.getAllCreatedBy(userId)
 
-    override fun getDetails(taskId: String): TaskEntity = dao.getDetails(taskId)
+    override fun getDetails(taskId: String): TaskEntity? = dao.getDetails(taskId)
 
-    override fun create(newTask: TaskEntity) = dao.insert(newTask)
+    override fun create(newTask: TaskEntity): TaskEntity? = dao.getDetails(dao.insert(newTask))
 
     override fun update(task: TaskEntity) = dao.update(task)
 

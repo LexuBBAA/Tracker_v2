@@ -9,10 +9,13 @@ interface TeamsDao {
     fun getAll() : List<TeamEntity>
 
     @Query("SELECT * FROM TEAMS WHERE teamId = :teamId LIMIT 1")
-    fun getById(teamId: String) : TeamEntity
+    fun getById(teamId: String) : TeamEntity?
+
+    @Query("SELECT * FROM TEAMS WHERE id = :teamId LIMIT 1")
+    fun getById(teamId: Long) : TeamEntity?
 
     @Insert
-    fun insert(team: TeamEntity)
+    fun insert(team: TeamEntity): Long
 
     @Update
     fun update(team: TeamEntity)

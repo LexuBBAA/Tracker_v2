@@ -6,7 +6,7 @@ import com.tracker.trackerv2.datasource.providers.local.room.entity.ProjectEntit
 class ProjectsProvider(private val dao: ProjectsDao): IProjectsProvider {
     override fun getAll(): List<ProjectEntity> = dao.getAll()
 
-    override fun create(newProject: ProjectEntity) = dao.insert(newProject)
+    override fun create(newProject: ProjectEntity): ProjectEntity? = dao.getById(dao.insert(newProject))
 
     override fun update(project: ProjectEntity) = dao.update(project)
 

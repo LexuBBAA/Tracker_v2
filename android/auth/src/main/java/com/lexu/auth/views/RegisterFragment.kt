@@ -13,6 +13,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.lexu.auth.R
 import com.lexu.auth.delegates.NavigationDelegate
+import com.lexu.auth.models.RegisterBody
 import com.lexu.auth.views.support.SupportFragment
 
 class RegisterFragment(presenter: NavigationDelegate.NavigationPresenter) :
@@ -50,8 +51,24 @@ class RegisterFragment(presenter: NavigationDelegate.NavigationPresenter) :
         cancelButton = rootView.findViewById(R.id.registerBackButton)
         submitButton = rootView.findViewById(R.id.registerActionButton)
 
-        //  TODO: refactor this
-        cancelButton.setOnClickListener { presenter.onNavigateToLogin() }
-        submitButton.setOnClickListener { presenter.onRegisterSuccessful() }
+        cancelButton.setOnClickListener {
+            emailInputField.setText("")
+            usernameInputField.setText("")
+            passwordInputField.setText("")
+
+            presenter.onNavigateToLogin()
+        }
+        submitButton.setOnClickListener {
+            val validInput = !usernameInputField.text?.toString().isNullOrEmpty() &&
+                !emailInputField.text?.toString().isNullOrEmpty() &&
+                !passwordInputField.text?.toString().isNullOrEmpty() &&
+                passwordInputField.text.toString().contentEquals(confirmPasswordInputField.text?.toString() ?: "")
+
+            if(validInput) presenter.onRegisterClicked(RegisterBody(
+                email = emailInputField.text.toString(),
+                username = usernameInputField.text.toString(),
+                password = passwordInputField.text.toString()
+            ))
+        }
     }
 }

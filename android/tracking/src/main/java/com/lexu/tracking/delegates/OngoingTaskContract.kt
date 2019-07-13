@@ -9,7 +9,7 @@ import com.lexu.tracking.utils.TeamTask
 interface OngoingTaskContract {
 
     interface OngoingTaskView {
-        fun setTask(task: TeamTask)
+        fun setTask(task: TeamTask?)
 
         fun startTaskTracking()
         fun pauseTaskTracking()

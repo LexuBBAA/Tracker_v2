@@ -7,15 +7,15 @@ import java.sql.Date
 
 @Entity(tableName = "users")
 data class UserEntity(
-    @PrimaryKey val id: Int,
-    @ColumnInfo(name = "userId") val userId: String,
+    @PrimaryKey(autoGenerate = true) val id: Int? = null,
+    @ColumnInfo(name = "userId") val userId: String? = null,
     @ColumnInfo(name = "username") val username: String,
     @ColumnInfo(name = "email") val email: String,
-    @ColumnInfo(name = "phone") val phone: String,
-    @ColumnInfo(name = "firstname") var firstname: String,
-    @ColumnInfo(name = "lastname") var lastname: String,
-    @ColumnInfo(name = "createdAt") val createdAt: Date,
-    @ColumnInfo(name = "createdBy") val createdBy: String,
-    @ColumnInfo(name = "avatarUrl") var avatarUrl: String,
+    @ColumnInfo(name = "phone") val phone: String? = null,
+    @ColumnInfo(name = "firstname") var firstname: String? = null,
+    @ColumnInfo(name = "lastname") var lastname: String? = null,
+    @ColumnInfo(name = "createdAt") val createdAt: Date = Date(System.currentTimeMillis()),
+    @ColumnInfo(name = "createdBy") val createdBy: String? = null,
+    @ColumnInfo(name = "avatarUrl") var avatarUrl: String? = null,
     @ColumnInfo(name = "password") var password: String
 )
