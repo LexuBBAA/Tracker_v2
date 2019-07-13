@@ -27,13 +27,15 @@
 
             <RelativeLayout
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="2">
                 <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/ongoingTaskIcon"
                         android:layout_width="40dp"
                         android:layout_height="60dp"
                         android:layout_margin="4dp"
+                        android:layout_alignTop="@+id/ongoingTaskTitleLabel"
+                        android:layout_alignBottom="@+id/ongoingTaskDetailsContainer2"
                         android:src="@drawable/ic_alarm_white_24dp"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -43,21 +45,22 @@
                         android:text="Task Title"
                         android:textSize="20sp"
                         android:textStyle="bold"
+                        android:maxLines="3"
                         android:ellipsize="end"
                         android:layout_marginBottom="4dp"
                         android:layout_toEndOf="@+id/ongoingTaskIcon"
-                        android:layout_alignTop="@+id/ongoingTaskIcon"
+                        android:layout_alignParentTop="true"
                         android:layout_alignParentEnd="true"/>
 
 
                 <LinearLayout
+                    android:id="@+id/ongoingTaskDetailsContainer2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:layout_toEndOf="@+id/ongoingTaskIcon"
                         android:layout_alignEnd="@+id/ongoingTaskTitleLabel"
                         android:layout_below="@+id/ongoingTaskTitleLabel"
-                        android:layout_alignBottom="@+id/ongoingTaskIcon"
                         android:weightSum="3">
                     <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/ongoingTaskTypeLabel"
@@ -98,7 +101,7 @@
         <RelativeLayout
                 android:id="@+id/ongoingTaskErrorMessageContainer"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:visibility="visible">
             <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/ongoingTaskErrorMessage"

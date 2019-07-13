@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.lexu.models.Priority
 import com.lexu.models.Status
 import com.lexu.models.Type
 import com.lexu.tracking.OngoingTaskFragment
@@ -50,6 +51,8 @@ class DashboardActivity : AppCompatActivity(), OngoingTaskContract.OngoingTaskDe
         CoroutineScope(Dispatchers.IO).async {
             val userOngoingTasks = appDatabase.getTasksProvider()
                 .getAllAssignedToUser(userId)
+                .sortedBy { Type.valueOf(it.type).value }
+                .sortedBy { Priority.valueOf(it.priority).value }
                 .firstOrNull { it.status.capitalize().contentEquals("IN_PROGRESS") }
 
             val widgetTask = if(userOngoingTasks != null)
@@ -65,7 +68,6 @@ class DashboardActivity : AppCompatActivity(), OngoingTaskContract.OngoingTaskDe
         }
 
         CoroutineScope(Dispatchers.IO).async {
-//            val stats = mockDataParser.getPersonalWeekStats()
             val data = appDatabase.getWorklogsProvider().getAllForUser(userId)
                 .filter { it.createdDate.after(Date(System.currentTimeMillis() - 7 * 24 * 60 * 60 * 1000)) }
                 .groupBy { it.createdDate }
