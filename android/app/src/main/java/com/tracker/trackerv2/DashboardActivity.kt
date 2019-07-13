@@ -29,6 +29,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import java.sql.Date
+import java.util.Calendar
 
 class DashboardActivity : AppCompatActivity(), OngoingTaskContract.OngoingTaskDelegate,
     TeamStatsContract.TeamStatsDelegate, PersonalStatsContract.PersonalStatsDelegate {
@@ -68,15 +69,45 @@ class DashboardActivity : AppCompatActivity(), OngoingTaskContract.OngoingTaskDe
         }
 
         CoroutineScope(Dispatchers.IO).async {
-            val data = appDatabase.getWorklogsProvider().getAllForUser(userId)
-                .filter { it.createdDate.after(Date(System.currentTimeMillis() - 7 * 24 * 60 * 60 * 1000)) }
-                .groupBy { it.createdDate }
-                .toList().sortedBy { it.first }
-            delay(1500)
+            val stats = appDatabase.getWorklogsProvider().getAllForUser(userId)
+                .filter {
+                    val cal = Calendar.getInstance()
+                    cal.time = Date(System.currentTimeMillis())
+                    cal.add(Calendar.DAY_OF_YEAR, -7)
+                    it.createdDate.after(cal.time)
+                }
+                .groupBy {
+                    val cal = Calendar.getInstance()
+                    cal.time = it.createdDate
+                    cal.set(Calendar.HOUR, 0)
+                    cal.set(Calendar.MINUTE, 0)
+                    cal.set(Calendar.SECOND, 0)
+                    cal.set(Calendar.MILLISECOND, 0)
+                    cal.time
+                }
+                .also { Log.i(DashboardActivity::class.simpleName, "Grouped: $it") }
+                .map { pair ->
+                    Pair(
+                        pair.key,
+                        pair.value.fold(0.0) { total, worklog -> total.plus(worklog.value) })
+                }
+                .map { pair ->
+                    val cal = Calendar.getInstance()
+                    cal.time = pair.first
+                    DayLog(cal.get(Calendar.DAY_OF_WEEK), pair.second)
+                }
+                .toMutableList()
 
-            val stats = data.mapIndexed { index, pair ->
-                DayLog(index, pair.second.sumByDouble { it.value })
+            var missingDay = Calendar.SUNDAY
+            while (stats.size < 7) {
+                if (stats.find { it.day == missingDay } == null) stats.add(
+                    DayLog(missingDay, 0.0)
+                )
+                missingDay++
             }
+
+            stats.sortBy { it.day }
+            delay(1500)
 
             runBlocking {
                 runOnUiThread {
@@ -88,7 +119,6 @@ class DashboardActivity : AppCompatActivity(), OngoingTaskContract.OngoingTaskDe
         }
 
         CoroutineScope(Dispatchers.IO).async {
-//            val stats = mockDataParser.getTeamWeekStats()
             appDatabase.getUserTeamProvider().getForUser(userId)?.apply {
                 val teamMembersIds = appDatabase.getUserTeamProvider().getForTeam(teamId).map { it.userId }
                 val teamTasks = appDatabase.getTasksProvider().getAll()

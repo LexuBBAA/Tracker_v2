@@ -99,7 +99,7 @@ class PersonalStatsFragment : Fragment(), PersonalStatsContract.PersonalStatsVie
 
     private fun updateUI(dataSet: BarDataSet, dismissLoading: Boolean = true) {
         dataSet.valueFormatter = object : ValueFormatter() {
-            override fun getFormattedValue(value: Float): String = if (value != 0F) value.toString()
+            override fun getFormattedValue(value: Float): String = if (value != 0F) String.format("%.2f", value)
             else ""
         }
 

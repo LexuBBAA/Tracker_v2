@@ -11,10 +11,14 @@ import com.tracker.trackerv2.datasource.providers.local.room.entity.TeamEntity
 import com.tracker.trackerv2.datasource.providers.local.room.entity.UserEntity
 import com.tracker.trackerv2.datasource.providers.local.room.entity.WorklogEntity
 import com.tracker.trackerv2.datasource.providers.local.room.entity.utils.UserTeamEntity
+import java.sql.Date
+import java.util.Calendar
 import java.util.concurrent.Executors
 import kotlin.random.Random
 
 internal class DbPrePopulator(private val db: AppDatabase) {
+    private val calendar = Calendar.getInstance()
+
     fun execute() = Executors.newSingleThreadExecutor().execute {
         populateUsers()
         populateTeams()
@@ -39,7 +43,7 @@ internal class DbPrePopulator(private val db: AppDatabase) {
         val userId = db.getUsersProvider().getAll().first().userId!!
         val teamsProvider = db.getTeamsProvider()
         for(i in 1..5) teamsProvider.create(TeamEntity(
-            teamId = "tm-0000$i".capitalize(),
+            teamId = "tm-0000$i".toUpperCase(),
             name = "Test team",
             createdBy = userId
         ))
@@ -73,13 +77,13 @@ internal class DbPrePopulator(private val db: AppDatabase) {
         val project1Id = projectsProvider.create(ProjectEntity(
             title = "Test Project 1",
             createdBy = userId,
-            projectId = "pj-00001".capitalize(),
+            projectId = "pj-00001".toUpperCase(),
             assignedTeam = teamId
         ))!!.projectId!!
 
         val sprintsProvider = db.getSprintsProvider()
         sprintsProvider.create(SprintEntity(
-            sprintId = "S-000001".capitalize(),
+            sprintId = "S-000001".toUpperCase(),
             title = "Backlog",
             createdBy = userId,
             project = project1Id,
@@ -89,11 +93,11 @@ internal class DbPrePopulator(private val db: AppDatabase) {
         val project2Id = projectsProvider.create(ProjectEntity(
             title = "Degree Project",
             createdBy = userId,
-            projectId = "pj-00002".capitalize(),
+            projectId = "pj-00002".toUpperCase(),
             assignedTeam = teamId
         ))!!.projectId!!
         sprintsProvider.create(SprintEntity(
-            sprintId = "S-000002".capitalize(),
+            sprintId = "S-000002".toUpperCase(),
             title = "Backlog",
             createdBy = userId,
             project = project2Id,
@@ -153,10 +157,13 @@ internal class DbPrePopulator(private val db: AppDatabase) {
                 for(worklogIndex in 0 until userNoOfWorklogs) {
                     val newLogsCount = db.getWorklogsProvider().getAll().count() + 1
                     val idNo = newLogsCount.toString().padStart(10, '0')
+                    calendar.time = Date(System.currentTimeMillis())
+                    calendar.add(Calendar.DAY_OF_YEAR, Random.nextInt(-15, 0))
                     val worklog = WorklogEntity(
-                        worklogId = "t-$idNo".capitalize(),
+                        worklogId = "t-$idNo".toUpperCase(),
                         createdBy = user.userId as String,
-                        value = Random.nextDouble(13.7),
+                        createdDate = Date(calendar.time.time),
+                        value = Random.nextDouble(13.7).div(userNoOfWorklogs),
                         relatesTo = task.taskId as String
                     )
 
@@ -170,9 +177,13 @@ internal class DbPrePopulator(private val db: AppDatabase) {
     private fun generateTask(taskIdSuf: Int, assignedTo: String, createdBy: String, sprintId: String, taskType: Type, taskStatus: Status): TaskEntity {
         val sprintProjectId = db.getSprintsProvider().getSprintById(sprintId)!!.project
         val projectId = db.getProjectsProvider().getAll().find { it.projectId == sprintProjectId }?.projectId as String
-        val parentTaskId = db.getTasksProvider().getAllForSprint(sprintId).shuffled().firstOrNull { Type.valueOf(it.type.capitalize()) == Type.TASK }?.taskId
+        val parentTaskId = db.getTasksProvider().getAllForSprint(sprintId).shuffled().firstOrNull { Type.valueOf(it.type.toUpperCase()) == Type.TASK }?.taskId
         val internalTaskType : Type = if(taskType == Type.SUBTASK && parentTaskId == null) Type.TASK
         else taskType
+
+        calendar.set(Calendar.DAY_OF_WEEK_IN_MONTH, Random.nextInt(1, 29))
+        calendar.set(Calendar.MONTH, Random.nextInt(1, 7))
+        calendar.set(Calendar.YEAR, 2018)
 
         return TaskEntity(
             taskId = when(internalTaskType) {
@@ -181,7 +192,7 @@ internal class DbPrePopulator(private val db: AppDatabase) {
                 Type.SUBTASK -> "stsk"
                 Type.ISSUE -> "bug"
                 Type.QUESTION -> "qst"
-            }.plus("-$taskIdSuf").capitalize(),
+            }.plus("-$taskIdSuf").toUpperCase(),
             title = when(internalTaskType) {
                 Type.STORY -> "Test Story-type task"
                 Type.TASK -> "Test Task-type task"
@@ -191,6 +202,7 @@ internal class DbPrePopulator(private val db: AppDatabase) {
             }.plus(" <<$taskIdSuf>>"),
             assignedTo = assignedTo,
             createdBy = createdBy,
+            createdDate = Date(calendar.time.time),
             sprintId = sprintId,
             subtaskOf = parentTaskId,
             type = internalTaskType.name,
