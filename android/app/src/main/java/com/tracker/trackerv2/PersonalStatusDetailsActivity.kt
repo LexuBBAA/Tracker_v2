@@ -47,7 +47,6 @@ class PersonalStatusDetailsActivity : AppCompatActivity() {
 
         personalStatusDetailsBackButton.setOnClickListener { finish() }
 
-
         adapter = TaskListAdapter(this)
         personalStatusRecyclerView.layoutManager = LinearLayoutManager(this)
         personalStatusRecyclerView.adapter = adapter

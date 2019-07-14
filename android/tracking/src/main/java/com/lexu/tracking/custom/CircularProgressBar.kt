@@ -111,8 +111,8 @@ class CircularProgressBar(context: Context, attributeSet: AttributeSet?): View(c
         this.color = when(progress) {
             in 0F .. 25F -> Color.RED
             in 26F .. 50F -> Color.CYAN
-            in 51F .. 75F -> Color.GREEN
-            in 76F .. 99F -> Color.YELLOW
+            in 51F .. 80F -> Color.GREEN
+            in 81F .. 99F -> Color.YELLOW
             else -> Color.RED
         }
         foregroundPaint!!.color = color
