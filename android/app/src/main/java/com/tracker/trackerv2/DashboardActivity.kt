@@ -14,14 +14,17 @@ import com.lexu.models.Status
 import com.lexu.models.Type
 import com.lexu.tracking.OngoingTaskFragment
 import com.lexu.tracking.PersonalStatsFragment
+import com.lexu.tracking.TeamMembersFragment
 import com.lexu.tracking.TeamStatsFragment
 import com.lexu.tracking.delegates.OngoingTaskContract
 import com.lexu.tracking.delegates.PersonalStatsContract
 import com.lexu.tracking.delegates.TeamStatsContract
+import com.lexu.tracking.models.DashboardMembersProgressItem
 import com.lexu.tracking.models.TeamTask
 import com.lexu.tracking.utils.DayLog
 import com.tracker.trackerv2.datasource.providers.local.UserSessionProvider
 import com.tracker.trackerv2.datasource.providers.local.room.database.AppDatabase
+import com.tracker.trackerv2.datasource.providers.local.room.entity.UserEntity
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -142,6 +145,47 @@ class DashboardActivity : AppCompatActivity(), OngoingTaskContract.OngoingTaskDe
                         teamStatsFragment.registerDelegate(this@DashboardActivity)
                         teamStatsFragment.updateStats(teamTasks)
                     }
+                }
+            }
+        }
+
+        CoroutineScope(Dispatchers.IO).async {
+            val userTeam = appDatabase.getUserTeamProvider().getForUser(userId)
+            userTeam?.let { userToTeam ->
+                val items = appDatabase.getUserTeamProvider()
+                    .getForTeam(userToTeam.teamId)
+                    .filter { it.userId != userId }
+                    .map { userInTeam ->
+                        val user = appDatabase.getUsersProvider()
+                            .getAll()
+                            .first { userInTeam.userId == it.userId }
+                        val userLogs = appDatabase.getWorklogsProvider()
+                            .getAllForUser(user.userId as String)
+                            .filter { worklog ->
+                                val cal = Calendar.getInstance()
+                                cal.set(Calendar.HOUR_OF_DAY, 0)
+                                cal.set(Calendar.MINUTE, 0)
+                                cal.set(Calendar.SECOND, 0)
+                                cal.set(Calendar.MILLISECOND, 0)
+
+                                worklog.createdDate.after(cal.time)
+                            }
+                        Pair(user, userLogs)
+                    }
+                    .map { userWorklogs ->
+                        DashboardMembersProgressItem(
+                            userId,
+                            userWorklogs.first.username,
+                            userWorklogs.first.avatarUrl,
+                            DayLog(
+                                Calendar.getInstance()[Calendar.DAY_OF_WEEK],
+                                userWorklogs.second.fold(0.0) { total, logged -> total.plus(logged.value) }
+                            )
+                        )
+                    }
+
+                runOnUiThread {
+                    (dashboardTeamMembersFragment as TeamMembersFragment).setupData(items)
                 }
             }
         }

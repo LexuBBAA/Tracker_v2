@@ -34,6 +34,13 @@
                 android:name="com.lexu.tracking.TeamStatsFragment"
                 tools:layout="@layout/fragment_team_stats"/>
 
+        <fragment
+            android:id="@+id/dashboardTeamMembersFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:name="com.lexu.tracking.TeamMembersFragment"
+            tools:layout="@layout/fragment_team_members_progress"/>
+
     </LinearLayout>
 
 </ScrollView>

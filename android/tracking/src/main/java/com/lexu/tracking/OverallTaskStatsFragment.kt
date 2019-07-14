@@ -23,10 +23,11 @@ import com.lexu.tracking.delegates.PersonalStatsContract
 import com.lexu.tracking.utils.DayLog
 import java.util.*
 
-class OverallTaskStatsFragment(delegate: PersonalStatsContract.PersonalStatsDelegate) : Fragment(), PersonalStatsContract.PersonalStatsView {
+class OverallTaskStatsFragment : Fragment(), PersonalStatsContract.PersonalStatsView {
 
     private lateinit var rootView: View
 
+    private lateinit var titleView: TextView
     private lateinit var statsChartView: BarChart
     private lateinit var loadingContainer: FrameLayout
     private lateinit var loadingView: ProgressBar
@@ -35,13 +36,14 @@ class OverallTaskStatsFragment(delegate: PersonalStatsContract.PersonalStatsDele
     private var delegate: PersonalStatsContract.PersonalStatsDelegate? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        rootView = inflater.inflate(R.layout.fragment_team_stats, container, false)
+        rootView = inflater.inflate(R.layout.fragment_overall_task_effort, container, false)
         return rootView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        titleView = rootView.findViewById(R.id.taskOverallEffortCardTitle) as TextView
         statsChartView = rootView.findViewById(R.id.taskOverallEffortChartView) as BarChart
         loadingContainer = rootView.findViewById(R.id.taskOverallEffortLoadingContainer) as FrameLayout
         loadingView = rootView.findViewById(R.id.taskOverallEffortProgressBar) as ProgressBar
@@ -134,6 +136,8 @@ class OverallTaskStatsFragment(delegate: PersonalStatsContract.PersonalStatsDele
         statsChartView.data = BarData(barDataSet)
         statsChartView.invalidate()
     }
+
+    fun setTitle(title: String) { this.titleView.text = title }
 
     override fun updateStats(stats: List<DayLog>) {
         val newEntries = generateEntries(stats)

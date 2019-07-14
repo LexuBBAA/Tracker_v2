@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/teamMembersProgressHeaderContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/teamMembersProgressTitleView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Teammates current status"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/teamMembersProgressSeeMoreView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="See more..."
+            android:textSize="16sp"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/light_gray_bg"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/teamMembersProgressRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"/>
+
+        <FrameLayout
+            android:id="@+id/teamMembersStatusLoadingContainer"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_alignTop="@+id/teamMembersProgressRecyclerView"
+            android:layout_alignStart="@+id/teamMembersProgressRecyclerView"
+            android:layout_alignEnd="@+id/teamMembersProgressRecyclerView"
+            android:layout_alignBottom="@+id/teamMembersProgressRecyclerView"
+            android:background="@color/blocking_view_color"
+            android:clickable="true"
+            android:focusable="true">
+            <ProgressBar
+                android:id="@+id/teamMembersStatusProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:indeterminate="true"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/teamMembersStatusErrorMessage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:visibility="gone"
+                android:text="No users found"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+        </FrameLayout>
+    </RelativeLayout>
+
+</LinearLayout>

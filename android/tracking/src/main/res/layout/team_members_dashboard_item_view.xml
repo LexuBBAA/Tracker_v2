@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_margin="8dp"
+              android:gravity="center_horizontal"
+              android:orientation="vertical">
+
+    <!--<androidx.appcompat.widget.AppCompatImageView-->
+        <!--android:id="@+id/itemUserIcon"-->
+        <!--android:layout_width="100dp"-->
+        <!--android:layout_height="100dp"-->
+        <!--android:layout_margin="16dp"-->
+        <!--android:src="@drawable/ic_account_circle_black_24dp"/>-->
+
+    <com.lexu.tracking.custom.CircularProgressBar
+        android:id="@+id/itemUserIconView"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_margin="16dp"
+        app:image="@drawable/ic_account_circle_black_24dp"
+        app:progress="50"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/itemUsernameView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="4dp"
+        android:text="---"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/itemUserLoggedTimeView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="--- min"/>
+
+</LinearLayout>

@@ -29,174 +29,184 @@
                 android:src="@drawable/ic_keyboard_arrow_left_white_24dp"/>
 
         <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/taskDetailsTitleLabel"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Title"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:layout_weight="1"
-                android:layout_marginStart="8dp"
-                android:gravity="center_vertical"/>
+            android:id="@+id/taskDetailsTitleLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="---"
+            android:textSize="24sp"
+            android:textStyle="bold"/>
     </LinearLayout>
 
-    <RelativeLayout
-            android:id="@+id/taskDetailsContentContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/taskDetailsHeaderContainer"
-            android:layout_alignStart="@+id/taskDetailsHeaderContainer"
-            android:layout_alignEnd="@+id/taskDetailsHeaderContainer">
-
-        <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/taskDetailsTypeLabel"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Type: Story"
-                android:textSize="18sp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginBottom="8dp"
-                android:layout_toStartOf="@+id/taskDetailsAsigneeContainer"/>
-
-        <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/taskDetailsStatusLabel"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Status: In Progress"
-                android:textSize="18sp"
-                android:layout_marginBottom="8dp"
-                android:layout_below="@+id/taskDetailsTypeLabel"
-                android:layout_alignStart="@+id/taskDetailsTypeLabel"
-                android:layout_alignEnd="@+id/taskDetailsTypeLabel"/>
-
-        <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/taskDetailsPriorityLabel"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Priority: Low"
-                android:textSize="18sp"
-                android:layout_marginBottom="8dp"
-                android:layout_below="@+id/taskDetailsStatusLabel"
-                android:layout_alignStart="@+id/taskDetailsStatusLabel"
-                android:layout_alignEnd="@+id/taskDetailsStatusLabel"/>
-
-        <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/taskDetailsStoryPointsLabel"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="SPs: 0"
-                android:textSize="18sp"
-                android:layout_marginBottom="8dp"
-                android:layout_below="@+id/taskDetailsPriorityLabel"
-                android:layout_alignStart="@+id/taskDetailsPriorityLabel"
-                android:layout_alignEnd="@+id/taskDetailsPriorityLabel"/>
-
-        <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/taskDetailsDueDateLabel"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Due date: DD/MM/YYYY"
-                android:textSize="18sp"
-                android:layout_marginBottom="8dp"
-                android:layout_below="@+id/taskDetailsStoryPointsLabel"
-                android:layout_alignStart="@+id/taskDetailsStoryPointsLabel"
-                android:layout_alignEnd="@+id/taskDetailsStoryPointsLabel"/>
-
-        <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/taskDetailsEstimateLabel"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Estimate: 0m"
-                android:textSize="18sp"
-                android:layout_marginBottom="8dp"
-                android:layout_below="@+id/taskDetailsDueDateLabel"
-                android:layout_alignStart="@+id/taskDetailsDueDateLabel"
-                android:layout_alignEnd="@+id/taskDetailsDueDateLabel"/>
-
-        <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/taskDetailsTotalEffortLabel"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Logged effort: 0m"
-                android:textSize="18sp"
-                android:layout_marginBottom="8dp"
-                android:layout_below="@+id/taskDetailsEstimateLabel"
-                android:layout_alignStart="@+id/taskDetailsEstimateLabel"
-                android:layout_alignEnd="@+id/taskDetailsEstimateLabel"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/taskDetailsHeaderContainer"
+        android:layout_alignStart="@+id/taskDetailsHeaderContainer"
+        android:layout_below="@+id/taskDetailsHeaderContainer">
 
         <LinearLayout
-                android:id="@+id/taskDetailsAsigneeContainer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_alignParentEnd="true"
-                android:layout_alignTop="@+id/taskDetailsTypeLabel">
-            <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/taskDetailsContentContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/taskDetailsTypeLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginBottom="8dp"
+                    android:layout_toStartOf="@+id/taskDetailsAsigneeContainer"
+                    android:text="Type: ---"
+                    android:textSize="18sp"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/taskDetailsStatusLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/taskDetailsTypeLabel"
+                    android:layout_alignStart="@+id/taskDetailsTypeLabel"
+                    android:layout_below="@+id/taskDetailsTypeLabel"
+                    android:layout_marginBottom="8dp"
+                    android:text="Status: ---"
+                    android:textSize="18sp"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/taskDetailsPriorityLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/taskDetailsStatusLabel"
+                    android:layout_alignStart="@+id/taskDetailsStatusLabel"
+                    android:layout_below="@+id/taskDetailsStatusLabel"
+                    android:layout_marginBottom="8dp"
+                    android:text="Priority: ---"
+                    android:textSize="18sp"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/taskDetailsStoryPointsLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/taskDetailsPriorityLabel"
+                    android:layout_alignStart="@+id/taskDetailsPriorityLabel"
+                    android:layout_below="@+id/taskDetailsPriorityLabel"
+                    android:layout_marginBottom="8dp"
+                    android:text="SPs: ---"
+                    android:textSize="18sp"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/taskDetailsDueDateLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/taskDetailsStoryPointsLabel"
+                    android:layout_alignStart="@+id/taskDetailsStoryPointsLabel"
+                    android:layout_below="@+id/taskDetailsStoryPointsLabel"
+                    android:layout_marginBottom="8dp"
+                    android:text="Due date: ---"
+                    android:textSize="18sp"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/taskDetailsEstimateLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/taskDetailsDueDateLabel"
+                    android:layout_alignStart="@+id/taskDetailsDueDateLabel"
+                    android:layout_below="@+id/taskDetailsDueDateLabel"
+                    android:layout_marginBottom="8dp"
+                    android:text="Estimate: ---"
+                    android:textSize="18sp"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/taskDetailsTotalEffortLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/taskDetailsEstimateLabel"
+                    android:layout_alignStart="@+id/taskDetailsEstimateLabel"
+                    android:layout_below="@+id/taskDetailsEstimateLabel"
+                    android:layout_marginBottom="8dp"
+                    android:text="Logged effort: ---"
+                    android:textSize="18sp"/>
+
+                <LinearLayout
+                    android:id="@+id/taskDetailsAsigneeContainer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginBottom="4dp"
-                    android:gravity="center_horizontal">
-                <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/taskDetailsAsigneeAvatarIcon"
-                        android:layout_width="56dp"
-                        android:layout_height="56dp"
-                        android:src="@drawable/ic_account_circle_white_24dp"/>
-                <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/taskDetailsAsigneeUsernameLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Username"
-                        android:textSize="16sp"/>
-                <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/taskDetailsTaskAsignationDate"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="DD/MM/YYYY"
-                        android:textSize="14sp"/>
-            </LinearLayout>
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignTop="@+id/taskDetailsTypeLabel"
+                    android:orientation="vertical">
 
-
-            <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal">
-                <androidx.appcompat.widget.AppCompatTextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Created by:"
-                        android:textSize="16sp"/>
-                <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/taskDetailsTaskCreatedByLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:layout_marginBottom="4dp"
-                        android:text="Username"
-                        android:textSize="14sp"/>
-                <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Created by:"
-                        android:textSize="16sp"/>
-                <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/taskDetailsTaskCreatedAtLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="DD/MM/YYYY"
-                        android:textSize="14sp"/>
-            </LinearLayout>
-        </LinearLayout>
-    </RelativeLayout>
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
 
-    <FrameLayout
-            android:id="@+id/taskDetailsChartFragmentContainer"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginBottom="4dp"
-            android:layout_below="@+id/taskDetailsContentContainer"
-            android:layout_alignStart="@+id/taskDetailsContentContainer"
-            android:layout_alignEnd="@+id/taskDetailsContentContainer"
-            android:layout_alignParentBottom="true"/>
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/taskDetailsAsigneeAvatarIcon"
+                            android:layout_width="56dp"
+                            android:layout_height="56dp"
+                            android:src="@drawable/ic_account_circle_white_24dp"/>
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/taskDetailsAsigneeUsernameLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="---"
+                            android:textSize="16sp"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Created by:"
+                            android:textSize="16sp"/>
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/taskDetailsTaskCreatedByLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text="---"
+                            android:textSize="14sp"/>
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Created by:"
+                            android:textSize="16sp"/>
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/taskDetailsTaskCreatedAtLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="---"
+                            android:textSize="14sp"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </RelativeLayout>
+
+            <fragment
+                android:id="@+id/taskDetailsChartFragment"
+                android:name="com.lexu.tracking.OverallTaskStatsFragment"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                tools:layout="@layout/fragment_overall_task_effort"/>
+        </LinearLayout>
+    </ScrollView>
 </RelativeLayout>
