@@ -73,6 +73,7 @@ dependencies {
     implementation 'androidx.cursoradapter:cursoradapter:1.0.0'
 
     // Core library
+    implementation 'androidx.appcompat:appcompat:1.0.2'
     androidTestImplementation 'androidx.test:core:1.2.0'
 
     // AndroidJUnitRunner and JUnit Rules
@@ -120,7 +121,8 @@ dependencies {
 
     //  ROOM Persistance Lib
     implementation "androidx.room:room-runtime:$roomVersion"
-    kapt "androidx.room:room-compiler:$roomVersion" // For Kotlin use kapt instead of annotationProcessor
+    kapt "androidx.room:room-compiler:$roomVersion"
+    // For Kotlin use kapt instead of annotationProcessor
 
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation "androidx.room:room-ktx:$roomVersion"

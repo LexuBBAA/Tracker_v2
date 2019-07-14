@@ -24,6 +24,7 @@ import com.lexu.tracking.delegates.TeamStatsContract
 import com.lexu.tracking.models.DashboardMembersProgressItem
 import com.lexu.tracking.models.TeamTask
 import com.lexu.tracking.utils.DayLog
+import com.tracker.trackerv2.configs.SearchUserConfigBundle
 import com.tracker.trackerv2.datasource.providers.local.UserSessionProvider
 import com.tracker.trackerv2.datasource.providers.local.room.database.AppDatabase
 import com.tracker.trackerv2.datasource.providers.local.room.entity.UserEntity
@@ -252,7 +253,10 @@ class DashboardActivity : AppCompatActivity(), OngoingTaskContract.OngoingTaskDe
     }
 
     override fun onNavigateToUsersListClicked() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val intent = Intent(this, SearchUsersActivity::class.java)
+        val searchConfig = SearchUserConfigBundle(userId)
+        intent.putExtra(SearchUsersActivity.KEY_SEARCH_CONFIG_EXTRA, searchConfig)
+        startActivity(intent)
     }
 
     override fun onNavigateToUserDetailsClicked(userId: String) {

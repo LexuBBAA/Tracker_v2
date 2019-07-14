@@ -50,9 +50,7 @@ class TeamMembersDashboardAdapter(private val context: Context): RecyclerView.Ad
                 if (item.loggedTime.loggedTime > 8.0) 100F
                 else item.loggedTime.loggedTime.div(8.0).times(100.0).toFloat()
             )
-            onItemClickListener?.let { listener ->
-                rootView.setOnClickListener { listener.onItemClicked(item) }
-            }
+            rootView.setOnClickListener { onItemClickListener?.onItemClicked(item) }
         }
     }
 
