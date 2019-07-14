@@ -11,15 +11,19 @@ import com.tracker.trackerv2.datasource.providers.local.room.entity.TeamEntity
 import com.tracker.trackerv2.datasource.providers.local.room.entity.UserEntity
 import com.tracker.trackerv2.datasource.providers.local.room.entity.WorklogEntity
 import com.tracker.trackerv2.datasource.providers.local.room.entity.utils.UserTeamEntity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.sql.Date
 import java.util.Calendar
 import java.util.concurrent.Executors
+import kotlin.coroutines.CoroutineContext
 import kotlin.random.Random
 
 internal class DbPrePopulator(private val db: AppDatabase) {
     private val calendar = Calendar.getInstance()
 
-    fun execute() = Executors.newSingleThreadExecutor().execute {
+    fun execute() = CoroutineScope(Dispatchers.IO).launch {
         populateUsers()
         populateTeams()
         populateUserTeams()
@@ -28,7 +32,7 @@ internal class DbPrePopulator(private val db: AppDatabase) {
         populateWorklogs()
     }
 
-    private fun populateUsers() {
+    private suspend fun populateUsers() {
         val usersProvider = db.getUsersProvider()
         for(i in 1..15) usersProvider.create(UserEntity(
             userId = "u${i}upso${i}sjnfnf1-2ub41hu24b",
@@ -39,7 +43,7 @@ internal class DbPrePopulator(private val db: AppDatabase) {
         ))
     }
 
-    private fun populateTeams() {
+    private suspend fun populateTeams() {
         val userId = db.getUsersProvider().getAll().first().userId!!
         val teamsProvider = db.getTeamsProvider()
         for(i in 1..5) teamsProvider.create(TeamEntity(
@@ -49,7 +53,7 @@ internal class DbPrePopulator(private val db: AppDatabase) {
         ))
     }
 
-    private fun populateUserTeams() {
+    private suspend fun populateUserTeams() {
         val users = db.getUsersProvider().getAll().shuffled()
         val userTeamProvider = db.getUserTeamProvider()
         val teams = db.getTeamsProvider().getAll()
@@ -70,7 +74,7 @@ internal class DbPrePopulator(private val db: AppDatabase) {
         }
     }
 
-    private fun populateProjects() {
+    private suspend fun populateProjects() {
         val userId = db.getUsersProvider().getAll().first { it.username == "testUser1" }.userId as String
         val teamId = (db.getUserTeamProvider().getForUser(userId) as UserTeamEntity).teamId
         val projectsProvider = db.getProjectsProvider()
@@ -105,7 +109,7 @@ internal class DbPrePopulator(private val db: AppDatabase) {
         ))
     }
 
-    private fun populateTasks() {
+    private suspend fun populateTasks() {
         val users = db.getUsersProvider().getAll()
         val creatorId = users.first { it.username == "testUser1" }.userId as String
         val assignees = users.filter { it.userId != creatorId }.shuffled()
@@ -149,7 +153,7 @@ internal class DbPrePopulator(private val db: AppDatabase) {
         }
     }
 
-    private fun populateWorklogs() {
+    private suspend fun populateWorklogs() {
         val tasks = db.getTasksProvider().getAll()
         tasks.forEach { task ->
             db.getUsersProvider().getAll().shuffled().subList(0, 5).forEach { user ->
@@ -174,7 +178,7 @@ internal class DbPrePopulator(private val db: AppDatabase) {
         }
     }
 
-    private fun generateTask(taskIdSuf: Int, assignedTo: String, createdBy: String, sprintId: String, taskType: Type, taskStatus: Status): TaskEntity {
+    private suspend fun generateTask(taskIdSuf: Int, assignedTo: String, createdBy: String, sprintId: String, taskType: Type, taskStatus: Status): TaskEntity {
         val sprintProjectId = db.getSprintsProvider().getSprintById(sprintId)!!.project
         val projectId = db.getProjectsProvider().getAll().find { it.projectId == sprintProjectId }?.projectId as String
         val parentTaskId = db.getTasksProvider().getAllForSprint(sprintId).shuffled().firstOrNull { Type.valueOf(it.type.toUpperCase()) == Type.TASK }?.taskId

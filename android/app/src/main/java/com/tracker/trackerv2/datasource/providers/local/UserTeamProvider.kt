@@ -5,11 +5,11 @@ import com.tracker.trackerv2.datasource.providers.local.room.entity.utils.UserTe
 
 class UserTeamProvider(private val dao: UserTeamDao):
     IUserTeamProvider {
-    override fun getForTeam(teamId: String): List<UserTeamEntity> = dao.getForTeam(teamId)
+    override suspend fun getForTeam(teamId: String): List<UserTeamEntity> = dao.getForTeam(teamId)
 
-    override fun getForUser(userId: String): UserTeamEntity? = dao.getForUser(userId)
+    override suspend fun getForUser(userId: String): UserTeamEntity? = dao.getForUser(userId)
 
-    override fun create(newUserTeam: UserTeamEntity): UserTeamEntity? = dao.getById(dao.insert(newUserTeam))
+    override suspend fun create(newUserTeam: UserTeamEntity): UserTeamEntity? = dao.getById(dao.insert(newUserTeam))
 
-    override fun delete(userTeam: UserTeamEntity) = dao.delete(userTeam)
+    override suspend fun delete(userTeam: UserTeamEntity) = dao.delete(userTeam)
 }

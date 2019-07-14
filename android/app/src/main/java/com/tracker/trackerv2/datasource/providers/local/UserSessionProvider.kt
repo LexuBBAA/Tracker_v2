@@ -6,9 +6,9 @@ import com.lexu.auth.delegates.SessionProvider
 class UserSessionProvider(context: Context): SessionProvider {
     private val sharedPreferences = context.getSharedPreferences(RUNTIME_CONFIGS, Context.MODE_PRIVATE)
 
-    override fun getUserId(): String? = synchronized(this) { sharedPreferences.getString(USER_ID_KEY, "") }
+    override suspend fun getUserId(): String? = synchronized(this) { sharedPreferences.getString(USER_ID_KEY, "") }
 
-    override fun saveSession(userId: String) = synchronized(this) {
+    override suspend fun saveSession(userId: String) = synchronized(this) {
         sharedPreferences.edit()
             .putString(USER_ID_KEY, userId)
             .apply()

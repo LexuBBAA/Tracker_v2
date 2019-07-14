@@ -15,9 +15,6 @@ import android.widget.ArrayAdapter
 import androidx.annotation.MainThread
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.lexu.models.Priority
-import com.lexu.models.Status
-import com.lexu.models.Type
 import com.tracker.trackerv2.adapters.TaskListAdapter
 import com.tracker.trackerv2.configs.Config
 import com.tracker.trackerv2.configs.SearchTaskConfigBundle
@@ -25,9 +22,12 @@ import com.tracker.trackerv2.datasource.providers.local.UserSessionProvider
 import com.tracker.trackerv2.datasource.providers.local.room.database.AppDatabase
 import com.tracker.trackerv2.datasource.providers.local.room.entity.TaskEntity
 import kotlinx.android.synthetic.main.activity_task_list.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class SearchTaskActivity : AppCompatActivity(), TaskListAdapter.OnItemClickListener {
     private lateinit var sessionProvider: UserSessionProvider
@@ -42,10 +42,13 @@ class SearchTaskActivity : AppCompatActivity(), TaskListAdapter.OnItemClickListe
         sessionProvider = UserSessionProvider(this)
         appDatabase = AppDatabase.getDatabase(this)
 
-        searchConfig = intent.getSerializableExtra(KEY_SEARCH_CONFIG_EXTRA) as SearchTaskConfigBundle? ?: SearchTaskConfigBundle(sessionProvider.getUserId() ?: "")
+        val config = intent.getSerializableExtra(KEY_SEARCH_CONFIG_EXTRA) as SearchTaskConfigBundle?
+        CoroutineScope(Dispatchers.IO).launch {
+            searchConfig = config ?:SearchTaskConfigBundle(sessionProvider.getUserId() ?: "")
+        }
 
         setupUi()
-        val adapter = TaskListAdapter(this, searchConfig)
+        val adapter = TaskListAdapter(this)
         searchTaskRecyclerView.layoutManager = LinearLayoutManager(this)
         searchTaskRecyclerView.adapter = adapter
 

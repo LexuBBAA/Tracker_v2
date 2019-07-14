@@ -18,7 +18,7 @@ import com.tracker.trackerv2.configs.Config
 import com.tracker.trackerv2.configs.SearchTaskConfigBundle
 import com.tracker.trackerv2.datasource.providers.local.room.entity.TaskEntity
 
-class TaskListAdapter(private val context: Context, private val searchConfig: SearchTaskConfigBundle) : RecyclerView.Adapter<TaskListAdapter.ViewHolder>() {
+class TaskListAdapter(private val context: Context, private var searchConfig: SearchTaskConfigBundle? = null) : RecyclerView.Adapter<TaskListAdapter.ViewHolder>() {
     private var items = emptyList<TaskEntity>()
     private var displayedItems = emptyList<TaskEntity>()
     private var onItemClickListener: OnItemClickListener? =
@@ -31,8 +31,10 @@ class TaskListAdapter(private val context: Context, private val searchConfig: Se
         notifyDataSetChanged()
     }
 
-    private fun filter(searchConfig: SearchTaskConfigBundle) {
-        displayedItems = items
+    private fun filter(searchConfig: SearchTaskConfigBundle?) {
+        displayedItems = if(searchConfig == null) items
+        else items
+            .asSequence()
             .filter { Config.TypeFilter.get(searchConfig.typeFilter.filter) == Config.TypeFilter.FILTER_ALL || it.type == searchConfig.typeFilter.filter!!.name }
             .filter { Config.StatusFilter.get(searchConfig.statusFilter.filter) == Config.StatusFilter.FILTER_ALL || it.status == searchConfig.statusFilter.filter!!.name }
             .filter { Config.PriorityFilter.get(searchConfig.priorityFilter.filter) == Config.PriorityFilter.FILTER_ALL || it.priority == searchConfig.priorityFilter.filter!!.name }
@@ -44,8 +46,9 @@ class TaskListAdapter(private val context: Context, private val searchConfig: Se
                 }
             }
             .filter { it.title.contains(searchConfig.searchQuery ?: "") }
+            .toList()
 
-        when(searchConfig.sortOrder) {
+        if(searchConfig != null) when(searchConfig.sortOrder) {
             Config.SortOrder.CREATED_ASC -> displayedItems.sortedBy { it.createdDate }
             Config.SortOrder.CREATED_DESC -> displayedItems.sortedByDescending { it.createdDate }
             Config.SortOrder.ALPHA_ASC -> displayedItems.sortedBy { it.title }
@@ -59,12 +62,15 @@ class TaskListAdapter(private val context: Context, private val searchConfig: Se
     }
 
     fun onSearchConfigChanged(newSearchConfig: SearchTaskConfigBundle) {
-        this.searchConfig.searchQuery = newSearchConfig.searchQuery
-        this.searchConfig.statusFilter = newSearchConfig.statusFilter
-        this.searchConfig.typeFilter = newSearchConfig.typeFilter
-        this.searchConfig.priorityFilter = newSearchConfig.priorityFilter
-        this.searchConfig.assigneeFilter = newSearchConfig.assigneeFilter
-        this.searchConfig.sortOrder = newSearchConfig.sortOrder
+        if(this.searchConfig == null) this.searchConfig = newSearchConfig
+        else {
+            this.searchConfig!!.searchQuery = newSearchConfig.searchQuery
+            this.searchConfig!!.statusFilter = newSearchConfig.statusFilter
+            this.searchConfig!!.typeFilter = newSearchConfig.typeFilter
+            this.searchConfig!!.priorityFilter = newSearchConfig.priorityFilter
+            this.searchConfig!!.assigneeFilter = newSearchConfig.assigneeFilter
+            this.searchConfig!!.sortOrder = newSearchConfig.sortOrder
+        }
         filter(this.searchConfig)
     }
 

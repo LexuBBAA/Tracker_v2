@@ -1,6 +1,6 @@
 package com.lexu.auth.delegates
 
 interface SessionProvider {
-    fun getUserId(): String?
-    fun saveSession(userId: String)
+    suspend fun getUserId(): String?
+    suspend fun saveSession(userId: String)
 }

@@ -78,7 +78,9 @@ class MainActivity : AppCompatActivity(), NavigationDelegate.NavigationPresenter
             }?.apply {
                 userId?.let {
                     sessionProvider.saveSession(it)
-                    navigateToDashboard()
+                    runOnUiThread {
+                        navigateToDashboard()
+                    }
                 }
             }
         }
@@ -86,9 +88,10 @@ class MainActivity : AppCompatActivity(), NavigationDelegate.NavigationPresenter
 
     @MainThread
     override fun onRegisterClicked(registerBody: RegisterBody) {
-        CoroutineScope(Dispatchers.IO).async {
+        CoroutineScope(Dispatchers.IO).launch {
             appDatabase.getUsersProvider().create(
                 UserEntity(
+                    userId = "usr-2019-asfas${(appDatabase.getUsersProvider().getAll().count() + 1).toString().padEnd(10, 'x')}",
                     username = registerBody.username,
                     email = registerBody.email,
                     password = registerBody.password
@@ -97,7 +100,9 @@ class MainActivity : AppCompatActivity(), NavigationDelegate.NavigationPresenter
                 if(userId == null) return@apply
                 appDatabase.getTokensProvider().create(TokenEntity())
                 sessionProvider.saveSession(userId)
-                navigateToDashboard()
+                runOnUiThread {
+                    navigateToDashboard()
+                }
             }
         }
     }
@@ -109,7 +114,9 @@ class MainActivity : AppCompatActivity(), NavigationDelegate.NavigationPresenter
             appDatabase.getUsersProvider().update(user)
         }
 
-        showFragment(DisplayMode.LOGIN)
+        runOnUiThread {
+            showFragment(DisplayMode.LOGIN)
+        }
     }
 
     override fun onLoginFailure(exception: Exception) {

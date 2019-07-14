@@ -5,6 +5,7 @@
 package com.lexu.auth.views
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -64,11 +65,13 @@ class RegisterFragment(presenter: NavigationDelegate.NavigationPresenter) :
                 !passwordInputField.text?.toString().isNullOrEmpty() &&
                 passwordInputField.text.toString().contentEquals(confirmPasswordInputField.text?.toString() ?: "")
 
-            if(validInput) presenter.onRegisterClicked(RegisterBody(
+            val body = RegisterBody(
                 email = emailInputField.text.toString(),
                 username = usernameInputField.text.toString(),
                 password = passwordInputField.text.toString()
-            ))
+            )
+            if(validInput) presenter.onRegisterClicked(body)
+            else Log.e(RegisterFragment::class.simpleName, "> Invalid data: $body")
         }
     }
 }
