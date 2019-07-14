@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.activity_personal_status_details.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlin.coroutines.CoroutineContext
 
 class PersonalStatusDetailsActivity : AppCompatActivity() {
@@ -52,7 +53,7 @@ class PersonalStatusDetailsActivity : AppCompatActivity() {
     private fun fetchTasksForUser(userId: String) = CoroutineScope(Dispatchers.IO).async {
         val tasksForUser = appDatabase.getTasksProvider()
             .getAllAssignedToUser(userId)
-        val closedTasks: Int = tasksForUser.count { it.status.capitalize().contentEquals("CLOSED") }
+        val closedTasks: Int = tasksForUser.count { it.status.toUpperCase().contentEquals("CLOSED") }
         val estimates: Double = tasksForUser.sumByDouble { it.estimate }
 
         val worklogsForUser = appDatabase.getWorklogsProvider().getAllForUser(userId)
@@ -61,6 +62,7 @@ class PersonalStatusDetailsActivity : AppCompatActivity() {
         val dailyLoggedTimeOnTasks = worklogsForUser.filter { worklog ->
             worklog.relatesTo in tasksForUser.map { task -> task.taskId }
         }.groupBy { it.createdDate }
+        delay(1000)
 
         val taskData = StatsInfoTaskData(
             totalAssignedTasks = tasksForUser.size,
@@ -68,8 +70,8 @@ class PersonalStatusDetailsActivity : AppCompatActivity() {
             totalEstimates = estimates,
             totalLoggedTime = loggedTime,
             averageLoggedTimePerDay = dailyLoggedTimeOnTasks.map { dayToLogged ->
-                dayToLogged.value.sumByDouble { log -> log.value }
-            }.sum().div(dailyLoggedTimeOnTasks.size)
+                dayToLogged.value.fold(0.0) { total, log -> total.plus(log.value) }
+            }.average()
         )
 
         onDataProvided(taskData)

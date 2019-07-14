@@ -16,7 +16,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.Fragment
 import com.lexu.models.Type
 import com.lexu.tracking.delegates.OngoingTaskContract
-import com.lexu.tracking.utils.TeamTask
+import com.lexu.tracking.models.TeamTask
 import kotlinx.coroutines.*
 
 class OngoingTaskFragment(private val contract: OngoingTaskContract.OngoingTaskDelegate) : Fragment(),

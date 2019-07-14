@@ -3,6 +3,7 @@ package com.tracker.trackerv2.datasource.providers.local.room.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 import java.sql.Date
 
 @Entity(tableName = "tasks")
@@ -32,4 +33,4 @@ data class TaskEntity(
     @ColumnInfo(name = "project") val project: String,
     @ColumnInfo(name = "epic") val epic: String? = null,
     @ColumnInfo(name = "isEpic") val isEpic: Boolean = false
-)
+): Serializable

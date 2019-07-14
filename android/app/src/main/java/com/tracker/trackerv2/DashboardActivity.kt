@@ -18,8 +18,8 @@ import com.lexu.tracking.TeamStatsFragment
 import com.lexu.tracking.delegates.OngoingTaskContract
 import com.lexu.tracking.delegates.PersonalStatsContract
 import com.lexu.tracking.delegates.TeamStatsContract
+import com.lexu.tracking.models.TeamTask
 import com.lexu.tracking.utils.DayLog
-import com.lexu.tracking.utils.TeamTask
 import com.tracker.trackerv2.datasource.providers.local.UserSessionProvider
 import com.tracker.trackerv2.datasource.providers.local.room.database.AppDatabase
 import kotlinx.android.synthetic.main.activity_dashboard.*
@@ -54,14 +54,15 @@ class DashboardActivity : AppCompatActivity(), OngoingTaskContract.OngoingTaskDe
                 .getAllAssignedToUser(userId)
                 .sortedBy { Type.valueOf(it.type).value }
                 .sortedBy { Priority.valueOf(it.priority).value }
-                .firstOrNull { it.status.capitalize().contentEquals("IN_PROGRESS") }
+                .firstOrNull { it.status.toUpperCase().contentEquals("IN_PROGRESS") }
 
             val widgetTask = if(userOngoingTasks != null)
                 TeamTask(
-                Type.valueOf(userOngoingTasks.type),
-                Status.valueOf(userOngoingTasks.status),
-                userOngoingTasks.title,
-                userOngoingTasks.taskId
+                    Type.valueOf(userOngoingTasks.type),
+                    Status.valueOf(userOngoingTasks.status),
+                    userOngoingTasks.title,
+                    userOngoingTasks.taskId,
+                    Priority.valueOf(userOngoingTasks.priority)
             ) else null
 
             ongoingTaskFragmentContainer.visibility = View.VISIBLE
@@ -128,7 +129,8 @@ class DashboardActivity : AppCompatActivity(), OngoingTaskContract.OngoingTaskDe
                             Type.valueOf(task.type),
                             Status.valueOf(task.status),
                             task.title,
-                            task.taskId
+                            task.taskId,
+                            Priority.valueOf(task.priority)
                         )
                     }
 
@@ -155,7 +157,7 @@ class DashboardActivity : AppCompatActivity(), OngoingTaskContract.OngoingTaskDe
     }
 
     override fun onCategorySelected(taskType: Type) {
-        val intent = Intent(this, TaskListActivity::class.java)
+        val intent = Intent(this, SearchTaskActivity::class.java)
         startActivity(intent)
     }
 

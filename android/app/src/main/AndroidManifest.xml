@@ -22,7 +22,7 @@
         </activity>
         <activity android:name=".DashboardActivity">
         </activity>
-        <activity android:name=".TaskListActivity">
+        <activity android:name=".SearchTaskActivity">
         </activity>
         <activity android:name=".PersonalStatusDetailsActivity">
         </activity>

@@ -21,7 +21,7 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 import com.lexu.models.Status
 import com.lexu.models.Type
 import com.lexu.tracking.delegates.TeamStatsContract
-import com.lexu.tracking.utils.TeamTask
+import com.lexu.tracking.models.TeamTask
 
 class TeamStatsFragment: Fragment(), TeamStatsContract.TeamStatsView {
 

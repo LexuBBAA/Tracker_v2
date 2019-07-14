@@ -5,7 +5,7 @@
 package com.lexu.tracking.delegates
 
 import com.lexu.models.Type
-import com.lexu.tracking.utils.TeamTask
+import com.lexu.tracking.models.TeamTask
 
 interface TeamStatsContract {
 

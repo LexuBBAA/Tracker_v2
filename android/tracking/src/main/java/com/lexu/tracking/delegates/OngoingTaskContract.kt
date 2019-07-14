@@ -4,7 +4,7 @@
 
 package com.lexu.tracking.delegates
 
-import com.lexu.tracking.utils.TeamTask
+import com.lexu.tracking.models.TeamTask
 
 interface OngoingTaskContract {
 
