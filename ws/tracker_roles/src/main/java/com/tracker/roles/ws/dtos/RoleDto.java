@@ -17,8 +17,6 @@ public class RoleDto implements Serializable {
 	private RoleVeterancy veterancy;
 	
 	private int departmentId;
-	
-	private int accessProfileId;
 
 	public int getId() {
 		return id;
@@ -58,14 +56,6 @@ public class RoleDto implements Serializable {
 
 	public void setDepartmentId(int departmentId) {
 		this.departmentId = departmentId;
-	}
-
-	public int getAccessProfileId() {
-		return accessProfileId;
-	}
-
-	public void setAccessProfileId(int accessProfileId) {
-		this.accessProfileId = accessProfileId;
 	}
 	
 }

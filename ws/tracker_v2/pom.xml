@@ -12,6 +12,7 @@
 	<artifactId>tracker_v2</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>tracker_v2</name>
+	<packaging>jar</packaging>
 	<description>Tracker_v2 Spring Boot project</description>
 
 	<properties>

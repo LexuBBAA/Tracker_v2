@@ -12,6 +12,7 @@
 	<artifactId>tracker_firebase</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>tracker_firebase</name>
+	<packaging>jar</packaging>
 	<description>Tracker v2 Firebase integration server</description>
 
 	<properties>
@@ -34,7 +35,12 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>com.vaadin.external.google</groupId>
+            <artifactId>android-json</artifactId>
+            <version>0.0.20131108.vaadin1</version>
+        </dependency>
+    </dependencies>
 
 	<dependencyManagement>
 		<dependencies>
