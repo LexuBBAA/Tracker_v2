@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) Bogdan Andrei Alexandru - 2017.
+  -->
+
+<resources>
+    <color name="dark_semitransparent_background_color">#25000000</color>
+</resources>
