@@ -188,7 +188,7 @@
                         <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Created by:"
+                            android:text="Created at:"
                             android:textSize="16sp"/>
 
                         <androidx.appcompat.widget.AppCompatTextView

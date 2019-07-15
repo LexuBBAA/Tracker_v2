@@ -1,6 +1,7 @@
 package com.tracker.trackerv2
 
 import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -90,6 +91,8 @@ class ProjectDetailsActivity : AppCompatActivity(), SprintsListAdapter.OnItemCli
         projectDetailsBackButtonToolbar.setTitle("[${projectEntity.projectId}] ${projectEntity.title}")
         projectDetailsDescriptionInputField.setText(projectEntity.description ?: "---")
 
+        projectDetailsDescriptionInputField.isEnabled = isEditMode
+
         projectDetailsAssignedTeamNameView.text = teams.first { it.teamId == projectEntity.assignedTeam }.name
         projectDetailsCreatedByView.text = "@".plus(projectCreator.username)
 
@@ -116,16 +119,22 @@ class ProjectDetailsActivity : AppCompatActivity(), SprintsListAdapter.OnItemCli
 
     private fun setEditMode() {
         isEditMode = true
-        //  TODO: enable edit mode
+        projectDetailsDescriptionInputField.isEnabled = true
+        projectDetailsDescriptionInputField.isClickable = true
+        projectDetailsDescriptionInputField.isFocusable = true
     }
 
     private fun setDisplayMode() {
         isEditMode = false
-        //  TODO: disable edit mode
+        projectDetailsDescriptionInputField.isEnabled = false
+        projectDetailsDescriptionInputField.isClickable = false
+        projectDetailsDescriptionInputField.isFocusable = false
     }
 
     override fun onItemClicked(item: SprintEntity) {
-        //  Navigate to SprintDetails activity
+        val intent = Intent(this, SprintDetailsActivity::class.java)
+        intent.putExtra(SprintDetailsActivity.KEY_SPRINT_ID_EXTRA, item.sprintId)
+        startActivity(intent)
     }
 
     companion object {

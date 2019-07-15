@@ -45,6 +45,8 @@ class DashboardActivity : AppCompatActivity(), OngoingTaskContract.OngoingTaskDe
     private lateinit var userId: String
     private lateinit var appDatabase : AppDatabase
 
+    private lateinit var ongoingTaskFragment : OngoingTaskFragment
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
@@ -54,12 +56,21 @@ class DashboardActivity : AppCompatActivity(), OngoingTaskContract.OngoingTaskDe
         }
         appDatabase = AppDatabase.getDatabase(this)
 
-        val ongoingTaskFragment = OngoingTaskFragment(this)
+        ongoingTaskFragment = OngoingTaskFragment(this)
 
         supportFragmentManager.beginTransaction()
             .replace(ongoingTaskFragmentContainer.id, ongoingTaskFragment, null)
             .commit()
 
+        dashboardAddEntryButton.setOnClickListener { navigateToNewEntryActivity() }
+
+        setupOngoingTask()
+        setupPersonalData()
+        setupTeamStats()
+        setupTeamMembersStatus()
+    }
+
+    private fun setupOngoingTask() {
         CoroutineScope(Dispatchers.IO).async {
             val userOngoingTasks = appDatabase.getTasksProvider()
                 .getAllAssignedToUser(userId)
@@ -74,14 +85,14 @@ class DashboardActivity : AppCompatActivity(), OngoingTaskContract.OngoingTaskDe
                     userOngoingTasks.title,
                     userOngoingTasks.taskId,
                     Priority.valueOf(userOngoingTasks.priority)
-            ) else null
+                ) else null
 
             ongoingTaskFragmentContainer.visibility = View.VISIBLE
             ongoingTaskFragment.setTask(widgetTask)
         }
+    }
 
-        setupPersonalData()
-
+    private fun setupTeamStats() {
         CoroutineScope(Dispatchers.IO).async {
             appDatabase.getUserTeamProvider().getForUser(userId)?.apply {
                 val teamMembersIds = appDatabase.getUserTeamProvider().getForTeam(teamId).map { it.userId }
@@ -106,7 +117,9 @@ class DashboardActivity : AppCompatActivity(), OngoingTaskContract.OngoingTaskDe
                 }
             }
         }
+    }
 
+    private fun setupTeamMembersStatus() {
         CoroutineScope(Dispatchers.IO).async {
             val userTeam = appDatabase.getUserTeamProvider().getForUser(userId)
             userTeam?.let { userToTeam ->
@@ -241,6 +254,20 @@ class DashboardActivity : AppCompatActivity(), OngoingTaskContract.OngoingTaskDe
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if(requestCode == REQUEST_CODE_ADD_ENTRY) {
+            setupOngoingTask()
+            setupPersonalData()
+            setupTeamStats()
+            setupTeamMembersStatus()
+        } else super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    private fun navigateToNewEntryActivity() {
+        val intent = Intent(this, AddNewEntryActivity::class.java)
+        startActivityForResult(intent, REQUEST_CODE_ADD_ENTRY)
+    }
+
     override fun onNavigateToTaskDetails(task: TeamTask, isEditMode: Boolean) {
         Log.i(DashboardActivity::class.simpleName, "Navigate to task details requested for: $task")
         val intent = Intent(this, TaskDetailsActivity::class.java)
@@ -265,5 +292,9 @@ class DashboardActivity : AppCompatActivity(), OngoingTaskContract.OngoingTaskDe
         val intent = Intent(this, PersonalStatusDetailsActivity::class.java)
         intent.putExtra(PersonalStatusDetailsActivity.KEY_USER_ID_EXTRA, userId)
         startActivity(intent)
+    }
+
+    companion object {
+        const val REQUEST_CODE_ADD_ENTRY = 1000
     }
 }

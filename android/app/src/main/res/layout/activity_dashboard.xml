@@ -3,44 +3,60 @@
   ~ Copyright (c) Bogdan Andrei Alexandru - 2017.
   -->
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            tools:context="com.tracker.trackerv2.DashboardActivity"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="com.tracker.trackerv2.DashboardActivity">
 
-    <LinearLayout
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-        <FrameLayout
+
+            <FrameLayout
                 android:id="@+id/ongoingTaskFragmentContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:visibility="gone"/>
 
-        <fragment
+            <fragment
                 android:id="@+id/dashboardPersonalStatsFragment"
+                android:name="com.lexu.tracking.PersonalStatsFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:name="com.lexu.tracking.PersonalStatsFragment"
                 tools:layout="@layout/fragment_personal_stats"/>
 
-        <fragment
+            <fragment
                 android:id="@+id/dashboardTeamStatsFragment"
+                android:name="com.lexu.tracking.TeamStatsFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:name="com.lexu.tracking.TeamStatsFragment"
                 tools:layout="@layout/fragment_team_stats"/>
 
-        <fragment
-            android:id="@+id/dashboardTeamMembersFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:name="com.lexu.tracking.TeamMembersFragment"
-            tools:layout="@layout/fragment_team_members_progress"/>
+            <fragment
+                android:id="@+id/dashboardTeamMembersFragment"
+                android:name="com.lexu.tracking.TeamMembersFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:layout="@layout/fragment_team_members_progress"/>
 
-    </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
-</ScrollView>
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/dashboardAddEntryButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_add_circle_black_24dp"/>
+</RelativeLayout>

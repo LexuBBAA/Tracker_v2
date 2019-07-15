@@ -12,6 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.NoActionBar"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+        <activity android:name=".CreateTeamActivity">
+        </activity>
+        <activity android:name=".AddNewEntryActivity">
+        </activity>
         <activity android:name=".SprintDetailsActivity">
         </activity>
         <activity android:name=".CreateSprintActivity">

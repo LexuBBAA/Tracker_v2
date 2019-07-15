@@ -52,7 +52,7 @@ class BackButtonToolbar(context: Context, attributeSet: AttributeSet?): LinearLa
 
     fun setTitle(title: String) {
         titleRes = title
-        invalidate()
+        this.title.text = titleRes
     }
 
     fun setOnBackClickListener(onBackClickListener: OnBackClickListener) {
@@ -65,7 +65,8 @@ class BackButtonToolbar(context: Context, attributeSet: AttributeSet?): LinearLa
 
     fun showEditButton(show: Boolean = true) {
         this.showEdit = show
-        invalidate()
+        this.editButton.visibility = if(this.showEdit) View.VISIBLE
+        else View.GONE
     }
 
     interface OnBackClickListener {
