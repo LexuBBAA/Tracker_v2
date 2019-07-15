@@ -71,7 +71,7 @@ class TaskDetailsActivity : AppCompatActivity(), PersonalStatsContract.PersonalS
         Log.i(DashboardActivity::class.simpleName, "Worklog selected: $worklog")
     }
 
-    override fun onNavigateToWorklogList() {
+    override fun onNavigateToUserDetails() {
         val intent = Intent(this, PersonalStatusDetailsActivity::class.java)
         startActivity(intent)
     }

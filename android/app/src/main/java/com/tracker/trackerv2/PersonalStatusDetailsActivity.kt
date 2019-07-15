@@ -55,6 +55,11 @@ class PersonalStatusDetailsActivity : AppCompatActivity() {
             userId = intent.extras!!.getString(KEY_USER_ID_EXTRA)
         }
 
+        val isEditMode = intent.extras?.getBoolean(KEY_IS_EDIT_MODE_EXTRA) ?: false
+        if(isEditMode) {
+
+        }
+
         fetchUserID()
     }
 
@@ -138,5 +143,6 @@ class PersonalStatusDetailsActivity : AppCompatActivity() {
 
     companion object {
         const val KEY_USER_ID_EXTRA = "user_id_extra"
+        const val KEY_IS_EDIT_MODE_EXTRA = "is_edit_mode"
     }
 }

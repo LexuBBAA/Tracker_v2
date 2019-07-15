@@ -12,6 +12,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.NoActionBar"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+        <activity android:name=".SprintDetailsActivity">
+        </activity>
+        <activity android:name=".CreateSprintActivity">
+        </activity>
+        <activity android:name=".CreateProjectActivity">
+        </activity>
+        <activity android:name=".ProjectDetailsActivity">
+        </activity>
+        <activity android:name=".CreateTaskActivity">
+        </activity>
         <activity android:name=".SearchUsersActivity">
         </activity>
         <activity android:name=".MainActivity">

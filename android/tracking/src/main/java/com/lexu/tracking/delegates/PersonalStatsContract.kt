@@ -17,7 +17,7 @@ interface PersonalStatsContract {
 
     interface PersonalStatsDelegate {
         fun onWorklogSelected(worklog: DayLog)
-        fun onNavigateToWorklogList()
+        fun onNavigateToUserDetails()
     }
 
 }

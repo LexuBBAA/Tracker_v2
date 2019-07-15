@@ -90,7 +90,7 @@ class PersonalStatsFragment : Fragment(), PersonalStatsContract.PersonalStatsVie
             statsChartView.axisLeft.textColor = accentColor
         }
 
-        statsChartView.setOnClickListener { delegate?.onNavigateToWorklogList() }
+        statsChartView.setOnClickListener { delegate?.onNavigateToUserDetails() }
 
         statsChartView.axisLeft.setDrawZeroLine(false)
         statsChartView.axisLeft.granularity = 3F

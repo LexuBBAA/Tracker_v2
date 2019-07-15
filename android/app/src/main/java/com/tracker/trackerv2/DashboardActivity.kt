@@ -7,6 +7,7 @@ package com.tracker.trackerv2
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.View
 import androidx.annotation.MainThread
 import androidx.appcompat.app.AppCompatActivity
@@ -131,7 +132,7 @@ class DashboardActivity : AppCompatActivity(), OngoingTaskContract.OngoingTaskDe
                     }
                     .map { userWorklogs ->
                         DashboardMembersProgressItem(
-                            userId,
+                            userWorklogs.first.userId!!,
                             userWorklogs.first.username,
                             userWorklogs.first.avatarUrl,
                             DayLog(
@@ -203,8 +204,9 @@ class DashboardActivity : AppCompatActivity(), OngoingTaskContract.OngoingTaskDe
         Log.i(DashboardActivity::class.simpleName, "Worklog selected: $worklog")
     }
 
-    override fun onNavigateToWorklogList() {
+    override fun onNavigateToUserDetails() {
         val intent = Intent(this, PersonalStatusDetailsActivity::class.java)
+        intent.putExtra(PersonalStatusDetailsActivity.KEY_USER_ID_EXTRA, userId)
         startActivity(intent)
     }
 
