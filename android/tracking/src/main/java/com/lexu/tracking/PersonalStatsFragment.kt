@@ -60,6 +60,8 @@ class PersonalStatsFragment : Fragment(), PersonalStatsContract.PersonalStatsVie
     }
 
     private fun configChart() {
+        statsChartView.setPinchZoom(false)
+        statsChartView.isDoubleTapToZoomEnabled = false
         statsChartView.isClickable = false
         statsChartView.isFocusable = false
         statsChartView.description.isEnabled = false
@@ -93,7 +95,7 @@ class PersonalStatsFragment : Fragment(), PersonalStatsContract.PersonalStatsVie
         statsChartView.setOnClickListener { delegate?.onNavigateToUserDetails() }
 
         statsChartView.axisLeft.setDrawZeroLine(false)
-        statsChartView.axisLeft.granularity = 3F
+        statsChartView.axisLeft.granularity = 2F
         statsChartView.axisRight.isEnabled = false
     }
 

@@ -121,7 +121,7 @@ class PersonalStatusDetailsActivity : AppCompatActivity(), TaskListAdapter.OnIte
     private fun fetchUserID() = CoroutineScope(Dispatchers.IO).async {
         currentUserId = usersProvider.getUserId() ?: ""
         val userId = this@PersonalStatusDetailsActivity.userId ?: currentUserId
-        if(userId.isNullOrEmpty()) {
+        if(userId.isEmpty()) {
             Log.e(PersonalStatusDetailsActivity::class.simpleName, "UserId is null or empty; no session provided")
             return@async
         }
@@ -319,6 +319,18 @@ class PersonalStatusDetailsActivity : AppCompatActivity(), TaskListAdapter.OnIte
         navigateToTaskDetails(item)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when(requestCode) {
+            REQUEST_CODE_TEAM_DETAILS -> if (resultCode == Activity.RESULT_OK) {
+                setResult(resultCode)
+                CoroutineScope(Dispatchers.IO).launch {
+                    fetchUserDetails(userId ?: currentUserId)
+                }
+            }
+            else -> super.onActivityResult(requestCode, resultCode, data)
+        }
+    }
+
     private fun navigateToTaskDetails(task: TaskEntity) {
         val intent = Intent(this, TaskDetailsActivity::class.java)
         intent.putExtra(TaskDetailsActivity.KEY_TASK_ID_EXTRA, task.taskId)
@@ -329,7 +341,7 @@ class PersonalStatusDetailsActivity : AppCompatActivity(), TaskListAdapter.OnIte
         userTeam?.let {
             val intent = Intent(this, TeamDetailsActivity::class.java)
             intent.putExtra(TeamDetailsActivity.KEY_TEAM_ID_EXTRA, it.teamId)
-            startActivity(intent)
+            startActivityForResult(intent, REQUEST_CODE_TEAM_DETAILS)
         }
     }
 
@@ -343,6 +355,6 @@ class PersonalStatusDetailsActivity : AppCompatActivity(), TaskListAdapter.OnIte
 
     companion object {
         const val KEY_USER_ID_EXTRA = "user_id_extra"
-        const val KEY_IS_EDIT_MODE_EXTRA = "is_edit_mode"
+        const val REQUEST_CODE_TEAM_DETAILS = 1001
     }
 }
