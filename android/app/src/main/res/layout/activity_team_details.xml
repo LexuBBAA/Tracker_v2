@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.tracker.trackerv2.TeamDetailsActivity">
+
+    <com.tracker.trackerv2.custom.BackButtonToolbar
+        android:id="@+id/teamDetailsToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="Team"
+        app:showEdit="false"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:padding="8dp"
+        android:background="@color/light_gray_bg">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/teamDetailsTeamLogo"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/ic_group_black_24dp"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/teamDetailsTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center_horizontal"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:text="---"
+            android:maxLines="3"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/teamDetailsDescription"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:text="---"/>
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/teamDetailsUsersList"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:padding="16dp">
+
+        <ProgressBar
+            android:id="@+id/taskDetailsLoadingView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/teamDetailsErrorMessage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:text="No data available."
+            android:gravity="center"
+            android:visibility="gone"/>
+    </FrameLayout>
+
+</LinearLayout>

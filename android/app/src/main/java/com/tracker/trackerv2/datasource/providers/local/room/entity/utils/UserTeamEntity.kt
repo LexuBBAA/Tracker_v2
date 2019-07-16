@@ -7,8 +7,8 @@ import java.sql.Date
 
 @Entity(tableName = "userteams")
 data class UserTeamEntity(
-    @PrimaryKey(autoGenerate = true) val id: Int? = null,
-    @ColumnInfo(name = "userId") val userId: String,
-    @ColumnInfo(name = "teamId") val teamId: String,
-    @ColumnInfo(name = "joinedDate") val joinedDate: Date = Date(System.currentTimeMillis())
+    @PrimaryKey(autoGenerate = true) var id: Int? = null,
+    @ColumnInfo(name = "userId") var userId: String,
+    @ColumnInfo(name = "teamId") var teamId: String,
+    @ColumnInfo(name = "joinedDate") var joinedDate: Date = Date(System.currentTimeMillis())
 )

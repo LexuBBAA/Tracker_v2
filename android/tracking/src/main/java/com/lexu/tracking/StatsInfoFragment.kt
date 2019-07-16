@@ -11,7 +11,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.lexu.tracking.models.StatsInfoTaskData
 
-class StatsInfoFragment: Fragment() {
+class StatsInfoFragment: Fragment(), ITrackingTask {
     private lateinit var rootView: View
 
     private lateinit var statsInfoTotalAssignedTasksValue: TextView
@@ -73,5 +73,9 @@ class StatsInfoFragment: Fragment() {
 
     private fun dismissLoading() {
         statsInfoLoadingContainer.visibility = View.GONE
+    }
+
+    override fun setLoading() {
+        statsInfoLoadingContainer.visibility = View.VISIBLE
     }
 }

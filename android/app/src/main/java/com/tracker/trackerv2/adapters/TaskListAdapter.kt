@@ -48,13 +48,13 @@ class TaskListAdapter(private val context: Context, private var searchConfig: Se
             .filter { it.title.contains(searchConfig.searchQuery ?: "") }
             .toList()
 
-        if(searchConfig != null) when(searchConfig.sortOrder) {
-            Config.SortOrder.CREATED_ASC -> displayedItems.sortedBy { it.createdDate }
-            Config.SortOrder.CREATED_DESC -> displayedItems.sortedByDescending { it.createdDate }
-            Config.SortOrder.ALPHA_ASC -> displayedItems.sortedBy { it.title }
-            Config.SortOrder.ALPHA_DESC -> displayedItems.sortedByDescending { it.title }
-            else -> {
-                //  do nothing
+        if(searchConfig != null) {
+            displayedItems = when(searchConfig.sortOrder) {
+                Config.SortOrder.CREATED_ASC -> displayedItems.sortedBy { it.createdDate }
+                Config.SortOrder.CREATED_DESC -> displayedItems.sortedByDescending { it.createdDate }
+                Config.SortOrder.ALPHA_ASC -> displayedItems.sortedBy { it.title }
+                Config.SortOrder.ALPHA_DESC -> displayedItems.sortedByDescending { it.title }
+                else -> displayedItems
             }
         }
 

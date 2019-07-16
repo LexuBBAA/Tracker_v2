@@ -23,7 +23,7 @@ import com.lexu.models.Type
 import com.lexu.tracking.delegates.TeamStatsContract
 import com.lexu.tracking.models.TeamTask
 
-class TeamStatsFragment: Fragment(), TeamStatsContract.TeamStatsView {
+class TeamStatsFragment: Fragment(), TeamStatsContract.TeamStatsView, ITrackingTask {
 
     private lateinit var rootView: View
 
@@ -159,5 +159,11 @@ class TeamStatsFragment: Fragment(), TeamStatsContract.TeamStatsView {
 
     override fun unregisterDelegate() {
         this.delegate = null
+    }
+
+    override fun setLoading() {
+        loadingContainer.visibility = View.VISIBLE
+        loadingView.visibility = View.VISIBLE
+        errorMessageLabel.visibility = View.GONE
     }
 }

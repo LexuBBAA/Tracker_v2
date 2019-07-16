@@ -67,6 +67,7 @@ class SearchTaskActivity : AppCompatActivity(), TaskListAdapter.OnItemClickListe
                 else View.GONE
 
                 adapter.setItems(tasks)
+                adapter.onSearchConfigChanged(searchConfig)
             }
         }
     }
@@ -157,6 +158,23 @@ class SearchTaskActivity : AppCompatActivity(), TaskListAdapter.OnItemClickListe
                 searchConfig.sortOrder = Config.SortOrder.get(searchTaskSortBySpinner.selectedItem as String)
                 (searchTaskRecyclerView.adapter as TaskListAdapter).onSearchConfigChanged(searchConfig)
             }
+        }
+
+        searchConfig.let {
+            val typeIndex = typeSpinnerAdapter.getPosition(it.typeFilter.value)
+            searchTaskTypeSpinner.setSelection(typeIndex)
+
+            val statusIndex = typeSpinnerAdapter.getPosition(it.statusFilter.value)
+            searchTaskStatusSpinner.setSelection(statusIndex)
+
+            val priorityIndex = prioritySpinnerAdapter.getPosition(it.priorityFilter.value)
+            searchTaskPrioritySpinner.setSelection(priorityIndex)
+
+            val assigneeIndex = assigneeSpinnerAdapter.getPosition(it.assigneeFilter.value)
+            searchTaskAssigneeSpinner.setSelection(assigneeIndex)
+
+            val sortIndex = sortOrderSpinnerAdapter.getPosition(it.sortOrder.value)
+            searchTaskSortBySpinner.setSelection(sortIndex)
         }
 
         searchTaskFiltersContainer.visibility = View.GONE

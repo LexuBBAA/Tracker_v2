@@ -23,7 +23,7 @@ import com.lexu.tracking.delegates.PersonalStatsContract
 import com.lexu.tracking.utils.DayLog
 import java.util.*
 
-class OverallTaskStatsFragment : Fragment(), PersonalStatsContract.PersonalStatsView {
+class OverallTaskStatsFragment : Fragment(), PersonalStatsContract.PersonalStatsView, ITrackingTask {
 
     private lateinit var rootView: View
 
@@ -150,5 +150,11 @@ class OverallTaskStatsFragment : Fragment(), PersonalStatsContract.PersonalStats
 
     override fun unregisterDelegate() {
         this.delegate = null
+    }
+
+    override fun setLoading() {
+        loadingContainer.visibility = View.VISIBLE
+        loadingView.visibility = View.VISIBLE
+        errorMessageLabel.visibility = View.GONE
     }
 }

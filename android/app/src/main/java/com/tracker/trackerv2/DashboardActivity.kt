@@ -4,6 +4,7 @@
 
 package com.tracker.trackerv2
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -51,9 +52,6 @@ class DashboardActivity : AppCompatActivity(), OngoingTaskContract.OngoingTaskDe
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
 
-        CoroutineScope(Dispatchers.IO).launch {
-            userId = UserSessionProvider(this@DashboardActivity).getUserId() ?: ""
-        }
         appDatabase = AppDatabase.getDatabase(this)
 
         ongoingTaskFragment = OngoingTaskFragment(this)
@@ -71,12 +69,15 @@ class DashboardActivity : AppCompatActivity(), OngoingTaskContract.OngoingTaskDe
     }
 
     private fun setupOngoingTask() {
+        ongoingTaskFragment.setLoading()
         CoroutineScope(Dispatchers.IO).async {
+            userId = UserSessionProvider(this@DashboardActivity).getUserId() ?: ""
             val userOngoingTasks = appDatabase.getTasksProvider()
                 .getAllAssignedToUser(userId)
-                .sortedBy { Type.valueOf(it.type).value }
-                .sortedBy { Priority.valueOf(it.priority).value }
-                .firstOrNull { it.status.toUpperCase().contentEquals("IN_PROGRESS") }
+                .filter { it.status == Status.IN_PROGRESS.name }
+                .sortedByDescending { Type.valueOf(it.type).value }
+                .sortedByDescending { Priority.valueOf(it.priority).value }
+                .firstOrNull()
 
             val widgetTask = if(userOngoingTasks != null)
                 TeamTask(
@@ -87,12 +88,16 @@ class DashboardActivity : AppCompatActivity(), OngoingTaskContract.OngoingTaskDe
                     Priority.valueOf(userOngoingTasks.priority)
                 ) else null
 
-            ongoingTaskFragmentContainer.visibility = View.VISIBLE
-            ongoingTaskFragment.setTask(widgetTask)
+            runOnUiThread {
+                ongoingTaskFragmentContainer.visibility = View.VISIBLE
+                ongoingTaskFragment.setTask(widgetTask)
+            }
         }
     }
 
     private fun setupTeamStats() {
+        val teamStatsFragment = (dashboardTeamStatsFragment as TeamStatsFragment)
+        teamStatsFragment.setLoading()
         CoroutineScope(Dispatchers.IO).async {
             appDatabase.getUserTeamProvider().getForUser(userId)?.apply {
                 val teamMembersIds = appDatabase.getUserTeamProvider().getForTeam(teamId).map { it.userId }
@@ -111,7 +116,6 @@ class DashboardActivity : AppCompatActivity(), OngoingTaskContract.OngoingTaskDe
                 delay(1500)
 
                 runOnUiThread {
-                    val teamStatsFragment = (dashboardTeamStatsFragment as TeamStatsFragment)
                     teamStatsFragment.registerDelegate(this@DashboardActivity)
                     teamStatsFragment.updateStats(teamTasks)
                 }
@@ -120,6 +124,8 @@ class DashboardActivity : AppCompatActivity(), OngoingTaskContract.OngoingTaskDe
     }
 
     private fun setupTeamMembersStatus() {
+        val teamStatusFragment = dashboardTeamMembersFragment as TeamMembersFragment
+        teamStatusFragment.setLoading()
         CoroutineScope(Dispatchers.IO).async {
             val userTeam = appDatabase.getUserTeamProvider().getForUser(userId)
             userTeam?.let { userToTeam ->
@@ -157,13 +163,15 @@ class DashboardActivity : AppCompatActivity(), OngoingTaskContract.OngoingTaskDe
                 delay(1800)
 
                 runOnUiThread {
-                    (dashboardTeamMembersFragment as TeamMembersFragment).setupData(items)
+                    teamStatusFragment.setupData(items)
                 }
             }
         }
     }
 
     private fun setupPersonalData() {
+        val personalStatsFragment = (dashboardPersonalStatsFragment as PersonalStatsFragment)
+        personalStatsFragment.setLoading()
         CoroutineScope(Dispatchers.IO).async {
             val stats = appDatabase.getWorklogsProvider().getAllForUser(userId)
                 .filter {
@@ -206,7 +214,6 @@ class DashboardActivity : AppCompatActivity(), OngoingTaskContract.OngoingTaskDe
             delay(1500)
 
             runOnUiThread {
-                val personalStatsFragment = (dashboardPersonalStatsFragment as PersonalStatsFragment)
                 personalStatsFragment.registerDelegate(this@DashboardActivity)
                 personalStatsFragment.updateStats(stats)
             }
@@ -220,7 +227,7 @@ class DashboardActivity : AppCompatActivity(), OngoingTaskContract.OngoingTaskDe
     override fun onNavigateToUserDetails() {
         val intent = Intent(this, PersonalStatusDetailsActivity::class.java)
         intent.putExtra(PersonalStatusDetailsActivity.KEY_USER_ID_EXTRA, userId)
-        startActivity(intent)
+        startActivityForResult(intent, REQUEST_CODE_PROFILE)
     }
 
     override fun onCategorySelected(taskType: Type) {
@@ -255,12 +262,17 @@ class DashboardActivity : AppCompatActivity(), OngoingTaskContract.OngoingTaskDe
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if(requestCode == REQUEST_CODE_ADD_ENTRY) {
-            setupOngoingTask()
-            setupPersonalData()
-            setupTeamStats()
-            setupTeamMembersStatus()
-        } else super.onActivityResult(requestCode, resultCode, data)
+        when(requestCode) {
+            REQUEST_CODE_ADD_ENTRY, REQUEST_CODE_PROFILE -> {
+                if(resultCode == Activity.RESULT_OK) {
+                    setupOngoingTask()
+                    setupPersonalData()
+                    setupTeamStats()
+                    setupTeamMembersStatus()
+                }
+            }
+            else -> super.onActivityResult(requestCode, resultCode, data)
+        }
     }
 
     private fun navigateToNewEntryActivity() {
@@ -296,5 +308,6 @@ class DashboardActivity : AppCompatActivity(), OngoingTaskContract.OngoingTaskDe
 
     companion object {
         const val REQUEST_CODE_ADD_ENTRY = 1000
+        const val REQUEST_CODE_PROFILE = 1001
     }
 }

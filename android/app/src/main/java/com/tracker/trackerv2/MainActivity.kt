@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity(), NavigationDelegate.NavigationPresenter
             )?.apply {
                 if(userId == null) return@apply
                 appDatabase.getTokensProvider().create(TokenEntity())
-                sessionProvider.saveSession(userId)
+                sessionProvider.saveSession(userId!!)
                 runOnUiThread {
                     navigateToDashboard()
                 }

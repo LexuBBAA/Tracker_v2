@@ -16,7 +16,7 @@ import com.lexu.tracking.adapters.TeamMembersDashboardAdapter
 import com.lexu.tracking.delegates.TeamMembersFragmentDelegate
 import com.lexu.tracking.models.DashboardMembersProgressItem
 
-class TeamMembersFragment: Fragment(), TeamMembersDashboardAdapter.OnItemClickListener {
+class TeamMembersFragment: Fragment(), TeamMembersDashboardAdapter.OnItemClickListener, ITrackingTask {
     private lateinit var rootView: View
     private lateinit var headerContainer: LinearLayout
     private lateinit var titleView: TextView
@@ -81,5 +81,12 @@ class TeamMembersFragment: Fragment(), TeamMembersDashboardAdapter.OnItemClickLi
         Log.d(TeamMembersDashboardAdapter::class.simpleName, "> User selected: $item")
         val delegate = context as TeamMembersFragmentDelegate?
         delegate?.onNavigateToUserDetailsClicked(item.userId)
+    }
+
+    override fun setLoading() {
+        recyclerView.visibility = View.GONE
+        loadingContainer.visibility = View.VISIBLE
+        loadingProgressBar.visibility = View.GONE
+        errorMessage.visibility = View.VISIBLE
     }
 }

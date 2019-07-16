@@ -69,6 +69,10 @@ class BackButtonToolbar(context: Context, attributeSet: AttributeSet?): LinearLa
         else View.GONE
     }
 
+    fun setEditMode(isEdit: Boolean) {
+        this.editButton.setImageResource(if(isEdit) R.drawable.ic_cancel_black_24dp else R.drawable.ic_edit_white_24dp)
+    }
+
     interface OnBackClickListener {
         fun onBackClicked()
     }
