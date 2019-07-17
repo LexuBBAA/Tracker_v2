@@ -44,6 +44,8 @@ class DashboardActivity : AppCompatActivity(), OngoingTaskContract.OngoingTaskDe
     private lateinit var userId: String
     private lateinit var appDatabase: AppDatabase
 
+    private lateinit var primaryProjectId : String
+
     private lateinit var ongoingTaskFragment: OngoingTaskFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -116,6 +118,12 @@ class DashboardActivity : AppCompatActivity(), OngoingTaskContract.OngoingTaskDe
                         Priority.valueOf(task.priority)
                     )
                 }
+
+            primaryProjectId = appDatabase.getProjectsProvider()
+                .getAll()
+                .sortedBy { it.createdDate }
+                .first { it.createdBy in teamMembersIds }
+                .projectId as String
 
             runOnUiThread {
                 val teamStatsFragment = (dashboardTeamStatsFragment as TeamStatsFragment)
@@ -235,7 +243,8 @@ class DashboardActivity : AppCompatActivity(), OngoingTaskContract.OngoingTaskDe
     }
 
     override fun onCategorySelected(taskType: Type) {
-        val intent = Intent(this, SearchTaskActivity::class.java)
+        val intent = Intent(this, ProjectDetailsActivity::class.java)
+        intent.putExtra(ProjectDetailsActivity.KEY_PROJECT_ID_EXTRA, primaryProjectId)
         startActivity(intent)
     }
 

@@ -5,4 +5,4 @@ import com.lexu.models.Status
 import com.lexu.models.Type
 import java.sql.Date
 
-data class TeamTask(val type: Type, val status: Status, val title: String, val id: String? = null, val priority: Priority)
+data class TeamTask(val type: Type, val status: Status, val title: String, val id: String? = null, val priority: Priority, val sprintId: String? = null)

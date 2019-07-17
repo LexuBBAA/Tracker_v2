@@ -8,9 +8,4 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-
-    <declare-styleable name="BackButtonToolbar">
-        <attr name="title" format="string"/>
-        <attr name="showEdit" format="boolean"/>
-    </declare-styleable>
 </resources>
