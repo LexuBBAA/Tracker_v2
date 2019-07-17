@@ -18,6 +18,7 @@ import com.tracker.trackerv2.datasource.providers.local.room.entity.TaskEntity
 import com.tracker.trackerv2.datasource.providers.local.room.entity.UserEntity
 import com.tracker.trackerv2.utils.SimpleSpinnerListener
 import kotlinx.android.synthetic.main.activity_create_task.*
+import kotlinx.android.synthetic.main.activity_project_details.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -35,6 +36,9 @@ class CreateTaskActivity : AppCompatActivity() {
         status = "",
         type = ""
     )
+
+    private lateinit var taskToUpdate : TaskEntity
+    private var taskId : String? = null
 
     private lateinit var userId: String
     private lateinit var projects : List<ProjectEntity>
@@ -85,31 +89,9 @@ class CreateTaskActivity : AppCompatActivity() {
 
         setupUi()
 
-        CoroutineScope(Dispatchers.IO).launch {
-            userId = sessionProvider.getUserId() ?: ""
+        taskId = intent.getStringExtra(KEY_TASK_ID_EXTRA)
 
-            appDatabase.getUserTeamProvider()
-                .getForUser(userId)
-                ?.let { userTeam ->
-                    projects = appDatabase.getProjectsProvider()
-                        .getAll()
-                        .filter { project -> project.assignedTeam == userTeam.teamId }
-                        .sortedBy { it.title }
-
-                    val userIds = appDatabase.getUserTeamProvider()
-                        .getForTeam(userTeam.teamId)
-                        .map { it.userId }
-
-                    val users = appDatabase.getUsersProvider()
-                        .getAll()
-                        .filter { it.userId in userIds }
-                        .sortedBy { it.username }
-
-                    runOnUiThread { onUsersProvided(users) }
-                }
-
-            runOnUiThread { onProjectsProvided() }
-        }
+        fetchData()
     }
 
     private fun setupUi() {
@@ -269,6 +251,62 @@ class CreateTaskActivity : AppCompatActivity() {
         createTaskSubmitButton.setOnClickListener { createTask() }
     }
 
+    private fun fetchData() {
+        CoroutineScope(Dispatchers.IO).launch {
+            userId = sessionProvider.getUserId() ?: ""
+
+            appDatabase.getUserTeamProvider()
+                .getForUser(userId)
+                ?.let { userTeam ->
+                    projects = appDatabase.getProjectsProvider()
+                        .getAll()
+                        .filter { project -> project.assignedTeam == userTeam.teamId }
+                        .sortedBy { it.title }
+
+                    val userIds = appDatabase.getUserTeamProvider()
+                        .getForTeam(userTeam.teamId)
+                        .map { it.userId }
+
+                    val users = appDatabase.getUsersProvider()
+                        .getAll()
+                        .filter { it.userId in userIds }
+                        .sortedBy { it.username }
+
+                    runOnUiThread { onUsersProvided(users) }
+                }
+
+            runOnUiThread { onProjectsProvided() }
+
+            if(taskId != null) {
+                taskToUpdate = appDatabase.getTasksProvider()
+                    .getDetails(taskId as String) as TaskEntity
+                runOnUiThread { setupCopyData() }
+            }
+        }
+    }
+
+    @MainThread
+    private fun setupCopyData() {
+        createTaskTitleInputField.setText(taskToUpdate.title)
+        val typeIndex = typeAdapter.getPosition(taskToUpdate.type)
+        createTaskTypeSpinner.setSelection(typeIndex)
+
+        val statusIndex = statusAdapter.getPosition(taskToUpdate.status)
+        createTaskStatusSpinner.setSelection(statusIndex)
+
+        val priorityIndex = statusAdapter.getPosition(taskToUpdate.priority)
+        createTaskPrioritySpinner.setSelection(priorityIndex)
+
+        val selectedProject = projects.find { it.projectId == taskToUpdate.project }
+        val projectIndex = projectAdapter.getPosition("[${selectedProject!!.projectId}] ${selectedProject.title}")
+        createTaskProjectSpinner.setSelection(projectIndex)
+
+        createTaskDescriptionInputField.setText(taskToUpdate.description)
+
+        val assigneeIndex = assigneeAdapter.getPosition("@".plus(taskToUpdate.assignedTo))
+        createTaskAssigneeSpinner.setSelection(assigneeIndex)
+    }
+
     private fun fetchProjectData(project: ProjectEntity) {
         CoroutineScope(Dispatchers.IO).launch {
             projectSprints = appDatabase.getSprintsProvider()
@@ -296,24 +334,37 @@ class CreateTaskActivity : AppCompatActivity() {
     }
 
     private fun createTask() {
+        newTaskEntity.title = createTaskTitleInputField.text?.toString() ?: ""
+        newTaskEntity.description = createTaskDescriptionInputField.text?.toString() ?: ""
+
         CoroutineScope(Dispatchers.IO).launch {
             val taskId = appDatabase.getTasksProvider()
                 .getAll().count().toString().padStart(5, '0')
 
             val taskType = Type.valueOf(createTaskTypeSpinner.selectedItem as String)
 
-            newTaskEntity.taskId = when(taskType) {
-                Type.STORY -> "str"
-                Type.TASK -> "tsk"
-                Type.SUBTASK -> "stsk"
-                Type.ISSUE -> "bug"
-                Type.QUESTION -> "qst"
-            }.plus("-$taskId").toUpperCase()
+            if(this@CreateTaskActivity.taskId != null) {
+                newTaskEntity.id = taskToUpdate.id
+                newTaskEntity.taskId = taskToUpdate.taskId
+            } else {
+                newTaskEntity.taskId = when(taskType) {
+                    Type.STORY -> "str"
+                    Type.TASK -> "tsk"
+                    Type.SUBTASK -> "stsk"
+                    Type.ISSUE -> "bug"
+                    Type.QUESTION -> "qst"
+                }.plus("-$taskId").toUpperCase()
+            }
 
             newTaskEntity.createdBy = userId
 
-            appDatabase.getTasksProvider()
-                .create(newTaskEntity)
+
+            if(this@CreateTaskActivity.taskId != null) {
+                appDatabase.getTasksProvider().update(newTaskEntity)
+            } else {
+                appDatabase.getTasksProvider()
+                    .create(newTaskEntity)
+            }
 
             runOnUiThread { onTaskSaved() }
         }
@@ -350,31 +401,37 @@ class CreateTaskActivity : AppCompatActivity() {
 
         partOfAdapter.apply {
             clear()
+            add("")
             addAll(taskLabels)
             notifyDataSetChanged()
         }
         blocksAdapter.apply {
             clear()
+            add("")
             addAll(taskLabels)
             notifyDataSetChanged()
         }
         linkedToAdapter.apply {
             clear()
+            add("")
             addAll(taskLabels)
             notifyDataSetChanged()
         }
         subtaskAdapter.apply {
             clear()
+            add("")
             addAll(taskLabels)
             notifyDataSetChanged()
         }
         parentAdapter.apply {
             clear()
+            add("")
             addAll(taskLabels)
             notifyDataSetChanged()
         }
         epicAdapter.apply {
             clear()
+            add("")
             addAll(taskLabels)
             notifyDataSetChanged()
         }
@@ -384,5 +441,10 @@ class CreateTaskActivity : AppCompatActivity() {
     private fun onTaskSaved() {
         setResult(Activity.RESULT_OK)
         finish()
+    }
+
+    companion object {
+        const val KEY_IS_UPDATE_EXTRA = "is_update_extra"
+        const val KEY_TASK_ID_EXTRA = "task_id_extra"
     }
 }

@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.lexu.tracking.OverallTaskStatsFragment
 import com.lexu.tracking.delegates.PersonalStatsContract
 import com.lexu.tracking.utils.DayLog
+import com.tracker.trackerv2.custom.BackButtonToolbar
 import com.tracker.trackerv2.datasource.providers.local.ITasksProvider
 import com.tracker.trackerv2.datasource.providers.local.IUsersProvider
 import com.tracker.trackerv2.datasource.providers.local.IWorklogsProvider
@@ -20,9 +21,10 @@ import com.tracker.trackerv2.datasource.providers.local.room.entity.TaskEntity
 import com.tracker.trackerv2.datasource.providers.local.room.entity.UserEntity
 import com.tracker.trackerv2.utils.WorklogsFormatter
 import kotlinx.android.synthetic.main.activity_task_details.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -35,6 +37,8 @@ class TaskDetailsActivity : AppCompatActivity(), PersonalStatsContract.PersonalS
 
     private lateinit var chartFragment : OverallTaskStatsFragment
 
+    private lateinit var taskId : String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task_details)
@@ -45,14 +49,20 @@ class TaskDetailsActivity : AppCompatActivity(), PersonalStatsContract.PersonalS
         usersProvider = appDatabase.getUsersProvider()
         chartFragment = taskDetailsChartFragment as OverallTaskStatsFragment
 
-        GlobalScope.async {
-            val taskId = intent.getStringExtra(KEY_TASK_ID_EXTRA)
+        taskId = intent.getStringExtra(KEY_TASK_ID_EXTRA)
+        fetchTaskDetails(taskId)
+    }
+
+    private fun fetchTaskDetails(taskId: String) {
+        CoroutineScope(Dispatchers.IO).launch {
             val worklogs = worklogsProvider.getAllForTask(taskId)
                 .groupBy { worklog -> worklog.createdDate }
                 .toList()
                 .sortedBy { worklogsByDate -> worklogsByDate.first }
                 .mapIndexed { index, pair ->
-                    DayLog(index, pair.second.fold(0.0) { total, worklog -> total.plus(worklog.value) })
+                    DayLog(
+                        index,
+                        pair.second.fold(0.0) { total, worklog -> total.plus(worklog.value) })
                 }
             delay(2000)
 
@@ -78,38 +88,55 @@ class TaskDetailsActivity : AppCompatActivity(), PersonalStatsContract.PersonalS
 
     @MainThread
     private fun setupDetails(task: TaskEntity, worklogs: List<DayLog>, assignee: UserEntity? = null, creator: UserEntity) {
-        //TODO: investigate the blocker; data not populated in UI... code blocks somewhere below
-        taskDetailsBackButton.setOnClickListener { finish() }
-        taskDetailsTitleLabel.text.toString().replace("---", "[${task.taskId}] ${task.title}")
-        taskDetailsTypeLabel.text.toString().replace("---", task.type)
-        taskDetailsStatusLabel.text.toString().replace("---", task.status)
-        taskDetailsPriorityLabel.text.toString().replace("---", task.priority)
-        taskDetailsStoryPointsLabel.text.toString().replace("---", task.storyPoints?.toString() ?: "---")
+        taskDetailsToolbar.setOnBackClickListener(object : BackButtonToolbar.OnBackClickListener {
+            override fun onBackClicked() {
+                finish()
+            }
+        })
+        taskDetailsToolbar.setOnEditClickListener(object : BackButtonToolbar.OnEditClickListener {
+            override fun onEditClicked() {
+                val intent = Intent(this@TaskDetailsActivity, CreateTaskActivity::class.java)
+                intent.putExtra(CreateTaskActivity.KEY_IS_UPDATE_EXTRA, true)
+                intent.putExtra(CreateTaskActivity.KEY_TASK_ID_EXTRA, task.taskId)
+                startActivityForResult(intent, REQUEST_CODE_UPDATE_TASK)
+            }
+        })
+        taskDetailsToolbar.setTitle("[".plus(task.taskId).plus("] ".plus(task.title)))
+        taskDetailsTypeLabel.text = task.type
+        taskDetailsStatusLabel.text = task.status
+        taskDetailsPriorityLabel.text = task.priority
+        taskDetailsStoryPointsLabel.text = task.storyPoints?.toString() ?: "---"
 
         task.dueDate?.let {
             val formattedDueDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(it)
-            taskDetailsDueDateLabel.text.toString().replace("---", formattedDueDate)
+            taskDetailsDueDateLabel.text = formattedDueDate
         }
-        taskDetailsEstimateLabel.text.toString().replace("---", worklogsFormatter.format(task.estimate))
+        taskDetailsEstimateLabel.text = worklogsFormatter.format(task.estimate)
         val totalLogged = worklogs
             .map { it.loggedTime }
             .fold(0.0) { total, log -> total.plus(log) }
-        taskDetailsTotalEffortLabel.text.toString().replace("---", worklogsFormatter.format(totalLogged))
+        taskDetailsTotalEffortLabel.text = worklogsFormatter.format(totalLogged)
 
         assignee?.let {
-            taskDetailsAsigneeUsernameLabel.text.toString().replace("---", it.username)
+            taskDetailsAsigneeUsernameLabel.text = it.username
         }
-        taskDetailsTaskCreatedByLabel.text.toString().replace("---", creator.username)
-        taskDetailsTaskCreatedAtLabel.text.toString().replace("---",
-            SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(creator.createdAt)
-        )
+        taskDetailsTaskCreatedByLabel.text = creator.username
+        taskDetailsTaskCreatedAtLabel.text = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(creator.createdAt)
 
         chartFragment.registerDelegate(this@TaskDetailsActivity)
         chartFragment.setTitle("Effort timeline")
         chartFragment.updateStats(worklogs)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when(requestCode) {
+            REQUEST_CODE_UPDATE_TASK -> fetchTaskDetails(taskId)
+            else -> super.onActivityResult(requestCode, resultCode, data)
+        }
+    }
+
     companion object {
         const val KEY_TASK_ID_EXTRA = "task_id"
+        const val REQUEST_CODE_UPDATE_TASK = 1004
     }
 }

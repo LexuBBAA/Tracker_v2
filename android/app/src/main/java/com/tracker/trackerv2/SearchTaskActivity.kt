@@ -20,7 +20,9 @@ import com.tracker.trackerv2.configs.Config
 import com.tracker.trackerv2.configs.SearchTaskConfigBundle
 import com.tracker.trackerv2.datasource.providers.local.UserSessionProvider
 import com.tracker.trackerv2.datasource.providers.local.room.database.AppDatabase
+import com.tracker.trackerv2.datasource.providers.local.room.entity.ProjectEntity
 import com.tracker.trackerv2.datasource.providers.local.room.entity.TaskEntity
+import com.tracker.trackerv2.datasource.providers.local.room.entity.utils.UserTeamEntity
 import kotlinx.android.synthetic.main.activity_task_list.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -44,14 +46,29 @@ class SearchTaskActivity : AppCompatActivity(), TaskListAdapter.OnItemClickListe
 
         val config = intent.getSerializableExtra(KEY_SEARCH_CONFIG_EXTRA) as SearchTaskConfigBundle?
         CoroutineScope(Dispatchers.IO).launch {
-            searchConfig = config ?:SearchTaskConfigBundle(sessionProvider.getUserId() ?: "")
+            val userId = sessionProvider.getUserId() ?: ""
+            searchConfig = config ?:SearchTaskConfigBundle(userId)
+
+            val userTeam = appDatabase.getUserTeamProvider()
+                .getForUser(userId) as UserTeamEntity
+
+            val projectId = appDatabase.getProjectsProvider()
+                .getAll()
+                .first { it.assignedTeam == userTeam.teamId }
+
+            searchConfig.tasksProject = projectId.projectId
+
+            setupUi()
+
+            fetch()
         }
 
-        setupUi()
         val adapter = TaskListAdapter(this)
         searchTaskRecyclerView.layoutManager = LinearLayoutManager(this)
         searchTaskRecyclerView.adapter = adapter
+    }
 
+    private fun fetch() {
         GlobalScope.async {
             val tasks = appDatabase.getTasksProvider().getAll()
             delay(1500)
@@ -66,6 +83,7 @@ class SearchTaskActivity : AppCompatActivity(), TaskListAdapter.OnItemClickListe
                 searchTaskNoResultsContainer.visibility = if(tasks.isEmpty()) View.VISIBLE
                 else View.GONE
 
+                val adapter = searchTaskRecyclerView.adapter as TaskListAdapter
                 adapter.setItems(tasks)
                 adapter.onSearchConfigChanged(searchConfig)
             }

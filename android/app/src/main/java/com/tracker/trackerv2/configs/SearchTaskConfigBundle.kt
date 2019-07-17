@@ -13,7 +13,8 @@ class SearchTaskConfigBundle(
     var statusFilter: Config.StatusFilter = Config.StatusFilter.FILTER_ALL,
     var priorityFilter: Config.PriorityFilter = Config.PriorityFilter.FILTER_ALL,
     var assigneeFilter: Config.AssigneeFilter = Config.AssigneeFilter.FILTER_ALL,
-    var sortOrder: Config.SortOrder = Config.SortOrder.DEFAULT
+    var sortOrder: Config.SortOrder = Config.SortOrder.DEFAULT,
+    var tasksProject: String? = null
 ) : Serializable
 
 abstract class Config {
