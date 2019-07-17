@@ -1,5 +1,6 @@
 package com.tracker.trackerv2
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -20,7 +21,6 @@ import kotlinx.android.synthetic.main.activity_create_task.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlin.coroutines.CoroutineContext
 
 class CreateTaskActivity : AppCompatActivity() {
     private lateinit var sessionProvider: UserSessionProvider
@@ -30,14 +30,18 @@ class CreateTaskActivity : AppCompatActivity() {
         createdBy = "",
         title = "",
         sprintId = "",
+        project = "",
         priority = "",
         status = "",
-        type = "",
-        project = ""
+        type = ""
     )
 
     private lateinit var userId: String
     private lateinit var projects : List<ProjectEntity>
+
+    private lateinit var projectUsers : List<UserEntity>
+    private lateinit var projectTasks : List<TaskEntity>
+    private lateinit var projectSprints : List<SprintEntity>
 
     private lateinit var typeAdapter: ArrayAdapter<String>
     private lateinit var statusAdapter: ArrayAdapter<String>
@@ -84,8 +88,25 @@ class CreateTaskActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             userId = sessionProvider.getUserId() ?: ""
 
-            projects = appDatabase.getProjectsProvider()
-                .getAll()
+            appDatabase.getUserTeamProvider()
+                .getForUser(userId)
+                ?.let { userTeam ->
+                    projects = appDatabase.getProjectsProvider()
+                        .getAll()
+                        .filter { project -> project.assignedTeam == userTeam.teamId }
+                        .sortedBy { it.title }
+
+                    val userIds = appDatabase.getUserTeamProvider()
+                        .getForTeam(userTeam.teamId)
+                        .map { it.userId }
+
+                    val users = appDatabase.getUsersProvider()
+                        .getAll()
+                        .filter { it.userId in userIds }
+                        .sortedBy { it.username }
+
+                    runOnUiThread { onUsersProvided(users) }
+                }
 
             runOnUiThread { onProjectsProvided() }
         }
@@ -148,31 +169,153 @@ class CreateTaskActivity : AppCompatActivity() {
                 fetchProjectData(selectedProject)
             }
         }
+
+        createTaskPartOfSpinner.adapter = partOfAdapter
+        createTaskPartOfSpinner.onItemSelectedListener = object : SimpleSpinnerListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                //  TODO
+            }
+        }
+        createTaskBlocksSpinner.adapter = blocksAdapter
+        createTaskBlocksSpinner.onItemSelectedListener = object : SimpleSpinnerListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                //  TODO
+            }
+        }
+        createTaskLinkedToSpinner.adapter = linkedToAdapter
+        createTaskLinkedToSpinner.onItemSelectedListener = object : SimpleSpinnerListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                //  TODO
+            }
+        }
+        createTaskSubtaskOfSpinner.adapter = subtaskAdapter
+        createTaskSubtaskOfSpinner.onItemSelectedListener = object : SimpleSpinnerListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                //  TODO
+            }
+        }
+        createTaskParentTaskSpinner.adapter = parentAdapter
+        createTaskParentTaskSpinner.onItemSelectedListener = object : SimpleSpinnerListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                //  TODO
+            }
+        }
+        createTaskEpicTaskSpinner.adapter = epicAdapter
+        createTaskEpicTaskSpinner.onItemSelectedListener = object : SimpleSpinnerListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                //  TODO
+            }
+        }
+
+        createTaskAssigneeSpinner.adapter = assigneeAdapter
+        createTaskAssigneeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                createTaskAssigneeSpinner.setSelection(0)
+            }
+
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                val selection = createTaskAssigneeSpinner.selectedItem as String?
+                newTaskEntity.assignedTo = if(!selection.isNullOrEmpty()) projectUsers.find { "@".plus(it.username) == selection }?.userId
+                else null
+            }
+        }
+
+        createTaskStoryPointsSpinner.onItemSelectedListener = object : SimpleSpinnerListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                newTaskEntity.storyPoints = (createTaskStoryPointsSpinner.selectedItem as String?)?.toInt() ?: 0
+            }
+        }
+
+        createTaskSubmitButton.setOnClickListener { createTask() }
     }
 
     private fun fetchProjectData(project: ProjectEntity) {
         CoroutineScope(Dispatchers.IO).launch {
-            val sprints = appDatabase.getSprintsProvider()
+            projectSprints = appDatabase.getSprintsProvider()
                 .getAllForProject(project.projectId as String)
                 .sortedBy { it.createdDate }
 
-            runOnUiThread { onSprintsProvided(sprints) }
+            runOnUiThread { onSprintsProvided(projectSprints) }
 
             val userTeam = appDatabase.getUserTeamProvider()
                 .getForTeam(project.assignedTeam as String)
 
-            val projectUsers = appDatabase.getUsersProvider()
+            projectUsers = appDatabase.getUsersProvider()
                 .getAll()
                 .filter { user -> user.userId in userTeam.map { it.userId } }
                 .sortedBy { it.username }
 
             runOnUiThread { onUsersProvided(projectUsers) }
 
-            val projectTasks = appDatabase.getTasksProvider()
+            projectTasks = appDatabase.getTasksProvider()
                 .getAllForProject(project.projectId as String)
                 .sortedBy { it.title }
 
             runOnUiThread { onTasksProvided(projectTasks) }
+        }
+    }
+
+    private fun createTask() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val taskId = appDatabase.getTasksProvider()
+                .getAll().count().toString().padStart(5, '0')
+
+            val taskType = Type.valueOf(createTaskTypeSpinner.selectedItem as String)
+
+            newTaskEntity.taskId = when(taskType) {
+                Type.STORY -> "str"
+                Type.TASK -> "tsk"
+                Type.SUBTASK -> "stsk"
+                Type.ISSUE -> "bug"
+                Type.QUESTION -> "qst"
+            }.plus("-$taskId").toUpperCase()
+
+            newTaskEntity.createdBy = userId
+
+            appDatabase.getTasksProvider()
+                .create(newTaskEntity)
+
+            runOnUiThread { onTaskSaved() }
         }
     }
 
@@ -188,16 +331,58 @@ class CreateTaskActivity : AppCompatActivity() {
 
     @MainThread
     private fun onSprintsProvided(sprints: List<SprintEntity>) {
-
+        sprintAdapter.clear()
+        sprintAdapter.addAll(sprints.map { "[".plus(it.sprintId).plus("] ").plus(it.title) }.sortedBy { it })
+        sprintAdapter.notifyDataSetChanged()
     }
 
     @MainThread
     private fun onUsersProvided(users: List<UserEntity>) {
-
+        assigneeAdapter.clear()
+        assigneeAdapter.addAll(users.map { "@".plus(it.username) }.plus("").sortedBy { it.length })
+        assigneeAdapter.notifyDataSetChanged()
     }
 
     @MainThread
     private fun onTasksProvided(tasks: List<TaskEntity>) {
+        val taskLabels = tasks.map { "[".plus(it.taskId).plus("] ").plus(it.title) }
+            .sortedBy { it }
 
+        partOfAdapter.apply {
+            clear()
+            addAll(taskLabels)
+            notifyDataSetChanged()
+        }
+        blocksAdapter.apply {
+            clear()
+            addAll(taskLabels)
+            notifyDataSetChanged()
+        }
+        linkedToAdapter.apply {
+            clear()
+            addAll(taskLabels)
+            notifyDataSetChanged()
+        }
+        subtaskAdapter.apply {
+            clear()
+            addAll(taskLabels)
+            notifyDataSetChanged()
+        }
+        parentAdapter.apply {
+            clear()
+            addAll(taskLabels)
+            notifyDataSetChanged()
+        }
+        epicAdapter.apply {
+            clear()
+            addAll(taskLabels)
+            notifyDataSetChanged()
+        }
+    }
+
+    @MainThread
+    private fun onTaskSaved() {
+        setResult(Activity.RESULT_OK)
+        finish()
     }
 }
