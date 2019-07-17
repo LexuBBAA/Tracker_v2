@@ -65,11 +65,11 @@ internal class DbPrePopulator(private val db: AppDatabase) {
             ))
             userTeamProvider.create(UserTeamEntity(
                 userId = users[i+5].userId!!,
-                teamId = team.teamId
+                teamId = team.teamId as String
             ))
             userTeamProvider.create(UserTeamEntity(
                 userId = users[i+10].userId!!,
-                teamId = team.teamId
+                teamId = team.teamId as String
             ))
         }
     }

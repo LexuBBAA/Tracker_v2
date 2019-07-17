@@ -50,10 +50,17 @@ class ProjectDetailsActivity : AppCompatActivity(), SprintsListAdapter.OnItemCli
                 finish()
             }
         })
+        projectDetailsBackButtonToolbar.setOnAddClickListener(object: BackButtonToolbar.OnAddButtonClickListener {
+            override fun onAddClicked() {
+                val intent = Intent(this@ProjectDetailsActivity, CreateSprintActivity::class.java)
+                intent.putExtra(KEY_PROJECT_ID_EXTRA, projectId)
+                startActivityForResult(intent, REQUEST_CODE_CREATE_SPRINT)
+            }
+        })
         projectDetailsBackButtonToolbar.setOnEditClickListener(object: BackButtonToolbar.OnEditClickListener {
             override fun onEditClicked() {
-                if(!isEditMode) setEditMode()
-                else setDisplayMode()
+                isEditMode = !isEditMode
+                toggleEditMode()
             }
         })
 
@@ -65,6 +72,12 @@ class ProjectDetailsActivity : AppCompatActivity(), SprintsListAdapter.OnItemCli
         projectDetailsRecyclerView.layoutManager = LinearLayoutManager(this)
         projectDetailsRecyclerView.adapter = adapter
 
+        projectDetailsSubmitButton.setOnClickListener { updateProject() }
+
+        fetchData()
+    }
+
+    private fun fetchData() {
         CoroutineScope(Dispatchers.IO).launch {
             userId = sessionProvider.getUserId() ?: ""
 
@@ -79,8 +92,18 @@ class ProjectDetailsActivity : AppCompatActivity(), SprintsListAdapter.OnItemCli
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when(requestCode) {
+            REQUEST_CODE_CREATE_SPRINT -> { fetchSprintsForProject() }
+            else -> super.onActivityResult(requestCode, resultCode, data)
+        }
+    }
+
     @MainThread
     private fun onProjectProvided() {
+        isEditMode = false
+        toggleEditMode()
+
         //  remove loading
         projectDetailsLoadingView.visibility = View.GONE
 
@@ -89,6 +112,7 @@ class ProjectDetailsActivity : AppCompatActivity(), SprintsListAdapter.OnItemCli
 
         //  populate data
         projectDetailsBackButtonToolbar.setTitle("[${projectEntity.projectId}] ${projectEntity.title}")
+        projectDetailsTitleInputField.setText(projectEntity.title)
         projectDetailsDescriptionInputField.setText(projectEntity.description ?: "---")
 
         projectDetailsDescriptionInputField.isEnabled = isEditMode
@@ -117,18 +141,42 @@ class ProjectDetailsActivity : AppCompatActivity(), SprintsListAdapter.OnItemCli
         }
     }
 
+    private fun toggleEditMode() {
+        if(isEditMode) setEditMode()
+        else setDisplayMode()
+        projectDetailsBackButtonToolbar.setEditMode(isEditMode)
+    }
+
     private fun setEditMode() {
-        isEditMode = true
+        projectDetailsTitleContainer.visibility = View.VISIBLE
+
         projectDetailsDescriptionInputField.isEnabled = true
         projectDetailsDescriptionInputField.isClickable = true
         projectDetailsDescriptionInputField.isFocusable = true
+
+        projectDetailsSubmitButton.visibility = View.VISIBLE
     }
 
     private fun setDisplayMode() {
-        isEditMode = false
+        projectDetailsTitleContainer.visibility = View.GONE
+
         projectDetailsDescriptionInputField.isEnabled = false
         projectDetailsDescriptionInputField.isClickable = false
         projectDetailsDescriptionInputField.isFocusable = false
+
+        projectDetailsSubmitButton.visibility = View.GONE
+    }
+
+    private fun updateProject() {
+        projectEntity.title = projectDetailsTitleInputField.text?.toString() ?: ""
+        projectEntity.description = projectDetailsDescriptionInputField.text?.toString() ?: ""
+
+        CoroutineScope(Dispatchers.IO).launch {
+            appDatabase.getProjectsProvider()
+                .update(projectEntity)
+
+            runOnUiThread { onProjectProvided() }
+        }
     }
 
     override fun onItemClicked(item: SprintEntity) {
@@ -139,5 +187,6 @@ class ProjectDetailsActivity : AppCompatActivity(), SprintsListAdapter.OnItemCli
 
     companion object {
         const val KEY_PROJECT_ID_EXTRA = "project_id"
+        const val REQUEST_CODE_CREATE_SPRINT = 2000
     }
 }

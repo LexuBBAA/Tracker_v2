@@ -4,48 +4,27 @@
   -->
 
 <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TaskDetailsActivity">
+
+    <com.tracker.trackerv2.custom.BackButtonToolbar
+        android:id="@+id/taskDetailsToolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".TaskDetailsActivity">
-
-    <LinearLayout
-            android:id="@+id/taskDetailsHeaderContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_margin="8dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:gravity="center_vertical">
-
-        <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/taskDetailsBackButton"
-                android:layout_width="34dp"
-                android:layout_height="34dp"
-                android:background="@drawable/round_dark_background_48dp"
-                android:src="@drawable/ic_keyboard_arrow_left_white_24dp"/>
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/taskDetailsTitleLabel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:text="---"
-            android:textSize="24sp"
-            android:textStyle="bold"/>
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        app:showEdit="true"
+        app:title="Task"/>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/taskDetailsHeaderContainer"
-        android:layout_alignStart="@+id/taskDetailsHeaderContainer"
-        android:layout_below="@+id/taskDetailsHeaderContainer">
+        android:layout_alignEnd="@+id/taskDetailsToolbar"
+        android:layout_alignStart="@+id/taskDetailsToolbar"
+        android:layout_below="@+id/taskDetailsToolbar"
+        android:padding="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -57,89 +36,209 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/taskDetailsTypeLabel"
+                <LinearLayout
+                    android:id="@+id/typeContainer"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
-                    android:layout_marginBottom="8dp"
                     android:layout_toStartOf="@+id/taskDetailsAsigneeContainer"
-                    android:text="Type: ---"
-                    android:textSize="18sp"/>
+                    android:orientation="horizontal">
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/taskDetailsStatusLabel"
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="0.33"
+                        android:text="Type:"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/taskDetailsTypeLabel"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.66"
+                        android:text="---"
+                        android:textSize="18sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/statusContainer"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignEnd="@+id/taskDetailsTypeLabel"
-                    android:layout_alignStart="@+id/taskDetailsTypeLabel"
-                    android:layout_below="@+id/taskDetailsTypeLabel"
+                    android:layout_alignEnd="@+id/typeContainer"
+                    android:layout_alignStart="@+id/typeContainer"
+                    android:layout_below="@+id/typeContainer"
                     android:layout_marginBottom="8dp"
-                    android:text="Status: ---"
-                    android:textSize="18sp"/>
+                    android:orientation="horizontal">
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/taskDetailsPriorityLabel"
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="0.33"
+                        android:text="Status:"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/taskDetailsStatusLabel"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.66"
+                        android:text="---"
+                        android:textSize="18sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/priorityContainer"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignEnd="@+id/taskDetailsStatusLabel"
-                    android:layout_alignStart="@+id/taskDetailsStatusLabel"
-                    android:layout_below="@+id/taskDetailsStatusLabel"
+                    android:layout_alignEnd="@+id/statusContainer"
+                    android:layout_alignStart="@+id/statusContainer"
+                    android:layout_below="@+id/statusContainer"
                     android:layout_marginBottom="8dp"
-                    android:text="Priority: ---"
-                    android:textSize="18sp"/>
+                    android:orientation="horizontal">
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/taskDetailsStoryPointsLabel"
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="0.33"
+                        android:text="Priority:"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/taskDetailsPriorityLabel"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.66"
+                        android:text="---"
+                        android:textSize="18sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/storyPointsContainer"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignEnd="@+id/taskDetailsPriorityLabel"
-                    android:layout_alignStart="@+id/taskDetailsPriorityLabel"
-                    android:layout_below="@+id/taskDetailsPriorityLabel"
+                    android:layout_alignEnd="@+id/priorityContainer"
+                    android:layout_alignStart="@+id/priorityContainer"
+                    android:layout_below="@+id/priorityContainer"
                     android:layout_marginBottom="8dp"
-                    android:text="SPs: ---"
-                    android:textSize="18sp"/>
+                    android:orientation="horizontal">
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/taskDetailsDueDateLabel"
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="0.33"
+                        android:text="SPs:"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/taskDetailsStoryPointsLabel"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.66"
+                        android:text="---"
+                        android:textSize="18sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/dueDateContainer"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignEnd="@+id/taskDetailsStoryPointsLabel"
-                    android:layout_alignStart="@+id/taskDetailsStoryPointsLabel"
-                    android:layout_below="@+id/taskDetailsStoryPointsLabel"
+                    android:layout_alignEnd="@+id/storyPointsContainer"
+                    android:layout_alignStart="@+id/storyPointsContainer"
+                    android:layout_below="@+id/storyPointsContainer"
                     android:layout_marginBottom="8dp"
-                    android:text="Due date: ---"
-                    android:textSize="18sp"/>
+                    android:orientation="horizontal">
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/taskDetailsEstimateLabel"
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="0.33"
+                        android:text="Due Date:"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/taskDetailsDueDateLabel"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="0.66"
+                        android:text="---"
+                        android:textSize="18sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/estimatesContainer"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignEnd="@+id/taskDetailsDueDateLabel"
-                    android:layout_alignStart="@+id/taskDetailsDueDateLabel"
-                    android:layout_below="@+id/taskDetailsDueDateLabel"
+                    android:layout_alignEnd="@+id/dueDateContainer"
+                    android:layout_alignStart="@+id/dueDateContainer"
+                    android:layout_below="@+id/dueDateContainer"
                     android:layout_marginBottom="8dp"
-                    android:text="Estimate: ---"
-                    android:textSize="18sp"/>
+                    android:orientation="horizontal">
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/taskDetailsTotalEffortLabel"
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="0.33"
+                        android:text="Estimate:"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/taskDetailsEstimateLabel"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.66"
+                        android:text="---"
+                        android:textSize="18sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/effortContainer"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignEnd="@+id/taskDetailsEstimateLabel"
-                    android:layout_alignStart="@+id/taskDetailsEstimateLabel"
-                    android:layout_below="@+id/taskDetailsEstimateLabel"
+                    android:layout_alignEnd="@+id/estimatesContainer"
+                    android:layout_alignStart="@+id/estimatesContainer"
+                    android:layout_below="@+id/estimatesContainer"
                     android:layout_marginBottom="8dp"
-                    android:text="Logged effort: ---"
-                    android:textSize="18sp"/>
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="0.33"
+                        android:text="Total Effort:"
+                        android:textSize="18sp"
+                        android:textStyle="bold"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/taskDetailsTotalEffortLabel"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.66"
+                        android:text="---"
+                        android:textSize="18sp"/>
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/taskDetailsAsigneeContainer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:layout_alignTop="@+id/taskDetailsTypeLabel"
+                    android:layout_alignTop="@+id/typeContainer"
                     android:orientation="vertical">
 
                     <LinearLayout

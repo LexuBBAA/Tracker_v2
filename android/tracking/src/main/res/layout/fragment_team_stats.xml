@@ -49,7 +49,7 @@
             <FrameLayout
                     android:id="@+id/teamStatsLoadingContainer"
                     android:layout_width="0dp"
-                    android:layout_height="0dp"
+                    android:layout_height="300dp"
                     android:layout_alignTop="@+id/diagramContainer"
                     android:layout_alignBottom="@+id/diagramContainer"
                     android:layout_alignStart="@+id/diagramContainer"

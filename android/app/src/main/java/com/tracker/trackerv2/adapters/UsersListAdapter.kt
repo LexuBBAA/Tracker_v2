@@ -39,15 +39,15 @@ class UsersListAdapter(private val context: Context, private var searchConfig: S
         displayedItems = if(searchConfig == null) items
         else items
             .filter { it.userId != searchConfig.userId }
-            .filter { it.username.contains(searchConfig.searchQuery ?: "") || it.email.contains(searchConfig.searchQuery ?: "") || (it.phone != null && it.phone.contains(searchConfig.searchQuery ?: "")) }
+            .filter { it.username.contains(searchConfig.searchQuery ?: "") || it.email.contains(searchConfig.searchQuery ?: "") || (it.phone != null && it.phone!!.contains(searchConfig.searchQuery ?: "")) }
 
-        if(searchConfig != null) when(searchConfig.sortOrder) {
-            Config.SortOrder.CREATED_ASC -> displayedItems.sortedBy { it.createdAt }
-            Config.SortOrder.CREATED_DESC -> displayedItems.sortedByDescending { it.createdAt }
-            Config.SortOrder.ALPHA_DESC -> displayedItems.sortedByDescending { it.username }
-            Config.SortOrder.ALPHA_ASC -> displayedItems.sortedBy { it.username }
-            else -> {
-                //  do nothing
+        if(searchConfig != null) {
+            displayedItems = when(searchConfig.sortOrder) {
+                Config.SortOrder.CREATED_ASC -> displayedItems.sortedBy { it.createdAt }
+                Config.SortOrder.CREATED_DESC -> displayedItems.sortedByDescending { it.createdAt }
+                Config.SortOrder.ALPHA_DESC -> displayedItems.sortedByDescending { it.username }
+                Config.SortOrder.ALPHA_ASC -> displayedItems.sortedBy { it.username }
+                else -> displayedItems
             }
         }
 

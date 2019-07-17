@@ -1,6 +1,7 @@
 package com.tracker.trackerv2.configs
 
 import com.lexu.models.Priority
+import com.lexu.models.SprintStatus
 import com.lexu.models.Status
 import com.lexu.models.Type
 import java.io.Serializable
@@ -12,7 +13,8 @@ class SearchTaskConfigBundle(
     var statusFilter: Config.StatusFilter = Config.StatusFilter.FILTER_ALL,
     var priorityFilter: Config.PriorityFilter = Config.PriorityFilter.FILTER_ALL,
     var assigneeFilter: Config.AssigneeFilter = Config.AssigneeFilter.FILTER_ALL,
-    var sortOrder: Config.SortOrder = Config.SortOrder.DEFAULT
+    var sortOrder: Config.SortOrder = Config.SortOrder.DEFAULT,
+    var tasksProject: String? = null
 ) : Serializable
 
 abstract class Config {
@@ -139,6 +141,20 @@ abstract class Config {
                 CREATED_ASC.value -> CREATED_ASC
                 CREATED_DESC.value -> CREATED_DESC
                 else -> DEFAULT
+            }
+        }
+    }
+
+    enum class SprintStatusFilter(val value: String, val filter: SprintStatus) {
+        NOT_STARTED("Not Started", SprintStatus.NOT_STARTED),
+        IN_PROGRESS("In Progress", SprintStatus.IN_PROGRESS),
+        DONE("Done", SprintStatus.DONE);
+
+        companion object {
+            fun get(value: String): SprintStatusFilter = when(value) {
+                IN_PROGRESS.value -> IN_PROGRESS
+                DONE.value -> DONE
+                else -> NOT_STARTED
             }
         }
     }

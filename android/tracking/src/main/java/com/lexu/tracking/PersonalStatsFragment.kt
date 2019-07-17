@@ -25,7 +25,7 @@ import com.lexu.tracking.utils.DayLog
 import java.util.*
 import kotlin.collections.ArrayList
 
-class PersonalStatsFragment : Fragment(), PersonalStatsContract.PersonalStatsView {
+class PersonalStatsFragment : Fragment(), PersonalStatsContract.PersonalStatsView, ITrackingTask {
     private lateinit var rootView: View
 
     private lateinit var statsChartView: BarChart
@@ -60,6 +60,8 @@ class PersonalStatsFragment : Fragment(), PersonalStatsContract.PersonalStatsVie
     }
 
     private fun configChart() {
+        statsChartView.setPinchZoom(false)
+        statsChartView.isDoubleTapToZoomEnabled = false
         statsChartView.isClickable = false
         statsChartView.isFocusable = false
         statsChartView.description.isEnabled = false
@@ -93,7 +95,7 @@ class PersonalStatsFragment : Fragment(), PersonalStatsContract.PersonalStatsVie
         statsChartView.setOnClickListener { delegate?.onNavigateToUserDetails() }
 
         statsChartView.axisLeft.setDrawZeroLine(false)
-        statsChartView.axisLeft.granularity = 3F
+        statsChartView.axisLeft.granularity = 2F
         statsChartView.axisRight.isEnabled = false
     }
 
@@ -156,5 +158,11 @@ class PersonalStatsFragment : Fragment(), PersonalStatsContract.PersonalStatsVie
     override fun updateStats(stats: List<DayLog>) {
         val entries = generateEntries(stats)
         updateUI(BarDataSet(entries, ""))
+    }
+
+    override fun setLoading() {
+        loadingContainer.visibility = View.VISIBLE
+        loadingView.visibility = View.VISIBLE
+        errorMessageLabel.visibility = View.GONE
     }
 }

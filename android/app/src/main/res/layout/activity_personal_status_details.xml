@@ -13,26 +13,11 @@
 
 
 
-    <LinearLayout
+    <com.tracker.trackerv2.custom.BackButtonToolbar
         android:id="@+id/personalStatusDetailsToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/personalStatusDetailsBackButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_arrow_back_black_24dp"
-            android:layout_margin="8dp"/>
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center_vertical"
-            android:textSize="16sp"
-            android:text="User Profile"/>
-    </LinearLayout>
+        app:title="User Profile"/>
 
     <ScrollView
         android:id="@+id/personalStatusDetailsScrollView"
@@ -44,70 +29,277 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_margin="16dp">
+                android:layout_height="wrap_content">
 
                 <LinearLayout
+                    android:id="@+id/personalStatsDetailsContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:orientation="vertical"
+                    android:layout_margin="16dp">
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_weight="1">
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_weight="1">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/personalStatsFullname"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="---"
+                                android:textStyle="bold"
+                                android:textSize="18sp"/>
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/personalStatsUsername"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="---"
+                                android:textStyle="bold"
+                                android:textSize="16sp"/>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginTop="4dp"
+                                android:layout_marginBottom="4dp"
+                                android:background="@color/light_gray_bg"/>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Email:"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold"/>
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/personalStatsEmail"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="4dp"
+                                    android:text="---"
+                                    android:textSize="16sp"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Phone no.:"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold"/>
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    android:id="@+id/personalStatsPhone"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="4dp"
+                                    android:text="---"
+                                    android:textSize="16sp"/>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/personalStatsUserAvatar"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:src="@drawable/ic_account_circle_white_24dp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Joined on:"
+                            android:textSize="14sp"/>
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/personalStatsFullname"
+                            android:id="@+id/personalStatsCreatedDate"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Bogdan Birsasteanu"
+                            android:text="---"
                             android:textStyle="bold"
-                            android:textSize="18sp"/>
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/personalStatsUsername"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="\@bbirsasteanu"
-                            android:textStyle="bold"
-                            android:textSize="16sp"/>
+                            android:textSize="14sp"/>
 
                     </LinearLayout>
 
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/personalStatsUserAvatar"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:src="@drawable/ic_account_circle_white_24dp"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Team:"
+                            android:textSize="14sp"/>
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/personalStatsTeam"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="---"
+                            android:textStyle="bold"
+                            android:textSize="14sp"
+                            android:textColor="#0ae7f6"/>
+
+                    </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/personalStatsDetailsEditContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Joined on:"
-                    android:textSize="14sp"/>
+                    android:orientation="vertical"
+                    android:layout_margin="16dp"
+                    android:visibility="gone">
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/personalStatsCreatedDate"
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/personalStatsFirstnameInputField"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:hint="Firstname"
+                            android:textStyle="bold"
+                            android:textSize="16sp"
+                            android:inputType="textPersonName"/>
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/personalStatsLastnameInputField"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:hint="Lastname"
+                            android:textStyle="bold"
+                            android:textSize="16sp"
+                            android:inputType="textPersonName"/>
+
+                    </LinearLayout>
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/personalStatsPhoneInputField"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="Phone no."
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:inputType="phone"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/light_gray_bg"
+                        android:layout_marginTop="8dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="8dp">
+
+                        <FrameLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/personalStatsUserAvatarPreview"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:src="@drawable/ic_account_circle_white_24dp"/>
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:id="@+id/personalStatsUploadAvatarButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="Upload Avatar"
+                                android:textAllCaps="false"/>
+                        </FrameLayout>
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/light_gray_bg"
+                        android:layout_marginTop="8dp"/>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="8dp">
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Team:"
+                            android:textSize="14sp"/>
+
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:id="@+id/personalStatsTeamSpinner"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"/>
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/light_gray_bg"
+                        android:layout_marginTop="8dp"/>
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/personalStatsUpdateButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="17/09/2018"
-                        android:textStyle="bold"
-                        android:textSize="14sp"/>
-
+                        android:layout_gravity="end"
+                        android:layout_marginTop="8dp"
+                        android:text="Submit"
+                        android:textAllCaps="false"/>
                 </LinearLayout>
-            </LinearLayout>
+
+            </FrameLayout>
 
             <fragment
                 android:id="@+id/personalStatusStatsInfoFragment"
@@ -119,7 +311,8 @@
             <FrameLayout
                 android:id="@+id/personalStatusNoResultsContainer"
                 android:layout_width="match_parent"
-                android:layout_height="250dp">
+                android:layout_height="wrap_content"
+                android:minHeight="300dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"

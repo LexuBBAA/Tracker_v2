@@ -35,6 +35,7 @@ class TaskListAdapter(private val context: Context, private var searchConfig: Se
         displayedItems = if(searchConfig == null) items
         else items
             .asSequence()
+            .filter { if(searchConfig.tasksProject != null) it.project == searchConfig.tasksProject else true }
             .filter { Config.TypeFilter.get(searchConfig.typeFilter.filter) == Config.TypeFilter.FILTER_ALL || it.type == searchConfig.typeFilter.filter!!.name }
             .filter { Config.StatusFilter.get(searchConfig.statusFilter.filter) == Config.StatusFilter.FILTER_ALL || it.status == searchConfig.statusFilter.filter!!.name }
             .filter { Config.PriorityFilter.get(searchConfig.priorityFilter.filter) == Config.PriorityFilter.FILTER_ALL || it.priority == searchConfig.priorityFilter.filter!!.name }
@@ -45,16 +46,16 @@ class TaskListAdapter(private val context: Context, private var searchConfig: Se
                     else -> true
                 }
             }
-            .filter { it.title.contains(searchConfig.searchQuery ?: "") }
+            .filter { it.title.contains(searchConfig.searchQuery ?: "") || it.taskId!!.contains(searchConfig.searchQuery ?: "") }
             .toList()
 
-        if(searchConfig != null) when(searchConfig.sortOrder) {
-            Config.SortOrder.CREATED_ASC -> displayedItems.sortedBy { it.createdDate }
-            Config.SortOrder.CREATED_DESC -> displayedItems.sortedByDescending { it.createdDate }
-            Config.SortOrder.ALPHA_ASC -> displayedItems.sortedBy { it.title }
-            Config.SortOrder.ALPHA_DESC -> displayedItems.sortedByDescending { it.title }
-            else -> {
-                //  do nothing
+        if(searchConfig != null) {
+            displayedItems = when(searchConfig.sortOrder) {
+                Config.SortOrder.CREATED_ASC -> displayedItems.sortedBy { it.createdDate }
+                Config.SortOrder.CREATED_DESC -> displayedItems.sortedByDescending { it.createdDate }
+                Config.SortOrder.ALPHA_ASC -> displayedItems.sortedBy { it.title }
+                Config.SortOrder.ALPHA_DESC -> displayedItems.sortedByDescending { it.title }
+                else -> displayedItems
             }
         }
 
@@ -88,6 +89,7 @@ class TaskListAdapter(private val context: Context, private var searchConfig: Se
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val detailsContainer: RelativeLayout = view.findViewById(R.id.taskItemDetailsContainer)
+        val taskId: TextView = view.findViewById(R.id.taskItemId)
         val titleLabel: TextView = view.findViewById(R.id.taskItemTitleLabel)
         val description: TextView = view.findViewById(R.id.taskItemDescription)
         val type: TextView = view.findViewById(R.id.taskItemTypeLabel)
@@ -98,6 +100,7 @@ class TaskListAdapter(private val context: Context, private var searchConfig: Se
 
         fun bind(item: TaskEntity, position: Int, onItemClickListener: OnItemClickListener?) {
             titleLabel.text = item.title
+            taskId.text = "#".plus(item.taskId)
             description.text = item.description ?: ""
             type.text = item.type
             status.text = item.status

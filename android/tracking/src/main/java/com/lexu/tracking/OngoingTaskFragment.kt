@@ -20,7 +20,7 @@ import com.lexu.tracking.models.TeamTask
 import kotlinx.coroutines.*
 
 class OngoingTaskFragment(private val contract: OngoingTaskContract.OngoingTaskDelegate) : Fragment(),
-    OngoingTaskContract.OngoingTaskView {
+    OngoingTaskContract.OngoingTaskView, ITrackingTask {
     private var ongoingTask: TeamTask? = null
     private var loggedTime: Long = 0
 
@@ -172,5 +172,9 @@ class OngoingTaskFragment(private val contract: OngoingTaskContract.OngoingTaskD
             updateUI()
             contract.onTaskTrackingStopped(task, loggedTime)
         }
+    }
+
+    override fun setLoading() {
+        //  not used here
     }
 }

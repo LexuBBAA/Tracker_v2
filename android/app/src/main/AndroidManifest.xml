@@ -12,6 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.NoActionBar"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+        <activity android:name=".TeamDetailsActivity">
+        </activity>
         <activity android:name=".CreateTeamActivity">
         </activity>
         <activity android:name=".AddNewEntryActivity">

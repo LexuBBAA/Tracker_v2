@@ -23,7 +23,7 @@ import com.lexu.models.Type
 import com.lexu.tracking.delegates.TeamStatsContract
 import com.lexu.tracking.models.TeamTask
 
-class TeamStatsFragment: Fragment(), TeamStatsContract.TeamStatsView {
+class TeamStatsFragment: Fragment(), TeamStatsContract.TeamStatsView, ITrackingTask {
 
     private lateinit var rootView: View
 
@@ -110,11 +110,11 @@ class TeamStatsFragment: Fragment(), TeamStatsContract.TeamStatsView {
         }
 
         return arrayListOf(
-            PieEntry(openTasks.toFloat(), "Open"),
-            PieEntry(onHold.toFloat(), "On Hold"),
-            PieEntry(inProgress.toFloat(), "In Progress"),
-            PieEntry(done.toFloat(), "Done"),
-            PieEntry(reopened.toFloat(), "Reopened")
+            PieEntry(openTasks.toFloat(), if(openTasks != 0) "Open" else ""),
+            PieEntry(onHold.toFloat(), if(onHold != 0) "On Hold" else ""),
+            PieEntry(inProgress.toFloat(), if(inProgress != 0) "In Progress" else ""),
+            PieEntry(done.toFloat(), if(done != 0) "Done" else ""),
+            PieEntry(reopened.toFloat(), if(reopened != 0) "Reopened" else "")
         )
     }
 
@@ -122,7 +122,7 @@ class TeamStatsFragment: Fragment(), TeamStatsContract.TeamStatsView {
         pieDataSet.valueTextSize = 18F
         pieDataSet.valueFormatter = object : ValueFormatter() {
             override fun getFormattedValue(value: Float): String =
-                if (value != 0F) "${value.toInt()}"
+                if (value.toInt() != 0) value.toInt().toString()
                 else ""
         }
 
@@ -159,5 +159,11 @@ class TeamStatsFragment: Fragment(), TeamStatsContract.TeamStatsView {
 
     override fun unregisterDelegate() {
         this.delegate = null
+    }
+
+    override fun setLoading() {
+        loadingContainer.visibility = View.VISIBLE
+        loadingView.visibility = View.VISIBLE
+        errorMessageLabel.visibility = View.GONE
     }
 }
