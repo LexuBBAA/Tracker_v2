@@ -1,0 +1,93 @@
+User Component:
+================
+
+Users:
+1. ID + Public_ID
+2. F/L Name
+3. Username
+4. Email
+5. Password
+6. Age
+7. Exp.
+8. Skills (IDs -> m2m relationship)
+9. Profile (ID -> m2m relationship; macro-system; multiple roles)
+10. Role (ID -> m2m relationship; micro-system)
+11. Manager
+12. Team
+13. Department
+14. Date of Birth
+15. Contract
+17. Phone
+18. 3rd Party Accounts (LinkedIn, Facebook, yahoo...)
+
+Contract:
+1. ID + Public_ID
+2. Start Date
+*3. End Date
+4. Salary
+5. Job Type (Fulltime / parttime / hourly)
+6. Paid Personal Time
+7. Benefits
+8. Review Reccurency
+
+Benefits:
+1. ID + Public_ID
+2. Name
+3. Description
+4. Attachment
+
+Skills:
+1. ID + Public_ID
+2. Name
+3. Type (Tech skill, soft skill)
+4. Description
+
+Review:
+1. ID + Public_ID
+2. Reviewer
+3. Reviewee
+4. Review Type (Skill / Question)
+5. Skill reviewed
+*6. Grade
+*7. Question
+*8. Answer
+
+Team:
+1. ID + Public_ID
+2. Name
+3. Description
+4. Icon
+5. Projects (m2m relationship)
+6. Members
+7. Team Lead
+8. Manager
+9. Department
+
+Department
+1. ID
+2. Name
+3. Description
+4. Type (Software, Hardware, Legal, Admin...)
+5. Teams
+
+Roles:
+1. ID
+2. Name
+3. Description
+4. Rights (m2m relationship; READ, WRITE, EXECUTE, DELETE)
+5. Profiles (m2m relationship)
+
+UserEntityRightRelation:
+1. ID
+2. UserID
+3. Right
+4. EntityType (Project, Sprint, Task, etc.)
+5. EntityID
+
+Profiles:
+1. ID
+2. Owner
+3. UserID
+4. Right
+5. EntityType
+6. EntityID

@@ -1,0 +1,94 @@
+Project Component:
+==================
+
+Project:
+1. ID
+2. Title
+3. Description
+4. Attachment
+5. Project Manager
+6. Teams
+7. Start date
+*8. End Date
+9. Status (enum)
+10. Funding
+11. Cost
+12. Icon
+13. Flow Step
+14. Estimate
+*15. Cost Overdue
+*16. Deadline Overdue
+
+Task Flows: (And all subtypes)
+1. ID
+2. Flow Steps
+
+Project Flow:
+1. ID
+2. Flow Steps
+
+Flow Steps:
+1. ID
+2. Name
+3. Flow Type (Task, Story, Issue, SubTask, Question, Project, etc.)
+*4. Success Step
+*5. Failure Step
+*6. Appprovers (Users m2m relationship)
+7. Needs Approval
+
+Sprints:
+1. ID
+2. Title
+3. Description
+4. Project
+5. Duration
+6. Tasks
+*7. Labels
+*8. Teams??
+*9. Components
+10. Status (enum: Pending, In Progress, Done)
+
+Tasks:
+1. ID
+2. Title
+3. Description
+4. Type
+*5. Issue Repro rate
+*6. Issue Repro Steps
+7. Priority (enum)
+*8. Time Estimate
+*9. Assignee
+10. Reporter / Owner / Creator
+11. Flow Step
+12. Comments
+13. Created Date
+14. Created By
+15. Last Modified Date
+16. Last Modified By
+*17. Resolution (enum)
+*18. Tasks Relationships
+19. Epic ID
+20. Sprints
+*21. SPs
+*22. TShirt Size
+
+Issue Repro Steps:
+1. ID
+2. Value
+3. Step Index
+4. Task ID (Issue ID)
+
+Tasks Relationships:
+1. ID
+2. Parent Task ID
+3. Child Task ID
+4. Relationship Type (enum: Is related To, Is child of, is duplicate of, is subtask of, ...)
+
+Worklogs:
+1. ID
+2. Task ID
+3. User ID
+4. Value
+*5. Comment
+6. Created Date
+7. Last Modified Date
