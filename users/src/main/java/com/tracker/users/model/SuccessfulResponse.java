@@ -11,5 +11,5 @@ import java.util.List;
 public class SuccessfulResponse {
 
     private String message;
-    private List<Object> successfullySavedItems = new ArrayList<>();
+    private List<Object> successfullySavedItems;
 }
