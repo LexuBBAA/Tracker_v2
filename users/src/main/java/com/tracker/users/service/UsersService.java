@@ -4,7 +4,9 @@ import com.tracker.users.model.User;
 
 import java.util.List;
 
-public interface UserService {
+public interface UsersService {
+
+    void syncWithDb();
 
     List<User> getUsers();
 

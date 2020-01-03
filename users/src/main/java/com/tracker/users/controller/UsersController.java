@@ -2,15 +2,13 @@ package com.tracker.users.controller;
 
 import com.tracker.users.model.SuccessfulResponse;
 import com.tracker.users.model.User;
-import com.tracker.users.repository.UsersRepository;
-import com.tracker.users.service.UserService;
+import com.tracker.users.service.UsersService;
 import com.tracker.users.utils.Constants;
 import com.tracker.users.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -18,23 +16,23 @@ import java.util.List;
 public class UsersController {
 
     @Autowired
-    private UserService userService;
+    private UsersService usersService;
 
     @GetMapping
     public List<User> getUsers() {
-        return userService.getUsers();
+        return usersService.getUsers();
     }
 
     @PostMapping(headers="Accept=application/json")
     public SuccessfulResponse saveUser(@RequestBody User user) {
-        System.out.println("user=" + user);
-
         User godza = Utils.getGodza();
         User lexu = Utils.getLexu();
 
-        User savedGodza = userService.saveAndFlush(godza);
-        User savedLexu = userService.save(lexu);
-        User savedUser = userService.save(user);
+        System.out.println(usersService.getUsers().contains(lexu));
+
+        User savedGodza = usersService.saveAndFlush(godza);
+        User savedLexu = usersService.save(lexu);
+        User savedUser = usersService.save(user);
 
         return SuccessfulResponse.builder()
                 .message(Constants.ADD_USER_SUCCESS)

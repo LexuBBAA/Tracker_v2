@@ -1,26 +1,25 @@
 package com.tracker.users.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-@Entity
-@Data
 @Table(name = "users")
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(exclude = "id")
 public class User {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     private String firstName;
@@ -32,9 +31,10 @@ public class User {
     private Date birthday;
     private Integer experience;
 
-//    @ManyToMany
-//    private List<Skill> skills;
-//
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "users_skills", joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn(name = "skill_id")})
+    private Set<Skill> skills = new HashSet<>();
+
 //    @ManyToMany
 //    private List<Profile> profiles;
 //

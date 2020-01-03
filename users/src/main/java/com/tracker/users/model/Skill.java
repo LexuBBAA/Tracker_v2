@@ -1,16 +1,27 @@
 package com.tracker.users.model;
 
-import lombok.Data;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
-@Entity
+@Table(name = "skills")
 @Data
-@Table(name="skills")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(exclude = "id")
 public class Skill {
 
     @Id
-    long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+
+    private String name;
+    private String description;
+    private String type;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "skills")
+    private Set<User> users = new HashSet<>();
 }
