@@ -1,9 +1,7 @@
 package com.tracker.users.service;
 
 import com.tracker.users.model.Skill;
-import com.tracker.users.model.User;
 import com.tracker.users.repository.SkillsRepository;
-import com.tracker.users.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;

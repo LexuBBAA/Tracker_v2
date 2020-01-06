@@ -1,7 +1,6 @@
 package com.tracker.users.repository;
 
 import com.tracker.users.model.Skill;
-import com.tracker.users.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

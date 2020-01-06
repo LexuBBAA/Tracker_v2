@@ -5,7 +5,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="third_party_accounts")
 public class ThirdPartyAccount {
 
     @Id

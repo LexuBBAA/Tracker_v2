@@ -6,7 +6,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="user_entity_right_relations")
 public class UserEntityRightRelation {
 
     @Id
