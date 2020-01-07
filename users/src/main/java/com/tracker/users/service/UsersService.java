@@ -10,6 +10,8 @@ public interface UsersService {
 
     List<User> getUsers();
 
+    User getUser(long id);
+
     List<User> findUserByName(String name);
 
     User saveAndFlush(User user);

@@ -1,20 +1,12 @@
 package com.tracker.users.repository;
 
-import com.tracker.users.model.Skill;
 import com.tracker.users.model.User;
+import com.tracker.users.model.UserSkill;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
-public interface UsersRepository extends JpaRepository<User, Long> {
-
-    List<User> findAll();
-
-    User findById(long id);
+public interface UsersSkillRepository extends JpaRepository<UserSkill, Long> {
 
     <S extends User> S save(S s);
-
-    <S extends User> S saveAndFlush(S s);
 }

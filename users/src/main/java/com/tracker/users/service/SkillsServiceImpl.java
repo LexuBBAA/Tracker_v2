@@ -39,6 +39,11 @@ public class SkillsServiceImpl implements SkillsService {
     }
 
     @Override
+    public Skill getSkill(long id) {
+        return skillsById.get(id);
+    }
+
+    @Override
     public List<Skill> findSkillByName(String skillName) {
         return skillsById.values()
                 .stream()

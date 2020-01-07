@@ -1,6 +1,8 @@
 package com.tracker.users.model;
 
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.lang.annotation.Retention;
@@ -9,13 +11,15 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Entity
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = "id")
+@EqualsAndHashCode(exclude = {"id", "skills"})
 public class User {
 
     @Id
@@ -31,8 +35,9 @@ public class User {
     private Date birthday;
     private Integer experience;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "users_skills", joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn(name = "skill_id")})
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "user_skill", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "skill_id"))
+    @Fetch(FetchMode.JOIN)
     private Set<Skill> skills = new HashSet<>();
 
 //    @ManyToMany

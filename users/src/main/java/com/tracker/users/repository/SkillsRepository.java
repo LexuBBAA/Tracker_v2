@@ -11,6 +11,8 @@ public interface SkillsRepository extends JpaRepository<Skill, Long> {
 
     List<Skill> findAll();
 
+    Skill findById(long id);
+
     <S extends Skill> S save(S s);
 
     <S extends Skill> S saveAndFlush(S s);

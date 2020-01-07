@@ -10,6 +10,8 @@ public interface SkillsService {
 
     List<Skill> getSkills();
 
+    Skill getSkill(long id);
+
     List<Skill> findSkillByName(String name);
 
     Skill saveAndFlush(Skill skill);

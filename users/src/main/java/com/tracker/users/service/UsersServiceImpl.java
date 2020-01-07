@@ -39,6 +39,11 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
+    public User getUser(long id) {
+        return usersById.get(id);
+    }
+
+    @Override
     public List<User> findUserByName(String useraName) {
         return usersById.values()
                 .stream()
