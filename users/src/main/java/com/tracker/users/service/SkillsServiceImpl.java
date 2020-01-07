@@ -61,4 +61,9 @@ public class SkillsServiceImpl implements SkillsService {
     public Skill save(Skill skill) {
         return skillsRepository.save(skill);
     }
+
+    @Override
+    public Skill delete(long id) {
+        return skillsRepository.deleteById(id);
+    }
 }

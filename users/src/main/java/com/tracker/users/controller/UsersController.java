@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -23,7 +24,7 @@ public class UsersController {
         return usersService.getUsers();
     }
 
-    @PostMapping(headers="Accept=application/json")
+    @PostMapping(headers = "Accept=application/json")
     public SuccessfulResponse saveUser(@RequestBody User user) {
         User godza = Utils.getGodza();
         User lexu = Utils.getLexu();
@@ -38,5 +39,14 @@ public class UsersController {
                 .message(Constants.ADD_USER_SUCCESS)
                 .successfullySavedItems(Arrays.asList(savedGodza, savedLexu, savedUser))
                 .build();
+    }
+
+    @DeleteMapping
+    public SuccessfulResponse deleteUser(@RequestParam long id) {
+        User delete = usersService.delete(id);
+        if (delete != null) {
+            return SuccessfulResponse.builder().message("Successfully removed user").successfullySavedItems(Collections.singletonList(delete)).build();
+        }
+        return SuccessfulResponse.builder().message("Cannot add skill to user").build();
     }
 }

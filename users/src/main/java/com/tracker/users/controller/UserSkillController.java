@@ -4,40 +4,32 @@ import com.tracker.users.model.Skill;
 import com.tracker.users.model.SuccessfulResponse;
 import com.tracker.users.model.User;
 import com.tracker.users.model.UserSkill;
-import com.tracker.users.repository.UsersSkillRepository;
 import com.tracker.users.service.SkillsService;
+import com.tracker.users.service.UserSkillService;
 import com.tracker.users.service.UsersService;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 @RestController
+@RequestMapping("/addSkillToUser")
 public class UserSkillController {
 
     @Autowired
-    private UsersSkillRepository usersSkillRepository;
+    private UserSkillService userSkillService;
 
-    @Autowired
-    private SkillsService skillsService;
+    @PostMapping
+    public SuccessfulResponse addSkillToUser(@RequestBody UserSkill userSkill) {
 
-    @Autowired
-    private UsersService usersService;
-
-
-    @PostMapping("/addSkillToUser")
-    public SuccessfulResponse addSkillToUser(UserSkill userSkill) {
-
-        User user = usersService.getUser(userSkill.getUserId());
-        Skill skill = skillsService.getSkill(userSkill.getUserId());
-
-        if (user != null && skill != null) {
-            usersSkillRepository.save(userSkill);
+        UserSkill saved = userSkillService.save(userSkill);
+        if (saved != null) {
             return SuccessfulResponse.builder().message("Successfully added skill to user").successfullySavedItems(Collections.singletonList(userSkill)).build();
         }
+
         return SuccessfulResponse.builder().message("Cannot add skill to user").build();
     }
 }

@@ -11,7 +11,7 @@ public interface SkillsRepository extends JpaRepository<Skill, Long> {
 
     List<Skill> findAll();
 
-    Skill findById(long id);
+    Skill deleteById(long id);
 
     <S extends Skill> S save(S s);
 

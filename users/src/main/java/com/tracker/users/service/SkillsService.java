@@ -6,8 +6,6 @@ import java.util.List;
 
 public interface SkillsService {
 
-    void syncWithDb();
-
     List<Skill> getSkills();
 
     Skill getSkill(long id);
@@ -17,4 +15,6 @@ public interface SkillsService {
     Skill saveAndFlush(Skill skill);
 
     Skill save(Skill skill);
+
+    Skill delete(long id);
 }

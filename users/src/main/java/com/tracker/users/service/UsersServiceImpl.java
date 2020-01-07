@@ -61,4 +61,9 @@ public class UsersServiceImpl implements UsersService {
     public User save(User user) {
         return usersRepository.save(user);
     }
+
+    @Override
+    public User delete(long id) {
+        return usersRepository.deleteById(id);
+    }
 }

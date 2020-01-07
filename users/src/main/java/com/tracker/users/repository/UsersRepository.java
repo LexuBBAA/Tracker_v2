@@ -12,7 +12,7 @@ public interface UsersRepository extends JpaRepository<User, Long> {
 
     List<User> findAll();
 
-    User findById(long id);
+    User deleteById(long id);
 
     <S extends User> S save(S s);
 

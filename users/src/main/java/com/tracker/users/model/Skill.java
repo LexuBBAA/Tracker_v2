@@ -14,7 +14,7 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = "id")
+@EqualsAndHashCode(exclude = { "id", "users" })
 @JsonIgnoreProperties(value = { "users" })
 public class Skill {
 
@@ -27,5 +27,6 @@ public class Skill {
     private String type;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "skills")
+    @ToString.Exclude
     private Set<User> users = new HashSet<>();
 }

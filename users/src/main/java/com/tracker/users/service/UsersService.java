@@ -6,8 +6,6 @@ import java.util.List;
 
 public interface UsersService {
 
-    void syncWithDb();
-
     List<User> getUsers();
 
     User getUser(long id);
@@ -17,4 +15,6 @@ public interface UsersService {
     User saveAndFlush(User user);
 
     User save(User user);
+
+    User delete(long id);
 }

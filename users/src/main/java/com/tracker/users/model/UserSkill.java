@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class UserSkill {
 
-    private long userId;
-    private long skillId;
+    private Long userId;
+    private Long skillId;
 }
