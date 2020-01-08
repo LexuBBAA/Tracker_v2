@@ -1,7 +1,7 @@
 package com.tracker.users.service;
 
-import com.tracker.users.model.User;
-import com.tracker.users.repository.UsersRepository;
+import com.tracker.users.model.Skill;
+import com.tracker.users.repository.SkillRepository;
 import com.tracker.users.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -15,51 +15,52 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
-public class UsersServiceImpl implements UsersService {
+public class SkillServiceImpl implements SkillService {
+
 
     @Autowired
-    private UsersRepository usersRepository;
+    private SkillRepository skillRepository;
 
-    private ConcurrentMap<Long, User> usersById = new ConcurrentHashMap<>();
+    private ConcurrentMap<Long, Skill> skillsById = new ConcurrentHashMap<>();
 
     @Scheduled(fixedDelay = Constants.SYNC_WITH_DB_TIMER)
     public void syncWithDb() {
 
-        usersById = usersRepository.findAll()
+        skillsById = skillRepository.findAll()
                 .stream()
-                .collect(Collectors.toConcurrentMap(User::getId, Function.identity()));
+                .collect(Collectors.toConcurrentMap(Skill::getId, Function.identity()));
     }
 
     @Override
-    public List<User> getUsers() {
+    public List<Skill> getSkills() {
 
-        return usersById.values()
+        return skillsById.values()
                 .stream()
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public User getUser(long id) {
-        return usersById.get(id);
+    public Skill getSkill(long id) {
+        return skillsById.get(id);
     }
 
     @Override
-    public List<User> findUserByName(String useraName) {
-        return usersById.values()
+    public List<Skill> findSkillByName(String skillName) {
+        return skillsById.values()
                 .stream()
                 .filter(Objects::nonNull)
-                .filter(u -> Objects.equals(u.getUserName(), useraName))
+                .filter(s -> Objects.equals(s.getName(), skillName))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public User save(User user) {
-        return usersRepository.save(user);
+    public Skill save(Skill skill) {
+        return skillRepository.save(skill);
     }
 
     @Override
-    public User delete(long id) {
-        return usersRepository.deleteById(id);
+    public Skill delete(long id) {
+        return skillRepository.deleteById(id);
     }
 }

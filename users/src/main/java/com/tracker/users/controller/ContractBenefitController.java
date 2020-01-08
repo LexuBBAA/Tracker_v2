@@ -1,8 +1,9 @@
 package com.tracker.users.controller;
 
-import com.tracker.users.model.Skill;
-import com.tracker.users.model.rest.RestResponse;
+import com.tracker.users.model.ContractBenefit;
 import com.tracker.users.model.UserSkill;
+import com.tracker.users.model.rest.RestResponse;
+import com.tracker.users.service.ContractBenefitService;
 import com.tracker.users.service.UserSkillService;
 import com.tracker.users.utils.Constants;
 import com.tracker.users.utils.Utils;
@@ -12,19 +13,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collections;
-
 @RestController
-@RequestMapping("/addSkillToUser")
-public class UserSkillController {
+@RequestMapping("/addBenefitToContract")
+public class ContractBenefitController {
 
     @Autowired
-    private UserSkillService userSkillService;
+    private ContractBenefitService contractBenefitService;
 
     @PostMapping
-    public RestResponse add(@RequestBody UserSkill userSkill) {
+    public RestResponse add(@RequestBody ContractBenefit contractBenefit) {
 
-        UserSkill saved = userSkillService.save(userSkill);
+        ContractBenefit saved = contractBenefitService.save(contractBenefit);
         return Utils.getRestResponse(saved, Constants.SUCCESSFULLY_ADDED_SKILL_TO_USER, Constants.UNSUCCESSFULLY_ADDED_SKILL_TO_USER);
     }
 }

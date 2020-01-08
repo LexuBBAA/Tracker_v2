@@ -4,7 +4,7 @@ import com.tracker.users.model.User;
 
 import java.util.List;
 
-public interface UsersService {
+public interface UserService {
 
     List<User> getUsers();
 

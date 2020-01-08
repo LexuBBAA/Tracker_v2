@@ -1,6 +1,6 @@
 package com.tracker.users.repository;
 
-import com.tracker.users.model.Skill;
+import com.tracker.users.model.Contract;
 import com.tracker.users.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -8,11 +8,11 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface UsersRepository extends JpaRepository<User, Long> {
+public interface ContractRepository extends JpaRepository<Contract, Long> {
 
-    List<User> findAll();
+    List<Contract> findAll();
 
-    User deleteById(long id);
+    Contract deleteById(long id);
 
-    <S extends User> S save(S s);
+    <S extends Contract> S save(S s);
 }

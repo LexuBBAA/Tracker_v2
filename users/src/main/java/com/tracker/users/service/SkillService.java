@@ -4,7 +4,7 @@ import com.tracker.users.model.Skill;
 
 import java.util.List;
 
-public interface SkillsService {
+public interface SkillService {
 
     List<Skill> getSkills();
 
