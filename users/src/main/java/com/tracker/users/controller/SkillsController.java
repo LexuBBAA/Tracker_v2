@@ -1,20 +1,20 @@
 package com.tracker.users.controller;
 
+import com.tracker.users.model.rest.RestResponse;
 import com.tracker.users.model.Skill;
-import com.tracker.users.model.SuccessfulResponse;
-import com.tracker.users.model.User;
 import com.tracker.users.service.SkillsService;
 import com.tracker.users.utils.Constants;
+import com.tracker.users.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 @RestController
 @RequestMapping("/skills")
 public class SkillsController {
+
 
     @Autowired
     private SkillsService skillsService;
@@ -25,23 +25,18 @@ public class SkillsController {
     }
 
     @PostMapping(headers = "Accept=application/json")
-    public SuccessfulResponse saveSkill(@RequestBody Skill skill) {
-        System.out.println("adding skill: " + skill);
+    public RestResponse save(@RequestBody Skill skill) {
 
-        Skill savedSkill = skillsService.save(skill);
-
-        return SuccessfulResponse.builder()
-                .message(Constants.ADD_USER_SUCCESS)
-                .successfullySavedItems(Arrays.asList(savedSkill))
-                .build();
+        Skill saved = skillsService.save(skill);
+        return Utils.getRestResponse(saved, Constants.SUCCESSFULLY_ADDED_SKILL, Constants.UNSUCCESSFULLY_ADDED_SKILL);
     }
 
     @DeleteMapping
-    public SuccessfulResponse deleteUser(@RequestParam long id) {
+    public RestResponse deleteSkill(@RequestParam long id) {
+
         Skill delete = skillsService.delete(id);
-        if (delete != null) {
-            return SuccessfulResponse.builder().message("Successfully removed skill").successfullySavedItems(Collections.singletonList(delete)).build();
-        }
-        return SuccessfulResponse.builder().message("Cannot add skill to user").build();
+        return Utils.getRestResponse(delete, Constants.SUCCESSFULLY_REMOVED_SKILL, Constants.UNSUCCESSFULLY_REMOVED_SKILL);
     }
+
+
 }

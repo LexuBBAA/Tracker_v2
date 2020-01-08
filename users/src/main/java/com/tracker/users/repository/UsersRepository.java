@@ -15,6 +15,4 @@ public interface UsersRepository extends JpaRepository<User, Long> {
     User deleteById(long id);
 
     <S extends User> S save(S s);
-
-    <S extends User> S saveAndFlush(S s);
 }

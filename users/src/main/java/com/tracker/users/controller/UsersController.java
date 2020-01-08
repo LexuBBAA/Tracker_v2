@@ -1,6 +1,6 @@
 package com.tracker.users.controller;
 
-import com.tracker.users.model.SuccessfulResponse;
+import com.tracker.users.model.rest.RestResponse;
 import com.tracker.users.model.User;
 import com.tracker.users.service.UsersService;
 import com.tracker.users.utils.Constants;
@@ -8,7 +8,6 @@ import com.tracker.users.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -25,28 +24,16 @@ public class UsersController {
     }
 
     @PostMapping(headers = "Accept=application/json")
-    public SuccessfulResponse saveUser(@RequestBody User user) {
-        User godza = Utils.getGodza();
-        User lexu = Utils.getLexu();
+    public RestResponse save(@RequestBody User user) {
 
-        System.out.println(usersService.getUsers().contains(lexu));
-
-        User savedGodza = usersService.saveAndFlush(godza);
-        User savedLexu = usersService.save(lexu);
-        User savedUser = usersService.save(user);
-
-        return SuccessfulResponse.builder()
-                .message(Constants.ADD_USER_SUCCESS)
-                .successfullySavedItems(Arrays.asList(savedGodza, savedLexu, savedUser))
-                .build();
+        User saved = usersService.save(user);
+        return Utils.getRestResponse(saved, Constants.SUCCESSFULLY_ADDED_USER, Constants.UNSUCCESSFULLY_ADDED_USER);
     }
 
     @DeleteMapping
-    public SuccessfulResponse deleteUser(@RequestParam long id) {
+    public RestResponse delete(@RequestParam long id) {
+
         User delete = usersService.delete(id);
-        if (delete != null) {
-            return SuccessfulResponse.builder().message("Successfully removed user").successfullySavedItems(Collections.singletonList(delete)).build();
-        }
-        return SuccessfulResponse.builder().message("Cannot add skill to user").build();
+        return Utils.getRestResponse(delete, Constants.SUCCESSFULLY_REMOVED_USER, Constants.UNSUCCESSFULLY_REMOVED_USER);
     }
 }

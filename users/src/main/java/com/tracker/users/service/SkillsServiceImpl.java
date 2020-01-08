@@ -2,6 +2,7 @@ package com.tracker.users.service;
 
 import com.tracker.users.model.Skill;
 import com.tracker.users.repository.SkillsRepository;
+import com.tracker.users.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -16,12 +17,13 @@ import java.util.stream.Collectors;
 @Service
 public class SkillsServiceImpl implements SkillsService {
 
+
     @Autowired
     private SkillsRepository skillsRepository;
 
     private ConcurrentMap<Long, Skill> skillsById = new ConcurrentHashMap<>();
 
-    @Scheduled(fixedDelay = 10_000)
+    @Scheduled(fixedDelay = Constants.SYNC_WITH_DB_TIMER)
     public void syncWithDb() {
 
         skillsById = skillsRepository.findAll()
@@ -50,11 +52,6 @@ public class SkillsServiceImpl implements SkillsService {
                 .filter(Objects::nonNull)
                 .filter(s -> Objects.equals(s.getName(), skillName))
                 .collect(Collectors.toList());
-    }
-
-    @Override
-    public Skill saveAndFlush(Skill user) {
-        return skillsRepository.saveAndFlush(user);
     }
 
     @Override

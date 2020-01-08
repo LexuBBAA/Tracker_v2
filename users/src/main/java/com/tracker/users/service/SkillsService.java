@@ -12,8 +12,6 @@ public interface SkillsService {
 
     List<Skill> findSkillByName(String name);
 
-    Skill saveAndFlush(Skill skill);
-
     Skill save(Skill skill);
 
     Skill delete(long id);

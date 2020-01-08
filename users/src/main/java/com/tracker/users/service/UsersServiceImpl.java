@@ -2,6 +2,7 @@ package com.tracker.users.service;
 
 import com.tracker.users.model.User;
 import com.tracker.users.repository.UsersRepository;
+import com.tracker.users.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class UsersServiceImpl implements UsersService {
 
     private ConcurrentMap<Long, User> usersById = new ConcurrentHashMap<>();
 
-    @Scheduled(fixedDelay = 10_000)
+    @Scheduled(fixedDelay = Constants.SYNC_WITH_DB_TIMER)
     public void syncWithDb() {
 
         usersById = usersRepository.findAll()
@@ -50,11 +51,6 @@ public class UsersServiceImpl implements UsersService {
                 .filter(Objects::nonNull)
                 .filter(u -> Objects.equals(u.getUserName(), useraName))
                 .collect(Collectors.toList());
-    }
-
-    @Override
-    public User saveAndFlush(User user) {
-        return usersRepository.saveAndFlush(user);
     }
 
     @Override

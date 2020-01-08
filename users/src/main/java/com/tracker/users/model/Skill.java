@@ -14,8 +14,8 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = { "id", "users" })
-@JsonIgnoreProperties(value = { "users" })
+@EqualsAndHashCode(exclude = {"id", "users"}, callSuper = false)
+@JsonIgnoreProperties(value = {"users"})
 public class Skill {
 
     @Id

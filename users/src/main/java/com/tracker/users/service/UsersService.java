@@ -12,8 +12,6 @@ public interface UsersService {
 
     List<User> findUserByName(String name);
 
-    User saveAndFlush(User user);
-
     User save(User user);
 
     User delete(long id);

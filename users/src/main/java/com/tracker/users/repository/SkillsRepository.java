@@ -14,6 +14,4 @@ public interface SkillsRepository extends JpaRepository<Skill, Long> {
     Skill deleteById(long id);
 
     <S extends Skill> S save(S s);
-
-    <S extends Skill> S saveAndFlush(S s);
 }
