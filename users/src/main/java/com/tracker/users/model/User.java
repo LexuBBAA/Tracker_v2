@@ -3,6 +3,7 @@ package com.tracker.users.model;
 import lombok.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.jsondoc.core.annotation.ApiObject;
 
 import javax.persistence.*;
 import java.lang.annotation.Retention;
@@ -20,6 +21,7 @@ import java.util.stream.Stream;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(exclude = {"id", "skills"})
+@ApiObject
 public class User{
 
     @Id
