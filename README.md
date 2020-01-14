@@ -58,10 +58,10 @@ If you have any questions, feedback, or want to contribute, you can contact us a
 
 ## Authors
 * *Android Developer* - **Bogdan Birsasteanu** - [LexuBBAA](https://github.com/LexuBBAA/)
-* *Back-end Developers* - **Bogdan Birsasteanu** - [LexuBBAA](https://github.com/LexuBBAA/), **Mihai Godza** [https://github.com/mgodza93]
-* *Front-end Developers* - **Bogdan Birsasteanu** - [LexuBBAA](https://github.com/LexuBBAA/), **Mihai Godza** [https://github.com/mgodza93]
+* *Back-end Developers* - **Bogdan Birsasteanu** - [LexuBBAA](https://github.com/LexuBBAA/), **Mihai Godza** - [mgodza93](https://github.com/mgodza93)
+* *Front-end Developers* - **Bogdan Birsasteanu** - [LexuBBAA](https://github.com/LexuBBAA/), **Mihai Godza** - [mgodza93](https://github.com/mgodza93)
 * *iOS Developer* - **Bogdan Birsasteanu** - [LexuBBAA](https://github.com/LexuBBAA/)
-* *UI/UX Designers* - **Bogdan Birsasteanu** - [LexuBBAA](https://github.com/LexuBBAA/), **Mihai Godza** [https://github.com/mgodza93]
+* *UI/UX Designers* - **Bogdan Birsasteanu** - [LexuBBAA](https://github.com/LexuBBAA/), **Mihai Godza** - [mgodza93](https://github.com/mgodza93)
 
 ## License
 
