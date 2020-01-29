@@ -32,5 +32,5 @@ public class Constants {
     public static final String UNSUCCESSFULLY_REMOVED_BENEFIT = "Cannot remove benefit!";
 
 
-    public final static int SYNC_WITH_DB_TIMER = 60_000;
+    public final static int SYNC_WITH_DB_TIMER = 60_000 * 10;
 }
