@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) Bogdan Andrei Alexandru - 2017.
+  -->
+
+<resources>
+    <color name="color_accent">@color/default_accent</color>
+    <color name="color_accent_dark">@color/default_accent_dark</color>
+
+    <!--Widgets coloring-->
+    <color name="stop_red">#DC0803</color>
+    <color name="default_accent">#ff80cbc4</color>
+    <color name="default_accent_dark">#ff009688</color>
+    <color name="light_gray_bg">#424242</color>
+    <color name="dark_gray_bg">#303030</color>
+    <color name="blocking_view_color">#35ffffff</color>
+
+    <!--Marker colors-->
+    <color name="story_type_color">#4CAF50</color>
+    <color name="issue_type_color">#FF5252</color>
+    <color name="task_type_color">#0288D1</color>
+    <color name="subtask_type_color">#03A9F4</color>
+    <color name="question_type_color">#FFEB3B</color>
+
+    <!--Status colors-->
+    <color name="in_progress_type_color">#0288D1</color>
+    <color name="open_type_color">#03A9F4</color>
+    <color name="closed_type_color">#757575</color>
+    <color name="done_type_color">#689F38</color>
+    <color name="in_qa_type_color">#FBC02D</color>
+    <color name="on_hold_type_color">#BDBDBD</color>
+    <color name="reopened_type_color">#FF5252</color>
+</resources>

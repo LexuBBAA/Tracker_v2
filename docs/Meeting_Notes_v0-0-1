@@ -1,0 +1,21 @@
+20/Dec/2019 -> 21/Dec/2019:
+1. How shall we manage rights on each entity since the entities can be added later on to the system?
+A: UserEntityRightRelation table will hold the EntityType (enum) and the EntityID (entry ID).
+
+2. How to add a profile to a user?
+A: Admin knows UserID & ProfileID -> creates UserEntityRightRelation for all the profile matchings (EntityID, EntityType, Right).
+
+3. Make sure we provide indepth customization on the process flows (projects, tasks) for end-users.
+
+!!! 4. Maybe concentrate on Users and Roles rather than Contracts and HR bullshit? :D
+
+5. Add something like ManPower in Sprints?
+eg. Sprint is completed by 1 member => 80h manpower; Sprint is completed by 3 members => 240h manpower (Happy scenario :D)
+
+6. Add Labels / Teams / Components to Sprints?
+
+7. The people that can CRUD a Worklog are the Assignee (the logger), its managers or the System Admin.
+
+!!! 8. Discuss the Mediator role in the overall architecture (how should the sync be done/managed between read/write requests); we can have multiple databases or a single database in action.
+
+9. Whenever a new Component is created / implemented, create a new endpoint in the related Public API.

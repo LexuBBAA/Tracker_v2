@@ -1,0 +1,55 @@
+1) Adm. Proiecte:
+	1.1 CRUD Proiecte
+	1.2 Import/Export Proiecte (Attlasian Jira, Asana, Trello, etc.)
+	1.3 Code review
+        1.4 Pull Request Approval Processes
+        1.5 Automations (CI / CD Tools integration, monitoring and reporting)
+        1.6 Design Validation
+	*1.7 Task Flow Customization
+
+2) Adm. Utilizatori:
+	2.1 CRUD Utilizatori
+	2.2 CRUD Echipe
+	2.3 CRUD Roluri
+	2.4 OAuth
+		*2.4.1 2Factor
+	2.5 Availability (OOO Calendar, Holidays, etc.) + Paid Personal Time Balance + More HR bullshit
+
+3) Adm. Sprint-uri:
+	3.1 CRUD Sprint-uri
+	3.2 CRUD Task-uri
+	3.3 Backlog (Default Neverending Sprint)
+
+4) Worklog-uri:
+	4.1 Effective time spent on tasks
+
+5) Service Manager (Tip Eureka but maybe more)
+
+6) Internal API (endpoint traffic redirects)
+	6.1 Endpoints
+	6.2 Adm. Utils / Monitoring
+
+7) Public APIs (Clients) - Public access to services for 3rd Parties
+	7.1 Management API (~Internal API)
+	7.2 Communication Channel API
+		7.2.1 Wiki API
+		7.2.2 Comments API
+
+8) Bug reporting service
+
+9) Google Services Integration:
+	9.1 Firebase FCM (Firebase Notifications)
+	9.2 Google Analytics
+
+10) PostMan Env.
+	10.1 Env. Setup
+	10.2 Env. Docs
+	*10.3 Integration Tests7
+
+11) Resource Server
+	11.1 Raw Files
+	11.2 Images
+	11.3 Video
+	11.4 Etc?
+
+Note: "*" = optional :)

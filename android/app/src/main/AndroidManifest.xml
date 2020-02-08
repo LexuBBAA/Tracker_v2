@@ -1,24 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
-          package="com.tracker.trackerv2">
+<manifest package="com.tracker.trackerv2"
+          xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools">
 
     <application
-            android:allowBackup="true"
-            android:icon="@mipmap/ic_launcher"
-            android:label="@string/app_name"
-            android:roundIcon="@mipmap/ic_launcher_round"
-            android:supportsRtl="true"
-            android:theme="@style/AppTheme"
-            tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+        android:name=".TrackerV2Application"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Design.NoActionBar"
+        tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+        <activity android:name=".TeamDetailsActivity">
+        </activity>
+        <activity android:name=".CreateTeamActivity">
+        </activity>
+        <activity android:name=".AddNewEntryActivity">
+        </activity>
+        <activity android:name=".SprintDetailsActivity">
+        </activity>
+        <activity android:name=".CreateSprintActivity">
+        </activity>
+        <activity android:name=".CreateProjectActivity">
+        </activity>
+        <activity android:name=".ProjectDetailsActivity">
+        </activity>
+        <activity android:name=".CreateTaskActivity">
+        </activity>
+        <activity android:name=".SearchUsersActivity">
+        </activity>
         <activity android:name=".MainActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".DashboardActivity">
+        </activity>
+        <activity android:name=".SearchTaskActivity">
+        </activity>
+        <activity android:name=".PersonalStatusDetailsActivity">
+        </activity>
+        <activity android:name=".TaskDetailsActivity"/>
+
+        <service
+            android:name=".FcmService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="1234567890"/>
     </application>
 
 </manifest>

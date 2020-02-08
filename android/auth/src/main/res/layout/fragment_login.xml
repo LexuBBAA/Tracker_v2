@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) Bogdan Andrei Alexandru - 2017.
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/registerFragmentLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/loginCardView"
+            android:layout_alignStart="@+id/loginCardView"
+            android:layout_alignEnd="@+id/loginCardView"
+            android:layout_marginBottom="8dp"
+            android:textSize="24sp"
+            android:text="Login"/>
+
+    <androidx.cardview.widget.CardView
+            android:id="@+id/loginCardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="48dp"
+            android:layout_marginEnd="48dp"
+            app:cardBackgroundColor="@color/dark_semitransparent_background_color">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/loginUsernameInputContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp">
+                <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/loginUsernameInputField"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="24sp"
+                        android:hint="Username"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/loginPasswordInputContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp">
+                <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/loginPasswordInputField"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="24sp"
+                        android:hint="Password"
+                        android:inputType="textPassword"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/loginResetPasswordLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="Forgot your password? Change it."
+                    android:textSize="14sp"
+                    android:layout_marginBottom="16dp"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:layout_below="@+id/loginCardView"
+            android:layout_alignStart="@+id/loginCardView"
+            android:layout_alignEnd="@+id/loginCardView">
+        <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/loginSignUpButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="8dp"
+                android:background="@android:color/transparent"
+                android:text="Create account"
+                android:textAllCaps="false"
+                android:textSize="16sp"/>
+
+        <View android:layout_width="0dp"
+              android:layout_height="match_parent"
+              android:layout_weight="1"/>
+
+        <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/loginActionButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="4dp"
+                android:background="@drawable/round_dark_background_48dp"
+                android:src="@drawable/ic_navigate_next_white_24dp"/>
+    </LinearLayout>
+
+</RelativeLayout>
