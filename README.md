@@ -1,4 +1,4 @@
-# Tracker_v2
+# Tracker_v2 (under development)
 
 Tracker_v2 is the new and improved version of the [Tracker App](https://github.com/LexuBBAA/Tracker). The new version of the app (the _v2_) will support a private web service written in Java using Spring Boot, a native Android app developed in Kotlin, and also web & iOS versions so that the users can benefit from the performance boosts on their preferred platform.
 
